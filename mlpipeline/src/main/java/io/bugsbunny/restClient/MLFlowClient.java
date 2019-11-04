@@ -46,4 +46,35 @@ public class MLFlowClient
             throw new RuntimeException(uriSyntaxException);
         }
     }
+
+    //List all the experiments stored in the Tracking Server
+    public void listExperiments()
+    {
+        logger.info("***LIST_EXPERIMENTS*******");
+        logger.info("***************************");
+
+        //Setup RestTemplate
+        RestTemplate restTemplate = new RestTemplate();
+        String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/experiments/list";
+
+        try {
+            //Setup the GET request
+            URI restURI = new URI(restUrl);
+            HttpMethod get = HttpMethod.GET;
+            RequestEntity<Void> requestEntity = RequestEntity.get(restURI).build();
+            ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
+
+            HttpStatus status = response.getStatusCode();
+
+            logger.info("***RESPONSE***");
+            logger.info("HttpStatus: " + status.value());
+            logger.info("HttpMessage: " + status.getReasonPhrase());
+            logger.info("JSON: " + response.getBody());
+            logger.info("**************");
+        }
+        catch (URISyntaxException uriSyntaxException)
+        {
+            throw new RuntimeException(uriSyntaxException);
+        }
+    }
 }
