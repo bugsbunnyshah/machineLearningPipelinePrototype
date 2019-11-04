@@ -10,9 +10,9 @@ import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.UUID;
 
-public class MLFlowClient
+public class MLFlowExperimentClient
 {
-    private Logger logger = LoggerFactory.getLogger(MLFlowClient.class);
+    private Logger logger = LoggerFactory.getLogger(MLFlowExperimentClient.class);
 
     //Takes an experiment name as a free form string
     //returns an internal experiment_id
