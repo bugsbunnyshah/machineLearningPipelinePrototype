@@ -25,4 +25,11 @@ public class MLFlowClientTest {
         MLFlowClient mlFlowClient = new MLFlowClient();
         mlFlowClient.getExperiment();
     }
+
+    @Test
+    public void testGetExperimentByName()
+    {
+        MLFlowClient mlFlowClient = new MLFlowClient();
+        mlFlowClient.getExperimentByName();
+    }
 }

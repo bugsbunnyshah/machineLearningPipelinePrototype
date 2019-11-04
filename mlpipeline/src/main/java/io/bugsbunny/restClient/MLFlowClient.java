@@ -113,4 +113,45 @@ public class MLFlowClient
             throw new RuntimeException(uriSyntaxException);
         }
     }
+
+    /**
+     * Get metadata for an experiment.
+     *
+     * This endpoint will return deleted experiments, but prefers the active experiment if an active and deleted experiment share the same name. If multiple deleted experiments share the same name, the API will return one of them.
+     *
+     * Throws RESOURCE_DOES_NOT_EXIST if no experiment with the specified name exists.
+     */
+    public void getExperimentByName()
+    {
+        logger.info("***GET_AN_EXPERIMENT_METADATA_BY_NAME*******");
+        logger.info("***************************");
+
+        //Setup RestTemplate
+        RestTemplate restTemplate = new RestTemplate();
+        String restUrl = MessageFormat.
+                format("http://127.0.0.1:5000/api/2.0/mlflow/experiments/get-by-name?experiment_name={0}",
+                        "bugsbunny");
+
+        try {
+            //Setup the GET request
+            URI restURI = new URI(restUrl);
+            HttpMethod get = HttpMethod.GET;
+            RequestEntity<Void> requestEntity = RequestEntity.get(restURI)
+                    .build();
+
+            ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
+
+            HttpStatus status = response.getStatusCode();
+
+            logger.info("***RESPONSE***");
+            logger.info("HttpStatus: " + status.value());
+            logger.info("HttpMessage: " + status.getReasonPhrase());
+            logger.info("JSON: " + response.getBody());
+            logger.info("**************");
+        }
+        catch (URISyntaxException uriSyntaxException)
+        {
+            throw new RuntimeException(uriSyntaxException);
+        }
+    }
 }
