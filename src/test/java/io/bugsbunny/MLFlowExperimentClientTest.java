@@ -1,7 +1,9 @@
 package io.bugsbunny;
 
 import io.bugsbunny.restClient.MLFlowExperimentClient;
-import org.junit.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
 
 public class MLFlowExperimentClientTest {
 

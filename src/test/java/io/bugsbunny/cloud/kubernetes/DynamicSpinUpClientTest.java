@@ -1,6 +1,7 @@
 package io.bugsbunny.cloud.kubernetes;
 
-import org.junit.Test;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
 
 public class DynamicSpinUpClientTest {
 
