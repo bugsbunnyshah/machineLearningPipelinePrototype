@@ -25,7 +25,7 @@ import java.util.zip.GZIPInputStream;
 public class ModelDeployerTest {
     private static Logger logger = LoggerFactory.getLogger(ModelDeployerTest.class);
 
-    //@Test
+    @Test
     public void testDeploy()
     {
         ModelDeployer deployer = new ModelDeployer();
