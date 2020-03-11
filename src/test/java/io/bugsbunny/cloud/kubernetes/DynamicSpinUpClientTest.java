@@ -18,4 +18,11 @@ public class DynamicSpinUpClientTest {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
         dynamicSpinUpClient.invokeGetPods();
     }
+
+    @Test
+    public void testInvokePostPod() throws Exception
+    {
+        DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
+        dynamicSpinUpClient.invokePostPod();
+    }
 }
