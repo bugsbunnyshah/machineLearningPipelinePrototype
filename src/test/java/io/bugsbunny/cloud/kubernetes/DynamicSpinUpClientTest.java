@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 public class DynamicSpinUpClientTest {
 
     @Test
-    public void testInvokeAlive()
+    public void testInvokeAlive() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
         dynamicSpinUpClient.invokeKubeAlive();
     }
 
     @Test
-    public void testInvokeGetPods()
+    public void testInvokeGetPods() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
         dynamicSpinUpClient.invokeGetPods();
