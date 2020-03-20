@@ -1,5 +1,7 @@
 package io.bugsbunny.cloud.kubernetes;
 
+import com.google.gson.JsonObject;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -8,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 
 public class DynamicSpinUpClient {
@@ -136,17 +140,24 @@ public class DynamicSpinUpClient {
 
         //Setup RestTemplate
         RestTemplate restTemplate = new RestTemplate(requestFactory);
-        String restUrl = "https://kubernetes.docker.internal:6443/api/v1/namespaces/default/pods";
+        String restUrl = "https://kubernetes.docker.internal:6443/apis/apps/v1/namespaces/default/deployments";
         try {
-            //Setup the GET request
             URI restURI = new URI(restUrl);
             HttpMethod post = HttpMethod.POST;
 
-            String json = "{\n" +
-                    "  \"kind\": \"Pod\",\n" +
-                    "  \"apiVersion\": \"v1\",\n" +
-                    "  ...\n" +
-                    "}";
+            //Get the docker image
+            String dockerImage = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("code-with-quarkus-jvm.tar"),
+                    StandardCharsets.UTF_8);
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("kind", "Deployment");
+            jsonObject.addProperty("apiVersion", "v1");
+            jsonObject.addProperty("body", dockerImage);
+            String json = jsonObject.toString();
+
+            //logger.info("*******");
+            //logger.info(json);
+            //logger.info("*******");
 
             RequestEntity postEntity = RequestEntity.post(restURI).contentType(MediaType.APPLICATION_JSON).body(json);
             ResponseEntity<String> response = restTemplate.exchange(postEntity, String.class);
@@ -158,6 +169,16 @@ public class DynamicSpinUpClient {
             logger.info("HttpMessage: " + status.getReasonPhrase());
             logger.info("JSON: " + response.getBody());
             logger.info("**************");
+        }
+        catch(HttpClientErrorException hce)
+        {
+            logger.error(hce.getMessage(), hce);
+
+            logger.info("*******");
+            logger.info(hce.getResponseBodyAsString());
+            logger.info("*******");
+
+            throw new RuntimeException(hce);
         }
         catch (URISyntaxException uriSyntaxException)
         {
