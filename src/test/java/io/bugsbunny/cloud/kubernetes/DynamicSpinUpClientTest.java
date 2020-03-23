@@ -23,6 +23,6 @@ public class DynamicSpinUpClientTest {
     public void testInvokePostPod() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
-        dynamicSpinUpClient.invokePostPod();
+        dynamicSpinUpClient.tryGoogleCloud();
     }
 }
