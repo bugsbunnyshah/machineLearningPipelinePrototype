@@ -89,7 +89,7 @@ public class MLFlowExperimentClient
         RestTemplate restTemplate = new RestTemplate();
         String restUrl = MessageFormat.
                 format("http://127.0.0.1:5000/api/2.0/mlflow/experiments/get?experiment_id={0}",
-                        "2");
+                        "0");
 
         try {
             //Setup the GET request
