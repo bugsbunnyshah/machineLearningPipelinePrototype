@@ -1,47 +1,13 @@
 {
   "name":"azlindexer",
-  "dataSourceName" : "cog-search-demo-ds",
-  "targetIndexName" : "cog-search-demo-idx",
-  "skillsetName" : "cog-search-demo-ss",
+  "dataSourceName" : "azlds",
+  "targetIndexName" : "azlindex",
   "fieldMappings" : [
     {
       "sourceFieldName" : "metadata_storage_path",
       "targetFieldName" : "id",
       "mappingFunction" :
       { "name" : "base64Encode" }
-    },
-    {
-      "sourceFieldName" : "metadata_storage_name",
-      "targetFieldName" : "metadata_storage_name",
-      "mappingFunction" :
-      { "name" : "base64Encode" }
-    },
-    {
-      "sourceFieldName" : "content",
-      "targetFieldName" : "content"
-    }
-  ],
-  "outputFieldMappings" :
-  [
-    {
-      "sourceFieldName" : "/document/persons",
-      "targetFieldName" : "persons"
-    },
-    {
-      "sourceFieldName" : "/document/organizations",
-      "targetFieldName" : "organizations"
-    },
-    {
-      "sourceFieldName" : "/document/locations",
-      "targetFieldName" : "locations"
-    },
-    {
-      "sourceFieldName" : "/document/pages/*/keyPhrases/*",
-      "targetFieldName" : "keyPhrases"
-    },
-    {
-      "sourceFieldName": "/document/languageCode",
-      "targetFieldName": "languageCode"
     }
   ],
   "parameters":

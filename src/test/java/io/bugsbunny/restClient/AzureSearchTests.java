@@ -34,11 +34,11 @@ public class AzureSearchTests {
     @Test
     public void testCreateDataSource() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
         String requestUrl = "https://alz.search.windows.net/datasources?api-version=2019-05-06";
-        String blobContainerName = "alzBlobContainer";
-        String accountName = "alzAccount";
+        String blobContainerName = "azlBlobContainer";
+        String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
         String json = "{\n" +
-                "  \"name\" : \"alzds\",\n" +
+                "  \"name\" : \"azlds\",\n" +
                 "  \"description\" : \"Demo files to demonstrate cognitive search capabilities.\",\n" +
                 "  \"type\" : \"azureblob\",\n" +
                 "  \"credentials\" :\n" +
@@ -72,9 +72,9 @@ public class AzureSearchTests {
 
     //@Test
     public void testCreateSkillSet() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
-        String requestUrl = "https://alz.search.windows.net/skillsets/alzds?api-version=2019-05-06";
-        String blobContainerName = "alzBlobContainer";
-        String accountName = "alzAccount";
+        String requestUrl = "https://alz.search.windows.net/skillsets/azlds?api-version=2019-05-06";
+        String blobContainerName = "azlBlobContainer";
+        String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
         String json = "{\n" +
                 "  \"description\": \"Extract entities, detect language and extract key-phrases\",\n" +
@@ -153,8 +153,8 @@ public class AzureSearchTests {
     @Test
     public void testCreateIndex() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
         String requestUrl = "https://alz.search.windows.net/indexes/azlindex?api-version=2019-05-06";
-        String blobContainerName = "alzBlobContainer";
-        String accountName = "alzAccount";
+        String blobContainerName = "azlBlobContainer";
+        String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
         String json = "{\n" +
                 "  \"fields\": [\n" +
@@ -249,67 +249,21 @@ public class AzureSearchTests {
     @Test
     public void testCreateIndexer() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
         String requestUrl = "https://alz.search.windows.net/indexes/azlindexer?api-version=2019-05-06";
-        String blobContainerName = "alzBlobContainer";
-        String accountName = "alzAccount";
+        String blobContainerName = "azlBlobContainer";
+        String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
         String json = "{\n" +
                 "  \"name\":\"azlindexer\",\n" +
-                "  \"dataSourceName\" : \"alzds\",\n" +
-                "  \"targetIndexName\" : \"azlindex\",\n" +
-                "  \"fieldMappings\" : [\n" +
+                "\"fieldMappings\" : [\n" +
                 "    {\n" +
                 "      \"sourceFieldName\" : \"metadata_storage_path\",\n" +
                 "      \"targetFieldName\" : \"id\",\n" +
                 "      \"mappingFunction\" :\n" +
                 "      { \"name\" : \"base64Encode\" }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"sourceFieldName\" : \"metadata_storage_name\",\n" +
-                "      \"targetFieldName\" : \"metadata_storage_name\",\n" +
-                "      \"mappingFunction\" :\n" +
-                "      { \"name\" : \"base64Encode\" }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"sourceFieldName\" : \"content\",\n" +
-                "      \"targetFieldName\" : \"content\"\n" +
                 "    }\n" +
-                "  ],\n" +
-                "  \"outputFieldMappings\" :\n" +
-                "  [\n" +
-                "    {\n" +
-                "      \"sourceFieldName\" : \"/document/persons\",\n" +
-                "      \"targetFieldName\" : \"persons\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"sourceFieldName\" : \"/document/organizations\",\n" +
-                "      \"targetFieldName\" : \"organizations\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"sourceFieldName\" : \"/document/locations\",\n" +
-                "      \"targetFieldName\" : \"locations\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"sourceFieldName\" : \"/document/pages/*/keyPhrases/*\",\n" +
-                "      \"targetFieldName\" : \"keyPhrases\"\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"sourceFieldName\": \"/document/languageCode\",\n" +
-                "      \"targetFieldName\": \"languageCode\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"parameters\":\n" +
-                "  {\n" +
-                "    \"maxFailedItems\":-1,\n" +
-                "    \"maxFailedItemsPerBatch\":-1,\n" +
-                "    \"configuration\":\n" +
-                "    {\n" +
-                "      \"dataToExtract\": \"contentAndMetadata\",\n" +
-                "      \"parsingMode\": \"default\",\n" +
-                "      \"firstLineContainsHeaders\": false,\n" +
-                "      \"delimitedTextDelimiter\": \",\"\n" +
-                "    }\n" +
-                "  }\n" +
+                "  ]"+
                 "}";
+        logger.info(json);
 
         X509TrustManager xtm = new AzureSearchTests.MyTrustManager();
         TrustManager mytm[] = {xtm};
@@ -330,6 +284,35 @@ public class AzureSearchTests {
         logger.info("*******");
         logger.info(status+"");
         logger.info(tokenJson);
+        logger.info("*******");
+    }
+
+    @Test
+    public void testSearch() throws NoSuchAlgorithmException, KeyManagementException, IOException, InterruptedException, URISyntaxException {
+        String requestUrl = "https://alz.search.windows.net/indexes/azlindex?api-version=2019-05-06&search=*&$count=true&$select=content";
+        String blobContainerName = "azlBlobContainer";
+        String accountName = "azlAccount";
+        String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
+
+        X509TrustManager xtm = new AzureSearchTests.MyTrustManager();
+        TrustManager mytm[] = {xtm};
+        SSLContext ctx = SSLContext.getInstance("SSL");
+        ctx.init(null,mytm, null );
+        SSLSocketFactory sf = ctx.getSocketFactory();
+        HttpClient httpClient = HttpClient.newBuilder().sslContext(ctx).build();
+
+        HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
+        HttpRequest httpRequest = httpRequestBuilder.uri(new URI(requestUrl))
+                .header("Content-Type", "application/json")
+                .header("api-key",primaryKey)
+                .GET()
+                .build();
+        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        String json = httpResponse.body();
+        int status = httpResponse.statusCode();
+        logger.info("*******");
+        logger.info(status+"");
+        logger.info(json);
         logger.info("*******");
     }
 
