@@ -1,0 +1,17 @@
+{
+  "@odata.context": "https://alz.search.windows.net/$metadata#datasources/$entity",
+  "@odata.etag": "\"0x8D7EC818B4743AD\"",
+  "name": "alz-ds",
+  "description": "Demo files to demonstrate cognitive search capabilities.",
+  "type": "azureblob",
+  "subtype": null,
+  "credentials": {
+    "connectionString": null
+  },
+  "container": {
+    "name": "alzContainer",
+    "query": null
+  },
+  "dataChangeDetectionPolicy": null,
+  "dataDeletionDetectionPolicy": null
+}
