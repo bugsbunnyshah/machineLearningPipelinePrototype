@@ -70,7 +70,7 @@ public class AzureSearchTests {
         logger.info("*******");
     }
 
-    @Test
+    //@Test
     public void testCreateSkillSet() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
         String requestUrl = "https://alz.search.windows.net/skillsets/alzds?api-version=2019-05-06";
         String blobContainerName = "alzBlobContainer";
