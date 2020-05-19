@@ -36,10 +36,11 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
     implementation 'com.google.code.gson:gson:2.8.6'
-    //implementation 'io.delta:delta-core_2.11:0.5.0'
+    implementation 'io.delta:delta-core_2.11:0.5.0'
     implementation 'org.apache.spark:spark-core_2.12:2.4.5'
     implementation 'org.apache.spark:spark-sql_2.12:2.4.5'
-    //compile group: 'commons-logging', name: 'commons-logging', version: '1.1.1'
+    implementation('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
+    implementation('org.apache.hadoop:hadoop-common:2.7.2') {force = true} // required for org.apache.hadoop.util.StopWatch
     implementation 'org.springframework:spring-web:5.2.1.RELEASE'
     implementation 'io.kubernetes:client-java:5.0.0'
     implementation 'io.kubernetes:client-java-api:7.0.0'
