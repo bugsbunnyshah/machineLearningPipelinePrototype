@@ -19,9 +19,9 @@ import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+//import java.net.http.HttpClient;
+//import java.net.http.HttpRequest;
+//import java.net.http.HttpResponse;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -33,7 +33,7 @@ public class AzureSearchTests {
 
     @Test
     public void testCreateDataSource() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
-        String requestUrl = "https://alz.search.windows.net/datasources?api-version=2019-05-06";
+        /*String requestUrl = "https://alz.search.windows.net/datasources?api-version=2019-05-06";
         String blobContainerName = "azlBlobContainer";
         String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
@@ -67,12 +67,12 @@ public class AzureSearchTests {
         logger.info("*******");
         logger.info(status+"");
         logger.info(tokenJson);
-        logger.info("*******");
+        logger.info("*******");*/
     }
 
     //@Test
     public void testCreateSkillSet() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
-        String requestUrl = "https://alz.search.windows.net/skillsets/azlds?api-version=2019-05-06";
+        /*String requestUrl = "https://alz.search.windows.net/skillsets/azlds?api-version=2019-05-06";
         String blobContainerName = "azlBlobContainer";
         String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
@@ -147,12 +147,12 @@ public class AzureSearchTests {
         logger.info("*******");
         logger.info(status+"");
         logger.info(tokenJson);
-        logger.info("*******");
+        logger.info("*******");*/
     }
 
     @Test
     public void testCreateIndex() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
-        String requestUrl = "https://alz.search.windows.net/indexes/azlindex?api-version=2019-05-06";
+        /*String requestUrl = "https://alz.search.windows.net/indexes/azlindex?api-version=2019-05-06";
         String blobContainerName = "azlBlobContainer";
         String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
@@ -243,12 +243,12 @@ public class AzureSearchTests {
         logger.info("*******");
         logger.info(status+"");
         logger.info(tokenJson);
-        logger.info("*******");
+        logger.info("*******");*/
     }
 
     @Test
     public void testCreateIndexer() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
-        String requestUrl = "https://alz.search.windows.net/indexes/azlindexer?api-version=2019-05-06";
+        /*String requestUrl = "https://alz.search.windows.net/indexes/azlindexer?api-version=2019-05-06";
         String blobContainerName = "azlBlobContainer";
         String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
@@ -284,12 +284,12 @@ public class AzureSearchTests {
         logger.info("*******");
         logger.info(status+"");
         logger.info(tokenJson);
-        logger.info("*******");
+        logger.info("*******");*/
     }
 
     @Test
     public void testSearch() throws NoSuchAlgorithmException, KeyManagementException, IOException, InterruptedException, URISyntaxException {
-        String requestUrl = "https://alz.search.windows.net/indexes/azlindex?api-version=2019-05-06&search=*&$count=true&$select=content";
+        /*String requestUrl = "https://alz.search.windows.net/indexes/azlindex?api-version=2019-05-06&search=*&$count=true&$select=content";
         String blobContainerName = "azlBlobContainer";
         String accountName = "azlAccount";
         String primaryKey = "CB509E0E7E50948D4CCAC506BD5655F5";
@@ -313,7 +313,7 @@ public class AzureSearchTests {
         logger.info("*******");
         logger.info(status+"");
         logger.info(json);
-        logger.info("*******");
+        logger.info("*******");*/
     }
 
     public class MyTrustManager implements X509TrustManager

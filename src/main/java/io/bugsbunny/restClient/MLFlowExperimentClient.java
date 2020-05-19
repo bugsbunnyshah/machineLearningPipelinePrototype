@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+//import java.net.http.HttpClient;
+//import java.net.http.HttpRequest;
+//import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public class MLFlowExperimentClient
     //the friendly name is then associated with this experiment_id
     public void createExperiment(String experimentName)
     {
-        logger.info("***CREATE_EXPERIMENT*******");
+        /*logger.info("***CREATE_EXPERIMENT*******");
         logger.info("***************************");
 
         //Setup RestTemplate
@@ -52,13 +52,13 @@ public class MLFlowExperimentClient
         {
             logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     //List all the experiments stored in the Tracking Server
     public void listExperiments()
     {
-        logger.info("***LIST_EXPERIMENTS*******");
+        /*logger.info("***LIST_EXPERIMENTS*******");
         logger.info("***************************");
 
         //Setup RestTemplate
@@ -82,13 +82,13 @@ public class MLFlowExperimentClient
         catch (URISyntaxException uriSyntaxException)
         {
             throw new RuntimeException(uriSyntaxException);
-        }
+        }*/
     }
 
     //Get metadata for an experiment. This method works on deleted experiments.
     public void getExperiment()
     {
-        logger.info("***GET_AN_EXPERIMENT_METADATA*******");
+        /*logger.info("***GET_AN_EXPERIMENT_METADATA*******");
         logger.info("***************************");
 
         //Setup RestTemplate
@@ -117,7 +117,7 @@ public class MLFlowExperimentClient
         catch (URISyntaxException uriSyntaxException)
         {
             throw new RuntimeException(uriSyntaxException);
-        }
+        }*/
     }
 
     /**
@@ -129,7 +129,7 @@ public class MLFlowExperimentClient
      */
     public void getExperimentByName()
     {
-        logger.info("***GET_AN_EXPERIMENT_METADATA_BY_NAME*******");
+        /*logger.info("***GET_AN_EXPERIMENT_METADATA_BY_NAME*******");
         logger.info("***************************");
 
         //Setup RestTemplate
@@ -158,12 +158,12 @@ public class MLFlowExperimentClient
         catch (URISyntaxException uriSyntaxException)
         {
             throw new RuntimeException(uriSyntaxException);
-        }
+        }*/
     }
 
     public void getRunById(String runId)
     {
-        logger.info("***GET_AN_EXPERIMENT_METADATA_BY_NAME*******");
+        /*logger.info("***GET_AN_EXPERIMENT_METADATA_BY_NAME*******");
         logger.info("***************************");
 
         //Setup RestTemplate
@@ -188,6 +188,6 @@ public class MLFlowExperimentClient
         {
             logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
-        }
+        }*/
     }
 }

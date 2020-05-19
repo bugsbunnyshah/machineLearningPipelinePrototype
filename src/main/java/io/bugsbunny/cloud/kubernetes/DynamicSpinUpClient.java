@@ -26,7 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.http.*;
+//import java.net.http.*;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -44,7 +44,7 @@ public class DynamicSpinUpClient {
         //logger.info("****INVOKE_KUBE_ALIVE****");
         //logger.info("*********************");
 
-        StringBuilder parameters = new StringBuilder();
+        /*StringBuilder parameters = new StringBuilder();
         //parameters.append("grant_type=client_credentials&");
         //parameters.append("client_id=ffe0d3c1-9024-4111-9b9e-80b51a14eecd&");
         //parameters.append("client_secret=QmIZ_yBfakT90AqVBj3XG?gdi_hr6Hp?&client_secret=QmIZ_yBfakT90AqVBj3XG?gdi_hr6Hp?");
@@ -101,7 +101,7 @@ public class DynamicSpinUpClient {
         httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         logger.info("*******");
         logger.info(httpResponse.body());
-        logger.info("*******");
+        logger.info("*******");*/
     }
 
     public void invokeGetPods() throws Exception
@@ -210,7 +210,7 @@ public class DynamicSpinUpClient {
         logger.info("***********************");
 
         //Get the docker image
-        String dockerImage = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("code-with-quarkus-jvm.tar"),
+        /*String dockerImage = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("code-with-quarkus-jvm.tar"),
                 StandardCharsets.UTF_8);
 
         JsonObject jsonObject = new JsonObject();
@@ -263,17 +263,16 @@ public class DynamicSpinUpClient {
                 .build();
 
 
-        /*CompletableFuture<HttpResponse<String>> future = httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
+        CompletableFuture<HttpResponse<String>> future = httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
         logger.info("*******");
         logger.info(future.get().body());
-        logger.info("*******");*/
-
-        HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        logger.info("*******");
-        logger.info(response.body());
         logger.info("*******");
 
-        /*URL url = new URL("https://appgallabscluster-dns-ff0337d8.hcp.eastus.azmk8s.io:443/api/v1/namespaces/default/deployments");
+        //logger.info("*******");
+        //logger.info(response.body());
+        //logger.info("*******");
+
+        URL url = new URL("https://appgallabscluster-dns-ff0337d8.hcp.eastus.azmk8s.io:443/api/v1/namespaces/default/deployments");
         HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
 
         httpsURLConnection.setSSLSocketFactory(sf);
