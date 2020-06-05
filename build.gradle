@@ -52,6 +52,7 @@ dependencies {
     implementation ('com.fasterxml.jackson.core:jackson-databind:2.9.10') {force = true}
     implementation ('com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.10') {force = true}
     implementation 'org.apache.xbean:xbean-asm6-shaded:4.10'
+    implementation 'com.github.opendevl:json2flat:1.0.3'
 
     //testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
     //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
