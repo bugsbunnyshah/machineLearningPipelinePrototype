@@ -7,7 +7,9 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FilterFunction;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.sql.DataFrameReader;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @QuarkusTest
@@ -71,5 +74,40 @@ public class SparkGetStartedTests implements Serializable {
         logger.info("*******");
         logger.info("Total Length: "+lineCount);
         logger.info("*******");
+    }
+
+    @Test
+    public void testFileReadingWriting() throws Exception
+    {
+        SparkSession spark = SparkSession
+                .builder()
+                .appName("FileReadingWriting")
+                .config("spark.master", "local")
+                .getOrCreate();
+
+        DataFrameReader reader = spark.read();
+        Dataset<Row> skillsDataSet = reader.csv("airlines.dat");
+        Dataset<String> json = skillsDataSet.toJSON();
+
+        Iterator<String> itr = json.toLocalIterator();
+        logger.info("*******");
+        while(itr.hasNext())
+        {
+            logger.info(itr.next());
+        }
+        logger.info("*******");
+
+
+
+        //logger.info("*******");
+        //logger.info("Dataset Row Count: "+skillsDataSet.count());
+        //skillsDataSet.show();
+        //logger.info("*******");
+
+        //skillsDataSet.write().parquet("sampleParquet.parquet");
+
+        String[] columns = {"name","iata","icao","alternativeName","country","callSign"};
+
+        spark.close();
     }
 }

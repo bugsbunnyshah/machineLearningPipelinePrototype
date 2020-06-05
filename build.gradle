@@ -33,18 +33,26 @@ dependencies {
     implementation 'org.mongodb:mongodb-driver:3.0.4'
     implementation 'org.apache.kafka:kafka-clients:2.4.0'
     implementation 'org.springframework.kafka:spring-kafka:2.4.1.RELEASE'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'io.delta:delta-core_2.11:0.5.0'
-    implementation 'org.apache.spark:spark-core_2.12:2.4.5'
-    implementation 'org.apache.spark:spark-sql_2.12:2.4.5'
-    implementation('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
-    implementation('org.apache.hadoop:hadoop-common:2.7.2') {force = true} // required for org.apache.hadoop.util.StopWatch
+    //implementation('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
+    //implementation('org.apache.hadoop:hadoop-common:2.7.2') {force = true} // required for org.apache.hadoop.util.StopWatch
     implementation 'org.springframework:spring-web:5.2.1.RELEASE'
     implementation 'io.kubernetes:client-java:5.0.0'
     implementation 'io.kubernetes:client-java-api:7.0.0'
     implementation 'org.kamranzafar:jtar:2.3'
+
+    implementation 'org.apache.spark:spark-core_2.12:2.4.5'
+    implementation 'org.apache.spark:spark-sql_2.12:2.4.5'
+    implementation 'io.delta:delta-core_2.12:0.6.1'
+    implementation 'org.apache.parquet:parquet-hadoop:1.11.0'
+    implementation 'org.apache.parquet:parquet-avro:1.11.0'
+    implementation 'org.apache.parquet:parquet-common:1.11.0'
+    implementation 'org.apache.parquet:parquet-column:1.11.0'
+    implementation 'com.univocity:univocity-parsers:2.8.4'
+    implementation ('com.fasterxml.jackson.core:jackson-databind:2.9.10') {force = true}
+    implementation ('com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.10') {force = true}
+    implementation 'org.apache.xbean:xbean-asm6-shaded:4.10'
+
     //testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
     //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
