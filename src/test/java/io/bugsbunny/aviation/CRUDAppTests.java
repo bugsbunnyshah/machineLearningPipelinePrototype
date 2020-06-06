@@ -28,6 +28,8 @@ public class CRUDAppTests
     public void testQueries() throws Exception
     {
         try {
+            String location = "/tmp/delta-table-"+ UUID.randomUUID().toString();
+
             // configure spark
             SparkSession spark = SparkSession
                     .builder()
@@ -47,7 +49,18 @@ public class CRUDAppTests
             flatMe.write2csv("blah.csv");
 
             final Dataset<Row> csv = spark.read().csv("blah.csv");
-            csv.show();
+            //csv.show();
+
+            csv.write().format("delta").save(location);
+
+            DeltaTable deltaTable = DeltaTable.forPath(location);
+            //deltaTable.toDF().show();
+
+            Dataset<Row> df = spark.read().format("delta").option("versionAsOf", 0).load(location);
+            df.show();
+
+            Dataset<Row> result = df.select("_c0");
+            result.show();
 
             // Java Bean (data class) used to apply schema to JSON data
             /*Encoder<JSONtoDataSet.Employee> employeeEncoder = Encoders.bean(JSONtoDataSet.Employee.class);
