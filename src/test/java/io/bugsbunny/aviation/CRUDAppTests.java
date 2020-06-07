@@ -28,7 +28,9 @@ public class CRUDAppTests
     public void testQueries() throws Exception
     {
         try {
-            String location = "/tmp/delta-table-"+ UUID.randomUUID().toString();
+            String location = "hdfs://localhost:9000/hdfs-table-"+ UUID.randomUUID().toString();
+
+            System.setProperty("spark.delta.logStore.class","org.apache.spark.sql.delta.storage.HDFSLogStore");
 
             // configure spark
             SparkSession spark = SparkSession
