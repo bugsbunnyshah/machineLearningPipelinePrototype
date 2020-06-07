@@ -12,7 +12,7 @@ repositories {
     }
     maven {
         url "http://download.osgeo.org/webdav/geotools/"
-    }
+   }
     maven {
         url "http://repo.boundlessgeo.com/main/"
     }
@@ -20,7 +20,7 @@ repositories {
         url "https://oss.sonatype.org/content/repositories/releases/"
     }
     flatDir {
-        dirs 'third-party-libs'
+        dirs 'thirdparty-libs'
     }
 }
 
@@ -53,6 +53,32 @@ dependencies {
     implementation ('com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.10') {force = true}
     implementation 'org.apache.xbean:xbean-asm6-shaded:4.10'
     implementation 'com.github.opendevl:json2flat:1.0.3'
+
+    implementation name: 'eclipse-swt-macos'
+    implementation name: 'jface-3.7.0'
+    implementation name: 'jface-databinding-1.5.0'
+    implementation name: 'eclipse-ui-3.7.0'
+    implementation name: 'eclipse-ui-workbench-3.7.1'
+    implementation name: 'eclipse-core-runtime-3.7.0'
+    implementation name: 'eclipse-core-runtime-auth-3.2.200'
+    implementation name: 'eclipse-core-commands-3.6.0'
+    implementation name: 'runtime_registry_compatibility'
+    implementation name: 'SchemaStoreClient'
+    implementation name: 'SchemaStorePorters'
+    implementation name: 'SchemaStoreWarehouse'
+    implementation name: 'gephi-toolkit'
+    implementation name: 'affinity-fatjar'
+    implementation name: 'LinkCommunityFinder'
+    implementation name: 'collections-generic-4.01'
+    implementation name: 'jung-algorithms-2.0.1'
+    implementation name: 'jung-api-2.0.1'
+    implementation name: 'org.eclipse.equinox.app_1.3.100.v20110321'
+    implementation name: 'org.eclipse.equinox.common_3.6.0.v20110523'
+    implementation name: 'org.eclipse.equinox.launcher_1.2.0.v20110502'
+    implementation name: 'org.eclipse.equinox.launcher_1.2.0.v20110502'
+    implementation name: 'org.eclipse.equinox.preferences_3.4.2.v20120111-2020'
+    implementation name: 'org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611'
+
 
     //testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
     //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
