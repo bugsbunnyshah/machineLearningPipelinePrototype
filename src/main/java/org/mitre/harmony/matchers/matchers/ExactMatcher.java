@@ -182,15 +182,16 @@ public class ExactMatcher extends Matcher
 	/** Generates scores for the specified elements */
 	public MatcherScores match() {
 		// Don't proceed if neither "name" nor "description" option selected
-		if (!name.isSelected() && !description.isSelected()) {
+		/*if (!name.isSelected() && !description.isSelected()) {
 			return new MatcherScores(100.0);
-		}
+		}*/
 
 		// Generate the matches
-		if (hierarchy.isSelected()) {
+		/*if (hierarchy.isSelected()) {
 			return getExactHierarchicalMatches();
 		} else {
 			return getExactMatches();
-		}
+		}*/
+		return getExactMatches();
 	}
 }
