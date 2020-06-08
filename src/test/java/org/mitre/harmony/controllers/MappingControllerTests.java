@@ -26,7 +26,8 @@ public class MappingControllerTests {
         }
 
         ArrayList<Integer> ids = MappingController.getMappingCellIDs(mappingCells);
-
         logger.info(ids.toString());
+
+
     }
 }
