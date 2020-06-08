@@ -44,6 +44,7 @@ public class AirlineDataTests {
             logger.info(info1.getModel().getChildElements(info1, 0).toString());
             logger.info(info1.getModel().getChildElements(info1, 1).toString());
             logger.info(info1.getModel().getChildElements(info1, 2).toString());
+            logger.info("*******");
 
             Schema schema2 = new Schema();
             schema2.setName("source");
@@ -63,6 +64,7 @@ public class AirlineDataTests {
             logger.info(info2.getModel().getChildElements(info2, 0).toString());
             logger.info(info2.getModel().getChildElements(info2, 1).toString());
             logger.info(info2.getModel().getChildElements(info2, 2).toString());
+            logger.info("*******");
 
             Matcher quickMatcher = MatcherManager.getMatcher("org.mitre.harmony.matchers.matchers.QuickMatcher");
             assertNotNull(quickMatcher);
