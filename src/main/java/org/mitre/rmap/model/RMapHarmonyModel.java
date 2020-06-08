@@ -13,7 +13,7 @@ public class RMapHarmonyModel extends HarmonyModel {
 	
 	/** Constructs the Harmony model */
 	public RMapHarmonyModel(Frame baseFrame) {
-		super(baseFrame);
+		super();
 	}
 	
 	/** Returns the schema manager */

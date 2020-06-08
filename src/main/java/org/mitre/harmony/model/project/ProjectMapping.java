@@ -220,12 +220,11 @@ public class ProjectMapping extends Mapping
 			Integer mappingID = mappingCell.getMappingId();
 			Integer inputID = mappingCell.getElementInputIDs()[0];
 			Integer outputID = mappingCell.getOutput();
-			String author = harmonyModel.getUserName();
 			Date date = Calendar.getInstance().getTime();		
 			String notes = mappingCell.getNotes();
 	
 			// Generate the validated mapping cell
-			MappingCell validatedMappingCell = MappingCell.createIdentityMappingCell(id, mappingID, inputID, outputID, author, date, notes);
+			MappingCell validatedMappingCell = MappingCell.createIdentityMappingCell(id, mappingID, inputID, outputID, "author", date, notes);
 			validatedMappingCells.add(validatedMappingCell);
 			mappingCellHash.put(validatedMappingCell.getId(), validatedMappingCell);
 		}

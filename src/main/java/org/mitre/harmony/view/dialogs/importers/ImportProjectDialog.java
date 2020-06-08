@@ -50,9 +50,9 @@ public class ImportProjectDialog extends AbstractImportDialog
 		
 		// Import the project
 		Importer importer = (Importer)selectionList.getSelectedItem();
-		if(harmonyModel.getInstantiationType()==InstantiationType.WEBAPP)
+		/*if(harmonyModel.getInstantiationType()==InstantiationType.WEBAPP)
 			projectID = SchemaStoreManager.importData(importer, name, author, description, uri);
-		else projectID = importItemLocally(importer, name, author, description, uri);
+		else projectID = importItemLocally(importer, name, author, description, uri);*/
 
 		// Load the imported project
 		ProjectController.loadProject(harmonyModel,projectID);

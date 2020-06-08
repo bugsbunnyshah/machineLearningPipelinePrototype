@@ -133,7 +133,7 @@ abstract public class AbstractImportDialog extends JInternalFrame implements Act
 		
 		// Initialize the author
 		authorField.setBorder(new LineBorder(Color.gray));
-		authorField.setText(harmonyModel.getUserName());
+		//authorField.setText(harmonyModel.getUserName());
 		
 		// Initialize the description
 		descriptionField.setBorder(new LineBorder(Color.gray));

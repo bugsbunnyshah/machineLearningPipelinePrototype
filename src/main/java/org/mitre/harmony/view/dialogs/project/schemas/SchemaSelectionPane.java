@@ -89,7 +89,7 @@ class SchemaSelectionPane extends JPanel implements ActionListener, InternalFram
 		setBorder(new EmptyBorder(0,0,0,5));
 		setLayout(new BorderLayout());
 		add(schemaScrollPane,BorderLayout.CENTER);
-		if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED) 
+		/*if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED)
 		{
 			// Create the import schema button
 			button.setFocusable(false);
@@ -101,7 +101,7 @@ class SchemaSelectionPane extends JPanel implements ActionListener, InternalFram
 			pane.setBorder(new EmptyBorder(5,0,0,0));
 			pane.add(button,BorderLayout.CENTER);
 			add(pane,BorderLayout.SOUTH);
-		}
+		}*/
 	}
 	
 	/** Handles the enabling of components in this dialog */
@@ -153,7 +153,7 @@ class SchemaSelectionPane extends JPanel implements ActionListener, InternalFram
 		
 		// Display the schema dialog
 		SchemaDialog dialog = new SchemaDialog(harmonyModel, getSelectedSchemaIDs());
-		harmonyModel.getDialogManager().openDialog(dialog);
+		//harmonyModel.getDialogManager().openDialog(dialog);
 		dialog.addInternalFrameListener(this);
 	}
 	

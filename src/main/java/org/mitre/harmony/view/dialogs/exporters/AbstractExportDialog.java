@@ -81,11 +81,14 @@ abstract class AbstractExportDialog
 			{
 				if(label.equals("OK"))
 				{
-					try {
+					/*try {
 						String filename = exportViaWebService(harmonyModel, (Exporter)exporterList.getSelectedItem());
 						if(filename!=null)
-							harmonyModel.getApplet().getAppletContext().showDocument(new URL("javascript:exportFile(\""+filename+"\")"));
-					} catch(MalformedURLException me) {}
+						{
+
+						}
+							//harmonyModel.getApplet().getAppletContext().showDocument(new URL("javascript:exportFile(\""+filename+"\")"));
+					} catch(MalformedURLException me) {}*/
 				}
 				dispose();
 			}
@@ -157,7 +160,7 @@ abstract class AbstractExportDialog
 			chooser.addChoosableFileFilter(new ExportFileFilter(exporter));
 
 		// Display the dialog for selecting which exporter to use
-		if(chooser.showDialog(harmonyModel.getBaseFrame(),getDialogTitle())==JFileChooser.APPROVE_OPTION)
+		/*if(chooser.showDialog(harmonyModel.getBaseFrame(),getDialogTitle())==JFileChooser.APPROVE_OPTION)
 		{
 			// Retrieve the selected file and exporter from the file chooser
 			File file = chooser.getSelectedFile();
@@ -186,14 +189,14 @@ abstract class AbstractExportDialog
 						"File " + file.toString() + " failed to be exported.\n"+e.getMessage(),
 						"Export Error",JOptionPane.ERROR_MESSAGE);
 			}
-		}
+		}*/
 	}
 	
 	/** Allows user to export */
 	public void export(HarmonyModel harmonyModel)
 	{		
-		if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
+		/*if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
 			exportViaLocalClient(harmonyModel);
-		else harmonyModel.getDialogManager().openDialog(new WebServiceDialog(harmonyModel));
+		else harmonyModel.getDialogManager().openDialog(new WebServiceDialog(harmonyModel));*/
 	}
 }

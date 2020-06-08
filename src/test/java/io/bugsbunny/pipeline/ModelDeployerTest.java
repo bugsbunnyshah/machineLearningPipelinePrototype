@@ -40,7 +40,7 @@ public class ModelDeployerTest {
         File file = new File(tarFile);
         int fileLength = (int)file.length();
 
-        try (TarArchiveInputStream fin = new TarArchiveInputStream(new FileInputStream(file))){
+        /*try (TarArchiveInputStream fin = new TarArchiveInputStream(new FileInputStream(file))){
             System.out.println("BLAHBLAH");
             TarArchiveEntry entry = fin.getCurrentEntry();
             TarArchiveEntry nextEntry = null;
@@ -54,6 +54,6 @@ public class ModelDeployerTest {
                     System.out.println("Next File: " + nextEntry.getName());
                 }
             }while(nextEntry != null);
-        }
+        }*/
     }
 }

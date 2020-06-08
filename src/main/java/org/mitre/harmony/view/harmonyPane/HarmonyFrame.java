@@ -60,7 +60,7 @@ public class HarmonyFrame extends JInternalFrame implements ComponentListener
 		
 		// Initialize the dialog manager
 		DialogManager dialogManager = new DialogManager(this);
-		harmonyModel.setDialogManager(dialogManager);
+		//harmonyModel.setDialogManager(dialogManager);
 		desktop.setDesktopManager(dialogManager);
 
 		return desktop;

@@ -30,7 +30,7 @@ public class Harmony extends JFrame implements ProjectListener, WindowListener
     public Harmony()
     {
     	super();
-    	harmonyModel = new HarmonyModel(this);
+    	harmonyModel = new HarmonyModel();
     	
     	// Place title on application
 		String projectName = harmonyModel.getProjectManager().getProject().getName();
@@ -60,7 +60,7 @@ public class Harmony extends JFrame implements ProjectListener, WindowListener
 	/** Disposes of the Harmony frame */
 	public void dispose()
 	{
-		int option = 1;
+		/*int option = 1;
 		if(harmonyModel.getProjectManager().isModified())
     		option = JOptionPane.showConfirmDialog(harmonyModel.getBaseFrame(),
     			"This mapping has been modified.  Do you want to save changes?",
@@ -68,7 +68,7 @@ public class Harmony extends JFrame implements ProjectListener, WindowListener
 				JOptionPane.WARNING_MESSAGE);
 		if(option==2) return;
 		if(option==0) harmonyModel.getDialogManager().openDialog(new SaveMappingDialog(harmonyModel));
-		super.dispose();
+		super.dispose();*/
 	}
 	
 	/** Forces graceful closing of Harmony */

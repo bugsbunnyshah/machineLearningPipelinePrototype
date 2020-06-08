@@ -465,11 +465,11 @@ public class SchemaTree extends JTree implements MappingListener, ProjectListene
 					Container mappingPane = getParent();
 					while(!(mappingPane instanceof MappingPane))
 						mappingPane = mappingPane.getParent();
-					if(mappingPane.getCursor()==Cursor.getPredefinedCursor(Cursor.HAND_CURSOR))
+					/*if(mappingPane.getCursor()==Cursor.getPredefinedCursor(Cursor.HAND_CURSOR))
 					{
 						SchemaModelDialog dialog = new SchemaModelDialog(((Schema)object).getId(),harmonyModel);
 						harmonyModel.getDialogManager().openDialog(dialog);
-					}
+					}*/
 				}
 					
 				// Allows the selection of the clicked on node

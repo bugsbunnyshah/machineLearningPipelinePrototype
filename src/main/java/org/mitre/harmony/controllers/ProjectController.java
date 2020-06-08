@@ -28,7 +28,7 @@ public class ProjectController
 
 		// Set up a new project
 		Project project = new Project();
-		project.setAuthor(harmonyModel.getUserName());		
+		//project.setAuthor(harmonyModel.getUserName());
 		harmonyModel.getProjectManager().setProject(project);
 		harmonyModel.getProjectManager().setModified(false);
 	}

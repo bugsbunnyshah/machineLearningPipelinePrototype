@@ -151,7 +151,7 @@ public class AddNewFunction extends JDialog implements MouseListener, MouseMotio
 		/** Initializes the mapping cell dialog */
 		public AddNewFunction(List<MappingCell> mappingCells, HarmonyModel harmonyModel, MappingCellFunctionPane mcfp)
 		{
-			super(harmonyModel.getBaseFrame());
+			super();
 			
 			mcFunctionPane = mcfp;
 			

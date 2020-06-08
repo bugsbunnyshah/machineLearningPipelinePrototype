@@ -50,7 +50,7 @@ public class MappingPane extends JPanel implements ActionListener, InternalFrame
 		// Create the import schema button
 		button = new JButton("Add Mapping");
 		button.setFocusable(false);
-		button.setEnabled(projectDialog.getHarmonyModel().getInstantiationType()!=InstantiationType.EMBEDDED);
+		//button.setEnabled(projectDialog.getHarmonyModel().getInstantiationType()!=InstantiationType.EMBEDDED);
 		button.addActionListener(this);
 		
 		// Constructs the mapping pane
@@ -83,7 +83,7 @@ public class MappingPane extends JPanel implements ActionListener, InternalFrame
 		// Run the dialog to add a mapping
 		HarmonyModel harmonyModel = projectDialog.getHarmonyModel();
 		AddMappingDialog dialog = new AddMappingDialog(harmonyModel, schemas, mappings);
-		harmonyModel.getDialogManager().openDialog(dialog);
+		//harmonyModel.getDialogManager().openDialog(dialog);
 		dialog.addInternalFrameListener(this);
 	}
 	

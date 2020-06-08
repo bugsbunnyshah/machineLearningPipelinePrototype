@@ -48,8 +48,8 @@ class MappingSelectionItem extends JPanel implements ActionListener
 		checkbox.addActionListener(this);
 	
 		// Initialize the delete link
-		if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED)
-			deleteMapping = new Link("Delete",this);
+		//if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED)
+		//	deleteMapping = new Link("Delete",this);
 		
 		// Constructs the check box pane
 		JPanel checkboxPane = new JPanel();

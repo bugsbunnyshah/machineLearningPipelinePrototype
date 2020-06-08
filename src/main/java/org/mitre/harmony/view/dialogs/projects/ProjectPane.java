@@ -73,10 +73,11 @@ class ProjectPane extends JPanel implements MouseListener
 			if(project.getId()!=null)
 			{
 				// Ask user before deleting project
-				int option = JOptionPane.showConfirmDialog(harmonyModel.getBaseFrame(),
+				int option = 0;
+				/*JOptionPane.showConfirmDialog(harmonyModel.getBaseFrame(),
 		    		"Continue with deletion of project \"" + project.getName() + "\"?",
 					"Delete Project", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.WARNING_MESSAGE);
+					JOptionPane.WARNING_MESSAGE);*/
 				if(option==2) return;
 	
 				// Delete the selected project
@@ -113,7 +114,7 @@ class ProjectPane extends JPanel implements MouseListener
 		if(saveMode)
 		{
 			Project newProject = harmonyModel.getProjectManager().getProject().copy();
-			newProject.setId(null); newProject.setName(""); newProject.setAuthor(harmonyModel.getUserName());
+			//newProject.setId(null); newProject.setName(""); newProject.setAuthor(harmonyModel.getUserName());
 			projects.add(0,newProject);
 		}
 		
@@ -124,9 +125,9 @@ class ProjectPane extends JPanel implements MouseListener
 		projectList.setSelectedIndex(0);
 		
 		// Locks ability to switch projects if not in standalone mode
-		if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED)
+		/*if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED)
 			projectList.addMouseListener(this);
-		else projectList.setEnabled(false);
+		else projectList.setEnabled(false);*/
 
 		// If in save mode, select current project
 		if(saveMode)

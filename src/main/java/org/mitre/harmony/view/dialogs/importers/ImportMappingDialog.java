@@ -135,7 +135,7 @@ public class ImportMappingDialog extends JInternalFrame implements ActionListene
 		private ArrayList<MappingCell> getMappingCells(Integer sourceID, Integer targetID, URI uri) throws Exception
 		{
 			// Get mapping cells
-			MappingImporter importer = (MappingImporter)getImporter();
+			/*MappingImporter importer = (MappingImporter)getImporter();
 			importer.initialize(uri);
 			importer.setSchemas(sourceID, targetID);
 			ArrayList<MappingCell> mappingCells = importer.getMappingCells();
@@ -143,10 +143,11 @@ public class ImportMappingDialog extends JInternalFrame implements ActionListene
 			// Display a dialog with any ignored mapping cells
 			ArrayList<MappingCellPaths> paths = importer.getUnidentifiedMappingCellPaths();
 			if(paths.size()>0)
-				harmonyModel.getDialogManager().openDialog(new UnidentifiedMappingCellsDialog(paths));
+				//harmonyModel.getDialogManager().openDialog(new UnidentifiedMappingCellsDialog(paths));
 
 			// Return the mapping cells
-			return mappingCells;
+			return mappingCells;*/
+			return null;
 		}
 		
 		/** Handles selection of button */
@@ -173,9 +174,9 @@ public class ImportMappingDialog extends JInternalFrame implements ActionListene
 							
 					// Retrieve the mapping cells from the importer
 					ArrayList<MappingCell> mappingCells = null;
-					if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
+					/*if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
 						mappingCells = getMappingCells(source.getId(), target.getId(), uri);
-					else mappingCells = SchemaStoreManager.getImportedMappingCells(getImporter(), source.getId(), target.getId(), uri);
+					else mappingCells = SchemaStoreManager.getImportedMappingCells(getImporter(), source.getId(), target.getId(), uri);*/
 					for(MappingCell mappingCell : mappingCells) mappingCell.setId(null);
 
 					// Add schemas to the project
@@ -337,9 +338,9 @@ public class ImportMappingDialog extends JInternalFrame implements ActionListene
 	{
 		// Retrieve the suggested schemas
 		ArrayList<ProjectSchema> schemas = new ArrayList<ProjectSchema>();
-		if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
+		/*if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
 			try { schemas = getSuggestedSchemas(); } catch(Exception e) {}
-		else schemas = SchemaStoreManager.getSuggestedSchemas(getImporter(), uriField.getURI());
+		else schemas = SchemaStoreManager.getSuggestedSchemas(getImporter(), uriField.getURI());*/
 		
 		// Update the labeling on the source and schema panes
 		sourceSelector.setSchema(schemas.size()>0 ? schemas.get(0) : null);

@@ -50,11 +50,11 @@ public class ImportSchemaDialog extends AbstractImportDialog implements ActionLi
 	/** Imports the currently specified schema */
 	protected void importItem(String name, String author, String description, URI uri) throws Exception
 	{
-		Importer importer = (Importer)selectionList.getSelectedItem();
+		/*Importer importer = (Importer)selectionList.getSelectedItem();
 		if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
 			importItemLocally(importer,name,author,description,uri);
 		else SchemaStoreManager.importData(importer, name, author, description, uri);
-		harmonyModel.getSchemaManager().initSchemas();
+		harmonyModel.getSchemaManager().initSchemas();*/
 	}
 	
 	/** Handles the selection of the importer */
@@ -81,9 +81,9 @@ public class ImportSchemaDialog extends AbstractImportDialog implements ActionLi
 				// Get the schema to be imported
 				Schema schema = null;
 				Importer importer = (Importer)selectionList.getSelectedItem();
-				if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
+				/*if(harmonyModel.getInstantiationType()!=InstantiationType.WEBAPP)
 					schema = getSchemaFromImporterLocally(importer,uriField.getURI());
-				else schema = SchemaStoreManager.getSchemaFromImporter(importer,uriField.getURI());
+				else schema = SchemaStoreManager.getSchemaFromImporter(importer,uriField.getURI());*/
 				
 				// Populate data fields from the schema
 				if(schema!=null)

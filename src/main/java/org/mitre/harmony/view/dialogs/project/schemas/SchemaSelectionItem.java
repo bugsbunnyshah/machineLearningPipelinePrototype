@@ -31,7 +31,7 @@ class SchemaSelectionItem extends JPanel implements ActionListener
 		checkbox = new JCheckBox(schema.getName());
 		checkbox.setOpaque(false);
 		checkbox.setFocusable(false);
-		checkbox.setEnabled(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED);
+		//checkbox.setEnabled(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED);
 		checkbox.addActionListener(this);
 		
 		// Constructs the check box pane

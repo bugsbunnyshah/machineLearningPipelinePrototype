@@ -62,7 +62,7 @@ class ProjectMenu extends AbstractMenu implements MenuListener
 		setMnemonic(KeyEvent.VK_P);
 		
 		// Set up menu for stand-alone mode
-		if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED)
+		/*if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED)
 		{	
 			// Constructs the new, open, and save menu items
 			JMenuItem newProject = createMenuItem("New", KeyEvent.VK_N, new CreateProjectAction());
@@ -118,7 +118,7 @@ class ProjectMenu extends AbstractMenu implements MenuListener
 
 			// Set accelerator keys for the save menu item
 			saveProject.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		}
+		}*/
 	}
 
 	/** Dynamically generates the "Export Mapping" menu */
@@ -136,14 +136,14 @@ class ProjectMenu extends AbstractMenu implements MenuListener
     /** Attempts to save old projects before opening new projects */
     private boolean saveOldProject()
     {
-		int option = 1;
+		/*int option = 1;
 		if(harmonyModel.getProjectManager().isModified())
     		option = JOptionPane.showConfirmDialog(harmonyModel.getBaseFrame(),
     			"This project has been modified.  Do you want to save changes?",
 				"Save Project", JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE);
 		if(option==2) return false;
-		if(option==0) new SaveMappingDialog(harmonyModel);
+		if(option==0) new SaveMappingDialog(harmonyModel);*/
 		return true;
     }
     
@@ -162,8 +162,9 @@ class ProjectMenu extends AbstractMenu implements MenuListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			if(saveOldProject())
-				harmonyModel.getDialogManager().openDialog(new LoadProjectDialog(harmonyModel));
+			if(saveOldProject()) {
+				//harmonyModel.getDialogManager().openDialog(new LoadProjectDialog(harmonyModel));
+			}
 		}
 	}
     
@@ -172,9 +173,9 @@ class ProjectMenu extends AbstractMenu implements MenuListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-    		if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED || harmonyModel.getProjectManager().getProject().getId()==null)
+    		/*if(harmonyModel.getInstantiationType()!=InstantiationType.EMBEDDED || harmonyModel.getProjectManager().getProject().getId()==null)
     			harmonyModel.getDialogManager().openDialog(new SaveMappingDialog(harmonyModel));
-    		else ProjectController.saveProject(harmonyModel,harmonyModel.getProjectManager().getProject());
+    		else ProjectController.saveProject(harmonyModel,harmonyModel.getProjectManager().getProject());*/
 		}
 	}
 	
@@ -185,7 +186,7 @@ class ProjectMenu extends AbstractMenu implements MenuListener
 		{
 			ImportProjectDialog dialog = new ImportProjectDialog(harmonyModel);
 			dialog.addInternalFrameListener(this);
-			harmonyModel.getDialogManager().openDialog(dialog);
+			//harmonyModel.getDialogManager().openDialog(dialog);
 		}
 		
 		/** Reselect the mappings with the newly imported project */
@@ -212,14 +213,18 @@ class ProjectMenu extends AbstractMenu implements MenuListener
 	private class ImportMappingAction extends AbstractAction
 	{
 		public void actionPerformed(ActionEvent e)
-			{ harmonyModel.getDialogManager().openDialog(new ImportMappingDialog(harmonyModel)); }
+			{
+				//harmonyModel.getDialogManager().openDialog(new ImportMappingDialog(harmonyModel));
+			}
 	}
     
 	/** Action for launching the configuration dialog */
 	private class ProjectSettingsAction extends AbstractAction
 	{
 		public void actionPerformed(ActionEvent e)
-			{ harmonyModel.getDialogManager().openDialog(new ProjectDialog(harmonyModel)); }
+			{
+				//harmonyModel.getDialogManager().openDialog(new ProjectDialog(harmonyModel));
+			}
 	}
     
 	/** Action for launching the schema management dialog */
@@ -228,13 +233,16 @@ class ProjectMenu extends AbstractMenu implements MenuListener
 		public void actionPerformed(ActionEvent e)
 		{
 			SchemaDialog dialog = new SchemaDialog(harmonyModel, new ArrayList<Integer>());
-			harmonyModel.getDialogManager().openDialog(dialog);
+			//harmonyModel.getDialogManager().openDialog(dialog);
 		}
 	}
  
 	/** Action for exiting Harmony */
 	private class ExitAction extends AbstractAction
-		{ public void actionPerformed(ActionEvent e) { harmonyModel.getBaseFrame().dispose(); } }
+		{ public void actionPerformed(ActionEvent e) {
+			//harmonyModel.getBaseFrame().dispose();
+		}
+		}
     
 	// Unused action listener
 	public void menuCanceled(MenuEvent e) {}
