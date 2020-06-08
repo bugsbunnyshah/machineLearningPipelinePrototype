@@ -78,6 +78,7 @@ dependencies {
     implementation name: 'org.eclipse.equinox.launcher_1.2.0.v20110502'
     implementation name: 'org.eclipse.equinox.preferences_3.4.2.v20120111-2020'
     implementation name: 'org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611'
+    implementation name: 'GoogleTranslate'
 
 
     //testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
