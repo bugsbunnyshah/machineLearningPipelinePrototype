@@ -73,6 +73,7 @@ public class SQLGenerator {
 		try {
 			exportType = Class.forName("org.mitre.rmap.model.exports." + targetDB).newInstance();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new SQLGeneratorException("Could not create an instance of the " + targetDB + " class.");
 		}
 
