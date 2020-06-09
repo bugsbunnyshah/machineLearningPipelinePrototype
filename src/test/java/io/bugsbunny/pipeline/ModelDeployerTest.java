@@ -22,7 +22,7 @@ import java.util.zip.GZIPInputStream;
 public class ModelDeployerTest {
     private static Logger logger = LoggerFactory.getLogger(ModelDeployerTest.class);
 
-    @Test
+    //@Test
     public void testDeploy()
     {
         ModelDeployer deployer = new ModelDeployer();
@@ -32,7 +32,7 @@ public class ModelDeployerTest {
         logger.info("****************");
     }
 
-    @Test
+    //@Test
     public void testReadTarFile() throws Exception
     {
         String tarFile = "/Users/babyboy/mamasboy/appgallabsForProfit/machineLearningPipelinePrototype/src/main/resources/code-with-quarkus-jvm.tar";

@@ -45,7 +45,7 @@ public class SparkGetStartedTests implements Serializable {
         spark.stop();
     }
 
-    @Test
+    //@Test
     public void testFirstRDD() throws Exception
     {
         String master = "local";
@@ -64,7 +64,7 @@ public class SparkGetStartedTests implements Serializable {
         sc.stop();
     }
 
-    @Test
+    //@Test
     public void testMapReduce() throws Exception
     {
         Skills skills = new Skills();
@@ -76,7 +76,7 @@ public class SparkGetStartedTests implements Serializable {
         logger.info("*******");
     }
 
-    @Test
+    //@Test
     public void testFileReadingWriting() throws Exception
     {
         SparkSession spark = SparkSession

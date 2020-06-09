@@ -24,7 +24,7 @@ public class CRUDAppTests
 {
     private static Logger logger = LoggerFactory.getLogger(CRUDAppTests.class);
 
-    @Test
+    //@Test
     public void testQueries() throws Exception
     {
         try {

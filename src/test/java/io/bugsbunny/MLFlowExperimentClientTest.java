@@ -9,14 +9,14 @@ import java.util.UUID;
 
 public class MLFlowExperimentClientTest {
 
-    @Test
+    //@Test
     public void testCreateExperiment()
     {
         MLFlowExperimentClient mlFlowExperimentClient = new MLFlowExperimentClient();
         mlFlowExperimentClient.createExperiment("appgallabs_"+UUID.randomUUID().toString());
     }
 
-    @Test
+    //@Test
     public void testListExperiments()
     {
         MLFlowExperimentClient mlFlowExperimentClient = new MLFlowExperimentClient();

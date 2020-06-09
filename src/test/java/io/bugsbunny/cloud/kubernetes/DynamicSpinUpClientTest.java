@@ -5,28 +5,28 @@ import org.junit.jupiter.api.Test;
 
 public class DynamicSpinUpClientTest {
 
-    @Test
+    //@Test
     public void testInvokeAlive() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
         dynamicSpinUpClient.invokeKubeAlive();
     }
 
-    @Test
+    //@Test
     public void testInvokeGetPods() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
         dynamicSpinUpClient.invokeGetPods();
     }
 
-    @Test
+    //@Test
     public void testInvokePostPod() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
         dynamicSpinUpClient.invokePostPod();
     }
 
-    @Test
+    //@Test
     public void testInvokePostPodUsingClientLibrary() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
