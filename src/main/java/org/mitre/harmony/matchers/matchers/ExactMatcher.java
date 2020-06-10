@@ -155,13 +155,16 @@ public class ExactMatcher extends Matcher
 			{
 				// Retrieve the source path
 				ArrayList<String> path = new ArrayList<String>();
-				for(SchemaElement element : sourcePath)
+				for(SchemaElement element : sourcePath) {
 					path.add(schema1.getDisplayName(element.getId()));
+				}
 
 				// Identify all target paths
-				for(Integer targetID : schema2.getPathIDs(path))
-					if(schema2.isVisible(targetID))
+				for(Integer targetID : schema2.getPathIDs(path)) {
+					if (schema2.isVisible(targetID)) {
 						targetIDs.add(targetID);
+					}
+				}
 			}
 
 			// Set scores for the matching target elements
@@ -169,8 +172,10 @@ public class ExactMatcher extends Matcher
 			{
 				String name1 = getName(schema1, sourceElement.getId());
 				String name2 = getName(schema2, targetID);
-				if(name1.length()>0 && name1.equals(name2))
-					scores.setScore(sourceElement.getId(), targetID, new MatcherScore(100.0,100.0));
+				if(name1.length()>0 && name1.equals(name2)) {
+					scores.setScore(sourceElement.getId(), targetID,
+							new MatcherScore(100.0, 100.0));
+				}
 			}
 
 			// Update the completed comparison count
@@ -182,16 +187,16 @@ public class ExactMatcher extends Matcher
 	/** Generates scores for the specified elements */
 	public MatcherScores match() {
 		// Don't proceed if neither "name" nor "description" option selected
-		/*if (!name.isSelected() && !description.isSelected()) {
+		if (!name.isSelected() && !description.isSelected()) {
 			return new MatcherScores(100.0);
-		}*/
+		}
 
 		// Generate the matches
-		/*if (hierarchy.isSelected()) {
+		if (hierarchy.isSelected()) {
 			return getExactHierarchicalMatches();
 		} else {
 			return getExactMatches();
-		}*/
-		return getExactMatches();
+		}
+		//return getExactMatches();
 	}
 }
