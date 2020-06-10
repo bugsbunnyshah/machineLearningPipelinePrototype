@@ -24,32 +24,26 @@ public class LogicalRelationTests {
     @Test
     public void testCreateLogicalRelations() throws Exception
     {
-        Schema schema = new Schema();
-        schema.setName("blah");
-        SchemaModel schemaModel = new RelationalSchemaModel();
-        schemaModel.setName("blahModel");
-        ArrayList<Integer> parentSchemaIds = new ArrayList<>();
-        ArrayList<SchemaElement> schemaElements = new ArrayList<>();
-        Entity element = new Entity();
-        element.setId(0);
-        element.setName("Id");
-        element.setDescription("Id");
-        element.setBase(0);
-        schemaElements.add(element);
-        element = new Entity();
-        element.setId(1);
-        element.setName("Rcvr");
-        element.setDescription("Rcvr");
-        element.setBase(1);
-        schemaElements.add(element);
-        SchemaInfo schemaInfo = new SchemaInfo(schema, parentSchemaIds, schemaElements);
-        ArrayList<LogicalRelation> relations = LogicalRelation.createLogicalRelations(schemaInfo);
+        Schema schema1 = new Schema();
+        schema1.setName("destination");
+
+        SchemaModel schemaModel1 = new RelationalSchemaModel();
+        schemaModel1.setName("destinationModel");
+        SchemaInfo schemaInfo1 = new SchemaInfo(schema1, new ArrayList<>(), new ArrayList<>());
+        HierarchicalSchemaInfo info1 = new HierarchicalSchemaInfo(schemaInfo1);
+        info1.setModel(schemaModel1);
+
+        this.addElement(info1, 0, "Id", "Id");
+        this.addElement(info1, 1, "Rcvr", "Rcvr");
+        this.addElement(info1, 2, "HasSig", "HasSig");
+        ArrayList<LogicalRelation> relations = LogicalRelation.createLogicalRelations(info1);
 
 
         logger.info("*******");
-        logger.info(schemaInfo.toString());
-        logger.info(relations.get(0).getEntitySet().toString());
-        logger.info(relations.get(1).getEntitySet().toString());
+        logger.info(info1.getModel().getChildElements(info1, 2).size() + "");
+        logger.info(info1.getModel().getChildElements(info1, 2).toString());
+        logger.info(relations.toString());
+        //logger.info(relations.get(1).getEntitySet().toString());
         logger.info("*******");
 
         //Testing the Dependency Concept
@@ -58,7 +52,13 @@ public class LogicalRelationTests {
         project.setName("project");
         Dependency dependency = new Dependency(relations.get(0), relations.get(1), new ArrayList<>());
         Object[] mappings = dependency.generateMapping(project);
-        logger.info(mappings[0].toString());
+        for(Object mapping:mappings) {
+            logger.info(mapping.getClass().getName());
+            if(mapping instanceof HierarchicalSchemaInfo) {
+                HierarchicalSchemaInfo info = (HierarchicalSchemaInfo) mapping;
+                logger.info(info.getElements(Entity.class).toString());
+            }
+        }
 
         /*SQLGenerator sqlGenerator = new SQLGenerator();
         ArrayList<Dependency> dependencies = new ArrayList<>();
@@ -69,11 +69,12 @@ public class LogicalRelationTests {
 
     private void addElement(HierarchicalSchemaInfo info1, int id, String name, String description)
     {
-        SchemaElement element = new SchemaElement();
+        Entity element = new Entity();
         element.setId(id);
         element.setName(name);
         element.setDescription(description);
         element.setBase(id);
+        info1.addElement(element);
         info1.getModel().getChildElements(info1, id).add(element);
     }
 }
