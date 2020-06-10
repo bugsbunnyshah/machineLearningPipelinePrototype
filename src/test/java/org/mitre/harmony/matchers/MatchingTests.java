@@ -149,6 +149,7 @@ public class MatchingTests {
 
         Map<SchemaElement, Double> scores  = this.findMatches(f1, f2, schemaElements);
         logger.info("Scores: "+scores.toString());
+        this.performMapping(scores);
     }
 
     private HierarchicalSchemaInfo getHierarchialSchema(String schemaName, ArrayList<SchemaElement> schemaElements)
@@ -232,5 +233,30 @@ public class MatchingTests {
         }
 
         return schemaElements;
+    }
+
+    private void performMapping(Map<SchemaElement, Double> scores) throws IOException
+    {
+        ArrayList<SchemaElement> schemaElements = new ArrayList<>();
+
+        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
+                StandardCharsets.UTF_8);
+
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+
+        JsonObject result = new JsonObject();
+        Set<Map.Entry<SchemaElement, Double>> entrySet = scores.entrySet();
+        for(Map.Entry<SchemaElement, Double> entry: entrySet)
+        {
+            SchemaElement schemaElement = entry.getKey();
+            Double score = entry.getValue();
+            String field = schemaElement.getName();
+
+            result.addProperty(field, jsonObject.get(field).getAsString());
+        }
+
+        logger.info("*******");
+        logger.info(result.toString());
+        logger.info("*******");
     }
 }
