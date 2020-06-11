@@ -1,5 +1,6 @@
 package io.bugsbunny.dataIngestion.endpoint;
 
+import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.apache.commons.io.IOUtils;
@@ -11,6 +12,7 @@ import com.google.gson.JsonObject;
 import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class DataMapperTests {
@@ -37,9 +39,11 @@ public class DataMapperTests {
         logger.info("****");
 
         //assert the body
-        //JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        //String statusCode = jsonObject.get("statusCode").getAsString();
-
-        //assertEquals("1", statusCode);
+        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        int statusCode = response.getStatusCode();
+        assertEquals(200, statusCode);
+        assertEquals("123456789", jsonObject.get("Id").getAsString());
+        assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
+        assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
     }
 }

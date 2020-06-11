@@ -1,6 +1,7 @@
 package io.bugsbunny.dataIngestion.service;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.apache.commons.io.IOUtils;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class MapperServiceTests {
@@ -26,9 +28,13 @@ public class MapperServiceTests {
     {
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
                 StandardCharsets.UTF_8);
-        JsonObject result = this.mapperService.map(json, json, json);
+        JsonObject jsonObject = this.mapperService.map(json, json, json);
         logger.info("*******");
-        logger.info(result.toString());
+        logger.info(jsonObject.toString());
         logger.info("*******");
+
+        assertEquals("123456789", jsonObject.get("Id").getAsString());
+        assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
+        assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
     }
 }
