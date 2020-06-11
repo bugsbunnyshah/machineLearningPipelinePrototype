@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonObject;
 import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
@@ -19,7 +20,14 @@ public class DataMapperTests {
     public void testMap() throws Exception{
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
                 StandardCharsets.UTF_8);
-        Response response = given().body(json).when().post("/dataMapper/map")
+
+        JsonObject input = new JsonObject();
+        input.addProperty("sourceSchema", json);
+        input.addProperty("destinationSchema", json);
+        input.addProperty("sourceData", json);
+
+
+        Response response = given().body(input.toString()).when().post("/dataMapper/map")
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();

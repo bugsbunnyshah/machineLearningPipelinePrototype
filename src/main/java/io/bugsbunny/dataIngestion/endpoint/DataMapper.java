@@ -2,6 +2,7 @@ package io.bugsbunny.dataIngestion.endpoint;
 
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.bugsbunny.dataIngestion.service.MapperService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,17 @@ public class DataMapper {
     @Path("map")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response map(@RequestBody String sourceData)
+    public Response map(@RequestBody String input)
     {
         try {
-            JsonObject jsonObject = this.mapperService.map(sourceData, sourceData, sourceData);
-            Response response = Response.ok(jsonObject.toString()).build();
+            JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
+
+            String sourceSchema = jsonObject.get("sourceSchema").getAsString();
+            String destinationSchema = jsonObject.get("destinationSchema").getAsString();
+            String sourceData = jsonObject.get("sourceData").getAsString();
+
+            JsonObject result = this.mapperService.map(sourceSchema, destinationSchema, sourceData);
+            Response response = Response.ok(result.toString()).build();
             return response;
         }
         catch(Exception e)
