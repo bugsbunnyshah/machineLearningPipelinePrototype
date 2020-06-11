@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@QuarkusTest
 public class LogicalRelationTests {
     private static Logger logger = LoggerFactory.getLogger(LogicalRelationTests.class);
 

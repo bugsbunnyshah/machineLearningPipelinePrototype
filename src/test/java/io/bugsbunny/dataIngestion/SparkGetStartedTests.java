@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-@QuarkusTest
 public class SparkGetStartedTests implements Serializable {
     private static Logger logger = LoggerFactory.getLogger(SparkGetStartedTests.class);
 

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-@QuarkusTest
 public class MappingControllerTests {
     private static Logger logger = LoggerFactory.getLogger(MappingControllerTests.class);
 

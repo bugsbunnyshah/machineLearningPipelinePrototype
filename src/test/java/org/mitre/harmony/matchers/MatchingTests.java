@@ -29,7 +29,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@QuarkusTest
 public class MatchingTests {
     private static Logger logger = LoggerFactory.getLogger(MatchingTests.class);
 

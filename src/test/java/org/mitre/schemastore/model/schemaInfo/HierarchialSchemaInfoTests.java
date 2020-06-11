@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-@QuarkusTest
 public class HierarchialSchemaInfoTests {
     private static Logger logger = LoggerFactory.getLogger(HierarchialSchemaInfoTests.class);
 

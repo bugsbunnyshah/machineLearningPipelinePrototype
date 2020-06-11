@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 
-@QuarkusTest
 public class SampleDataTests {
     private static Logger logger = LoggerFactory.getLogger(SampleDataTests.class);
 

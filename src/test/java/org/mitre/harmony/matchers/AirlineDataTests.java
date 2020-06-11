@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@QuarkusTest
 public class AirlineDataTests {
     private static Logger logger = LoggerFactory.getLogger(AirlineDataTests.class);
 
