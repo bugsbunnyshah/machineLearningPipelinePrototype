@@ -1,13 +1,13 @@
 plugins {
-    //id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'application'
+    id 'io.quarkus' version '1.4.2.Final'
+    //id 'io.quarkus' version '1.5.0.Final'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
-    //id 'io.quarkus' version '1.4.2.Final'
-    //id 'application'
-    //id 'maven-publish'
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     google()
     maven {
@@ -15,7 +15,7 @@ repositories {
     }
     maven {
         url "http://download.osgeo.org/webdav/geotools/"
-   }
+    }
     maven {
         url "http://repo.boundlessgeo.com/main/"
     }
@@ -29,19 +29,24 @@ repositories {
 
 
 dependencies {
-    //implementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
-    //implementation 'io.quarkus:quarkus-resteasy:1.4.2.Final'
+    implementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
+    implementation 'io.quarkus:quarkus-resteasy:1.4.2.Final'
+    //implementation enforcedPlatform('io.quarkus:quarkus-bom:1.5.0.Final')
+    //implementation 'io.quarkus:quarkus-resteasy:1.5.0.Final'
 
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation 'org.mongodb:mongodb-driver-sync:4.0.3'
-    implementation 'org.mongodb:mongodb-driver:3.0.4'
+    //implementation 'org.mongodb:mongodb-driver-sync:4.0.3'
+    //implementation 'org.mongodb:mongodb-driver:3.0.4'
 
-    implementation 'org.apache.kafka:kafka-clients:2.4.0'
-    implementation 'org.springframework.kafka:spring-kafka:2.4.1.RELEASE'
+    //implementation 'org.apache.kafka:kafka-clients:2.4.0'
+    //implementation 'org.springframework.kafka:spring-kafka:2.4.1.RELEASE'
     //implementation('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
     //implementation('org.apache.hadoop:hadoop-common:2.7.2') {force = true} // required for org.apache.hadoop.util.StopWatch
+
+
     implementation 'org.springframework:spring-web:5.2.1.RELEASE'
+
     implementation 'io.kubernetes:client-java:5.0.0'
     implementation 'io.kubernetes:client-java-api:7.0.0'
     implementation 'org.kamranzafar:jtar:2.3'
@@ -69,7 +74,7 @@ dependencies {
     implementation name: 'eclipse-core-commands-3.6.0'
     implementation name: 'runtime_registry_compatibility'
     implementation name: 'SchemaStoreClient'
-    implementation name: 'SchemaStorePorters'
+    implementation name: 'SchemaPorters'
     implementation name: 'SchemaStoreWarehouse'
     implementation name: 'gephi-toolkit'
     implementation name: 'affinity-fatjar'
@@ -85,13 +90,20 @@ dependencies {
     implementation name: 'org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611'
     implementation name: 'GoogleTranslate'
 
-
-    //testImplementation 'org.junit.platform:junit-platform-commons:1.5.2'
-    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
     testImplementation 'io.quarkus:quarkus-junit5:1.4.2.Final'
     testImplementation 'io.rest-assured:rest-assured:4.3.0'
+}
+
+//application {
+mainClassName = 'org.gradle.sample.Main'
+//}
+
+sourceSets {
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
 }
 
 test {
@@ -109,14 +121,26 @@ test {
     //createPom();
 }
 
-/*java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}*/
+shadowJar {
+    zip64 true
+}
 
-//shadowJar {
-//    zip64 true
-//}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            // augment your pom here if necessary
+        }
+    }
+}
 
-//apply plugin: 'com.github.johnrengelman.shadow'
-//apply plugin: 'java'
+task createPom(type: Copy) {
+    description 'This is workaround to generate pom.xml, needed for @QuarkusTest tests.'
+    dependsOn('generatePomFileForMavenJavaPublication')
+    from "$buildDir/publications/mavenJava/pom-default.xml"
+    into '.'
+    rename('pom-default.xml', 'pom.xml')
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'

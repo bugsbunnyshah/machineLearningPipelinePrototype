@@ -8,9 +8,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-//@Path("dataMapper")
+@Path("dataMapper")
 public class DataMapper {
-    /*private static Logger logger = LoggerFactory.getLogger(DataMapper.class);
+    private static Logger logger = LoggerFactory.getLogger(DataMapper.class);
 
     @Path("map")
     @GET
@@ -19,5 +19,6 @@ public class DataMapper {
     {
         Response response = Response.ok().build();
         return response;
-    }*/
+        //return "";
+    }
 }

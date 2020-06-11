@@ -8,18 +8,19 @@ import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
 
+@QuarkusTest
 public class DataMapperTests {
     private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
 
-    //@Test
+    @Test
     public void testMap() {
-        /*Response response = given().when().post("/dataMapper/map")
+        Response response = given().when().post("/dataMapper/map")
                 .andReturn();
 
         String json = response.getBody().prettyPrint();
         logger.info("****");
         logger.info(json);
-        logger.info("****");*/
+        logger.info("****");
 
         //assert the body
         //JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
