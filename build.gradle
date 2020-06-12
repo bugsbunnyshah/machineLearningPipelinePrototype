@@ -63,6 +63,7 @@ dependencies {
     implementation ('com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.10') {force = true}
     implementation 'org.apache.xbean:xbean-asm6-shaded:4.10'
     implementation 'com.github.opendevl:json2flat:1.0.3'
+    compile group: 'org.json', name: 'json', version: '20200518'
 
     implementation name: 'eclipse-swt-macos'
     implementation name: 'jface-3.7.0'
