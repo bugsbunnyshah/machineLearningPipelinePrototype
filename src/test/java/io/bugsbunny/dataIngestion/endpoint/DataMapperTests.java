@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DataMapperTests {
     private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
 
-    //@Test
+    @Test
     public void testMapWithOneToOneFields() throws Exception{
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("airlinesDataOneToOneFields.json"),
@@ -81,8 +81,8 @@ public class DataMapperTests {
         assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
     }
 
-   // @Test
-    public void testXmlToJson()
+   @Test
+    public void testMapXmlSourceData()
     {
         String xml = "<persons>\n" +
                 "    <person id=\"1\">\n" +
@@ -129,8 +129,19 @@ public class DataMapperTests {
                 "    </person>\n" +
                 "</persons>";
 
-        JSONObject jsonObject = XML.toJSONObject(xml);
-        String json = jsonObject.toString(4);
-        logger.info(json);
+        JsonObject input = new JsonObject();
+        input.addProperty("sourceSchema", xml);
+        input.addProperty("destinationSchema", xml);
+        input.addProperty("sourceData", xml);
+
+
+        Response response = given().body(input.toString()).when().post("/dataMapper/map")
+                .andReturn();
+
+        String jsonResponse = response.getBody().prettyPrint();
+        logger.info("****");
+        logger.info(response.getStatusLine());
+        logger.info(jsonResponse);
+        logger.info("****");
     }
 }
