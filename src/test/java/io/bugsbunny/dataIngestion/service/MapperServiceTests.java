@@ -24,9 +24,10 @@ public class MapperServiceTests {
     private MapperService mapperService;
 
     @Test
-    public void testMap() throws Exception
+    public void testMapAirlineData() throws Exception
     {
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
+        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                "airlinesData.json"),
                 StandardCharsets.UTF_8);
         JsonObject jsonObject = this.mapperService.map(json, json, json);
         logger.info("*******");
@@ -36,5 +37,21 @@ public class MapperServiceTests {
         assertEquals("123456789", jsonObject.get("Id").getAsString());
         assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
         assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
+    }
+
+    @Test
+    public void testMapPeopleData() throws Exception
+    {
+        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                "people.json"),
+                StandardCharsets.UTF_8);
+        JsonObject jsonObject = this.mapperService.map(json, json, json);
+        logger.info("*******");
+        logger.info(jsonObject.toString());
+        logger.info("*******");
+
+        assertEquals("James", jsonObject.get("firstname").getAsString());
+        //assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
+        //assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
     }
 }

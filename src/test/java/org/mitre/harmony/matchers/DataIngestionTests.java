@@ -49,25 +49,14 @@ public class DataIngestionTests {
         {
             String field = entry.getKey();
             JsonElement jsonElement = entry.getValue();
-            if(jsonElement.isJsonObject() || jsonElement.isJsonArray())
-            {
-                if(jsonElement.isJsonObject())
-                {
-                    SchemaElement schemaElement = new SchemaElement();
-                    schemaElement.setId(field.hashCode());
-                    schemaElement.setName(field);
-                    schemaElement.setDescription(field);
-                    schemaElements.add(schemaElement);
-                    continue;
-                }
-                else if(jsonElement.isJsonArray()) {
-                    continue;
-                }
-            }
             SchemaElement schemaElement = new SchemaElement();
             schemaElement.setId(field.hashCode());
             schemaElement.setName(field);
             schemaElement.setDescription(field);
+            if(jsonElement.isJsonArray())
+            {
+                continue;
+            }
             schemaElements.add(schemaElement);
         }
 

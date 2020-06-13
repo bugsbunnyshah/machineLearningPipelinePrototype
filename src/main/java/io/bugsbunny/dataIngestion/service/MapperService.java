@@ -1,8 +1,8 @@
 package io.bugsbunny.dataIngestion.service;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.commons.io.IOUtils;
 import org.mitre.harmony.matchers.ElementPair;
 import org.mitre.harmony.matchers.MatcherManager;
 import org.mitre.harmony.matchers.MatcherScores;
@@ -41,7 +41,7 @@ public class MapperService {
             FilteredSchemaInfo f2 = new FilteredSchemaInfo(destination);
 
             Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaElements);
-            JsonObject result = this.performMapping(scores);
+            JsonObject result = this.performMapping(scores, sourceData);
 
             return result;
         }
@@ -82,31 +82,34 @@ public class MapperService {
         schemaInfo.getModel().getChildElements(schemaInfo, id).add(element);
     }
 
-    private ArrayList<SchemaElement> parseSchemaElements(String schema) throws IOException
+    private ArrayList<SchemaElement> parseSchemaElements(String json) throws IOException
     {
         ArrayList<SchemaElement> schemaElements = new ArrayList<>();
 
-        JsonObject jsonObject = JsonParser.parseString(schema).getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 
-        Set<String> fields = jsonObject.keySet();
-        for(String field:fields)
+        Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+        for(Map.Entry<String, JsonElement> entry:entrySet)
         {
+            String field = entry.getKey();
+            JsonElement jsonElement = entry.getValue();
             SchemaElement schemaElement = new SchemaElement();
             schemaElement.setId(field.hashCode());
             schemaElement.setName(field);
             schemaElement.setDescription(field);
+            if(jsonElement.isJsonArray())
+            {
+                continue;
+            }
             schemaElements.add(schemaElement);
         }
 
         return schemaElements;
     }
 
-    private JsonObject performMapping(Map<SchemaElement, Double> scores) throws IOException
+    private JsonObject performMapping(Map<SchemaElement, Double> scores, String json) throws IOException
     {
         ArrayList<SchemaElement> schemaElements = new ArrayList<>();
-
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
-                StandardCharsets.UTF_8);
 
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 
@@ -117,8 +120,7 @@ public class MapperService {
             SchemaElement schemaElement = entry.getKey();
             Double score = entry.getValue();
             String field = schemaElement.getName();
-
-            result.addProperty(field, jsonObject.get(field).getAsString());
+            result.add(field, jsonObject.get(field));
         }
 
         return result;
@@ -129,7 +131,7 @@ public class MapperService {
     {
         Map<SchemaElement, Double> result = new HashMap<>();
         Matcher matcher = MatcherManager.getMatcher(
-                "org.mitre.harmony.matchers.matchers.EditDistanceMatcher");
+                "org.mitre.harmony.matchers.matchers.ExactMatcher");
         matcher.initialize(f1, f2);
 
         /*ArrayList<MatcherParameter> matcherParameters = matcher.getParameters();
