@@ -135,7 +135,7 @@ public class DataMapperTests {
         input.addProperty("sourceData", xml);
 
 
-        Response response = given().body(input.toString()).when().post("/dataMapper/map")
+        Response response = given().body(input.toString()).when().post("/dataMapper/mapXml")
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();

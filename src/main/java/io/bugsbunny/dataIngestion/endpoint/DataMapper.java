@@ -47,7 +47,7 @@ public class DataMapper {
         }
     }
 
-    @Path("map")
+    @Path("mapXml")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response mapXmlSourceData(@RequestBody String input)
