@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.mitre.harmony.matchers.MatcherScore;
 import org.mitre.harmony.matchers.MatcherScores;
+import org.mitre.schemastore.model.Entity;
 import org.mitre.schemastore.model.SchemaElement;
 
 /** Edit Distance Matcher Class */
@@ -35,6 +36,8 @@ public class EditDistanceMatcher extends Matcher
 		// Get the source and target elements
 		ArrayList<SchemaElement> sourceElements = schema1.getFilteredElements();
 		ArrayList<SchemaElement> targetElements = schema2.getFilteredElements();
+		//ArrayList<SchemaElement> sourceElements = schema1.getElements(Entity.class);
+		//ArrayList<SchemaElement> targetElements = schema2.getElements(Entity.class);
 
 		// Sets the completed and total comparisons
 		completedComparisons = 0;

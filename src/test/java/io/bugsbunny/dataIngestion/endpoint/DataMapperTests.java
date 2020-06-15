@@ -82,52 +82,10 @@ public class DataMapperTests {
     }
 
    @Test
-    public void testMapXmlSourceData()
+    public void testMapXmlSourceData() throws Exception
     {
-        String xml = "<persons>\n" +
-                "    <person id=\"1\">\n" +
-                "        <firstname>James</firstname>\n" +
-                "        <lastname>Smith</lastname>\n" +
-                "        <middlename></middlename>\n" +
-                "        <dob_year>1980</dob_year>\n" +
-                "        <dob_month>1</dob_month>\n" +
-                "        <gender>M</gender>\n" +
-                "        <salary currency=\"Euro\">10000</salary>\n" +
-                "        <addresses>\n" +
-                "            <address>\n" +
-                "                <street>123 ABC street</street>\n" +
-                "                <city>NewJersy</city>\n" +
-                "                <state>NJ</state>\n" +
-                "            </address>\n" +
-                "            <address>\n" +
-                "                <street>456 apple street</street>\n" +
-                "                <city>newark</city>\n" +
-                "                <state>DE</state>\n" +
-                "            </address>\n" +
-                "        </addresses>\n" +
-                "    </person>\n" +
-                "    <person id=\"2\">\n" +
-                "        <firstname>Michael</firstname>\n" +
-                "        <lastname></lastname>\n" +
-                "        <middlename>Rose</middlename>\n" +
-                "        <dob_year>1990</dob_year>\n" +
-                "        <dob_month>6</dob_month>\n" +
-                "        <gender>M</gender>\n" +
-                "        <salary currency=\"Dollor\">10000</salary>\n" +
-                "        <addresses>\n" +
-                "            <address>\n" +
-                "                <street>4512 main st</street>\n" +
-                "                <city>new york</city>\n" +
-                "                <state>NY</state>\n" +
-                "            </address>\n" +
-                "            <address>\n" +
-                "                <street>4367 orange st</street>\n" +
-                "                <city>sandiago</city>\n" +
-                "                <state>CA</state>\n" +
-                "            </address>\n" +
-                "        </addresses>\n" +
-                "    </person>\n" +
-                "</persons>";
+        String xml = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("people.xml"),
+                StandardCharsets.UTF_8);
 
         JsonObject input = new JsonObject();
         input.addProperty("sourceSchema", xml);
