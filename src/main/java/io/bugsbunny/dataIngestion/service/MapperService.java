@@ -3,11 +3,13 @@ package io.bugsbunny.dataIngestion.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import org.mitre.harmony.matchers.ElementPair;
 import org.mitre.harmony.matchers.MatcherManager;
 import org.mitre.harmony.matchers.MatcherScore;
 import org.mitre.harmony.matchers.MatcherScores;
 import org.mitre.harmony.matchers.matchers.Matcher;
+
 import org.mitre.schemastore.model.Entity;
 import org.mitre.schemastore.model.Schema;
 import org.mitre.schemastore.model.SchemaElement;
@@ -16,6 +18,7 @@ import org.mitre.schemastore.model.schemaInfo.HierarchicalSchemaInfo;
 import org.mitre.schemastore.model.schemaInfo.SchemaInfo;
 import org.mitre.schemastore.model.schemaInfo.model.RelationalSchemaModel;
 import org.mitre.schemastore.model.schemaInfo.model.SchemaModel;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,34 +34,19 @@ public class MapperService {
     {
         try
         {
-            JsonObject sourceElement = JsonParser.parseString(sourceData).getAsJsonObject();
-            JsonElement firstElement = sourceElement.get(sourceElement.keySet().iterator().next());
-            JsonObject sourceJson;
-            if(firstElement.isJsonArray())
-            {
-                sourceJson = firstElement.getAsJsonArray().get(0).getAsJsonObject();
-            }
-            else
-            {
-                sourceJson = firstElement.getAsJsonObject();
-            }
-            sourceData = sourceJson.toString();
+            String root = JsonParser.parseString(sourceData).getAsJsonObject().keySet().iterator().next();
+
+            HierarchicalSchemaInfo sourceSchemaInfo = this.populateHierarchialSchema(root,
+                    sourceData,null);
+            HierarchicalSchemaInfo destinationSchemaInfo = this.populateHierarchialSchema(root,
+                    sourceData,null);
 
 
-            HierarchicalSchemaInfo source = this.createHierachialSchemaInfo("source");
-            HierarchicalSchemaInfo destination = this.createHierachialSchemaInfo("destination");
-
-            this.populateHierarchialSchema(source, sourceData);
-            this.populateHierarchialSchema(destination, sourceData);
-
-            ArrayList<SchemaElement> sourceElements = source.getElements(Entity.class);
-            ArrayList<SchemaElement> destinationElements = destination.getElements(Entity.class);
-            FilteredSchemaInfo f1 = new FilteredSchemaInfo(source);
-            f1.addElements(sourceElements);
-            FilteredSchemaInfo f2 = new FilteredSchemaInfo(destination);
-            f2.addElements(destinationElements);
-            Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceElements);
-
+            FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
+            f1.addElements(sourceSchemaInfo.getElements(Entity.class));
+            FilteredSchemaInfo f2 = new FilteredSchemaInfo(destinationSchemaInfo);
+            f2.addElements(destinationSchemaInfo.getElements(Entity.class));
+            Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaInfo.getElements(Entity.class));
             JsonObject result = this.performMapping(scores, sourceData);
 
             return result;
@@ -84,64 +72,67 @@ public class MapperService {
         return schemaInfo;
     }
 
-    private void populateHierarchialSchema(HierarchicalSchemaInfo schemaInfo, String sourceData)
+    private HierarchicalSchemaInfo populateHierarchialSchema(String object, String sourceData, String parent)
     {
+        HierarchicalSchemaInfo schemaInfo = this.createHierachialSchemaInfo(object);
         JsonObject jsonObject = JsonParser.parseString(sourceData).getAsJsonObject();
-        logger.info(jsonObject.toString());
 
         Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
         for(Map.Entry<String, JsonElement> entry:entrySet)
         {
-            JsonElement jsonElement = entry.getValue();
-            if(jsonElement.isJsonArray())
-            {
-                jsonElement = jsonElement.getAsJsonArray().get(0);
-            }
-
             String field = entry.getKey();
-            SchemaElement schemaElement = new SchemaElement();
-            schemaElement.setId(field.hashCode());
-            schemaElement.setName(field);
-            schemaElement.setDescription(field);
-            logger.info("FIELD: "+field);
+            JsonElement jsonElement = entry.getValue();
 
             if(jsonElement.isJsonObject())
-            {
-                //HierarchicalSchemaInfo local = this.getHierarchialSchema(schemaName,
-                //        jsonElement.getAsJsonObject().toString());
-                //schemaInfo.getRootElements().addAll(local.getRootElements());
-                this.populateHierarchialSchema(schemaInfo, jsonElement.getAsJsonObject().toString());
-            }
-            else
             {
                 Entity element = new Entity();
                 element.setId(field.hashCode());
                 element.setName(field);
                 element.setDescription(field);
                 schemaInfo.addElement(element);
-                schemaInfo.getModel().getChildElements(schemaInfo, field
-                .hashCode()).add(element);
+                HierarchicalSchemaInfo fieldInfos = this.populateHierarchialSchema(field,
+                        jsonElement.getAsJsonObject().toString(), object);
+
+                ArrayList<SchemaElement> blah = fieldInfos.getElements(Entity.class);
+                for(SchemaElement local:blah)
+                {
+                    schemaInfo.addElement(local);
+                }
+
+                continue;
+            }
+            else if(jsonElement.isJsonArray())
+            {
+                JsonObject top = jsonElement.getAsJsonArray().get(0).getAsJsonObject();
+                HierarchicalSchemaInfo fieldInfos = this.populateHierarchialSchema(field,
+                        top.toString(), object);
+
+                ArrayList<SchemaElement> blah = fieldInfos.getElements(Entity.class);
+                for(SchemaElement local:blah)
+                {
+                    schemaInfo.addElement(local);
+                }
+
+                continue;
+            }
+            else
+            {
+                String objectLocation = parent + "." + object + "." + field;
+                Entity element = new Entity();
+                element.setId(objectLocation.hashCode());
+                element.setName(objectLocation);
+                element.setDescription(objectLocation);
+                schemaInfo.addElement(element);
             }
         }
-        logger.info("*******BINDAASBHIDDU******");
-        logger.info(schemaInfo.getElements(Entity.class).toString());
+
+        return schemaInfo;
     }
 
     private JsonObject performMapping(Map<SchemaElement, Double> scores, String json) throws IOException
     {
-        JsonObject root = JsonParser.parseString(json).getAsJsonObject();
-        JsonElement firstElement = root.entrySet().iterator().next().getValue();
-        JsonObject jsonObject;
-        if(firstElement.isJsonArray())
-        {
-            jsonObject = firstElement.getAsJsonArray().get(0).getAsJsonObject();
-        }
-        else
-        {
-            jsonObject = firstElement.getAsJsonObject();
-        }
-        logger.info("*******BINDAASBHIDDU******");
-        logger.info(jsonObject.toString());
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        //logger.info("*******BINDAASBHIDDU******");
 
         JsonObject result = new JsonObject();
         Set<Map.Entry<SchemaElement, Double>> entrySet = scores.entrySet();
@@ -150,7 +141,16 @@ public class MapperService {
             SchemaElement schemaElement = entry.getKey();
             Double score = entry.getValue();
             String field = schemaElement.getName();
-            result.add(field, jsonObject.get(field));
+            StringTokenizer tokenizer = new StringTokenizer(field, ".");
+            while(tokenizer.hasMoreTokens())
+            {
+                String local = tokenizer.nextToken();
+                if(!jsonObject.has(local))
+                {
+                    continue;
+                }
+                result.add(local, jsonObject.get(local));
+            }
         }
 
         return result;

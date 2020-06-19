@@ -58,6 +58,7 @@ public class DataMapper {
             String sourceData = jsonObject.get("sourceData").getAsString();
             JSONObject sourceJson = XML.toJSONObject(sourceData);
             String json = sourceJson.toString(4);
+            logger.info(json);
 
             JsonObject result = this.mapperService.map(json, json, json);
             Response response = Response.ok(result.toString()).build();

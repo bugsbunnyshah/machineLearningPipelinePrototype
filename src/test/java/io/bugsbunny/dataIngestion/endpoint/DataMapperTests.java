@@ -26,6 +26,7 @@ public class DataMapperTests {
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("airlinesDataOneToOneFields.json"),
                 StandardCharsets.UTF_8);
+        logger.info(json);
 
         JsonObject input = new JsonObject();
         input.addProperty("sourceSchema", json);
@@ -56,6 +57,7 @@ public class DataMapperTests {
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("airlinesDataScatteredFields.json"),
                 StandardCharsets.UTF_8);
+        logger.info(json);
 
         JsonObject input = new JsonObject();
         input.addProperty("sourceSchema", json);
