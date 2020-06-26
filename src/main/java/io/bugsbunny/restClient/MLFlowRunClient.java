@@ -3,14 +3,19 @@ package io.bugsbunny.restClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Instant;
 
 public class MLFlowRunClient
@@ -22,47 +27,105 @@ public class MLFlowRunClient
      * A run is usually a single execution of a machine learning or data ETL pipeline.
      * MLflow uses runs to track Param, Metric, and RunTag associated with a single execution.
      */
-    public void createRun()
+    public void createExperiment()
     {
-        logger.info("***CREATE_RUN*******");
-        logger.info("***************************");
-
         //Setup RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
-        String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/runs/create";
-        ObjectMapper objectMapper = new ObjectMapper();
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/experiments/create";
 
         //Setup POST request
         try {
-            URI restURI = new URI(restUrl);
-            HttpMethod post = HttpMethod.POST;
-
-            //Input Values
+            JsonObject json = new JsonObject();
             String experimentId = "0";
             long startTime = Instant.now().toEpochMilli();
+            json.addProperty("name", "AppGal");
+            java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder();
+            java.net.http.HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    //.header("Content-Type", "application/json")
+                    //.header("api-key",primaryKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
 
-            //Setup the Input Payload
-            ObjectNode inputPayload = objectMapper.createObjectNode();
-            inputPayload.put("experiment_id", experimentId);
-            inputPayload.put("start_time", startTime);
-            String body = inputPayload.toString();
-            logger.info("***INPUT_JSON***");
-            logger.info("json: " + body);
-            logger.info("**************");
 
-            RequestEntity<String> requestEntity = RequestEntity.post(restURI).accept(MediaType.APPLICATION_JSON).body(body);
-            ResponseEntity<String> response = restTemplate.exchange(requestEntity, String.class);
-            HttpStatus status = response.getStatusCode();
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String tokenJson = httpResponse.body();
+            int status = httpResponse.statusCode();
 
             logger.info("***RESPONSE***");
-            logger.info("HttpStatus: " + status.value());
-            logger.info("HttpMessage: " + status.getReasonPhrase());
-            logger.info("JSON: " + response.getBody());
+            logger.info("BODY: "+tokenJson);
+            logger.info("STATUS: "+status);
             logger.info("**************");
         }
-        catch (URISyntaxException uriSyntaxException)
+        catch(Exception e)
         {
-            throw new RuntimeException(uriSyntaxException);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void getExperiments()
+    {
+        //Setup RestTemplate
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/experiments/list";
+
+        //Setup POST request
+        try {
+            java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder();
+            java.net.http.HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    //.header("Content-Type", "application/json")
+                    //.header("api-key",primaryKey)
+                    .GET()
+                    .build();
+
+
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String tokenJson = httpResponse.body();
+            int status = httpResponse.statusCode();
+
+            logger.info("***RESPONSE***");
+            logger.info("BODY: "+tokenJson);
+            logger.info("STATUS: "+status);
+            logger.info("**************");
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void createRun()
+    {
+        //Setup RestTemplate
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/runs/create";
+
+        //Setup POST request
+        try {
+            JsonObject json = new JsonObject();
+            String experimentId = "0";
+            long startTime = Instant.now().toEpochMilli();
+            json.addProperty("experiment_id", experimentId);
+            json.addProperty("start_time", startTime);
+            java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder();
+            java.net.http.HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    //.header("Content-Type", "application/json")
+                    //.header("api-key",primaryKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String tokenJson = httpResponse.body();
+            int status = httpResponse.statusCode();
+
+            logger.info("***RESPONSE***");
+            logger.info("BODY: "+tokenJson);
+            logger.info("STATUS: "+status);
+            logger.info("**************");
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e);
         }
     }
 }
