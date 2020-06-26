@@ -128,4 +128,38 @@ public class MLFlowRunClient
             throw new RuntimeException(e);
         }
     }
+
+    public void logModel(String runId, String modelJson)
+    {
+        //Setup RestTemplate
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/runs/log-model";
+
+        //Setup POST request
+        try {
+            JsonObject json = new JsonObject();
+            json.addProperty("run_id", runId);
+            json.addProperty("model_json", modelJson);
+            java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder();
+            java.net.http.HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    //.header("Content-Type", "application/json")
+                    //.header("api-key",primaryKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String tokenJson = httpResponse.body();
+            int status = httpResponse.statusCode();
+
+            logger.info("***RESPONSE***");
+            logger.info("BODY: "+tokenJson);
+            logger.info("STATUS: "+status);
+            logger.info("**************");
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 }
