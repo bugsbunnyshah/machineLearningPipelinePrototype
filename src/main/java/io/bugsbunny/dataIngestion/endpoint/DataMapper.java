@@ -61,6 +61,8 @@ public class DataMapper {
             logger.info(json);
 
             JsonObject result = this.mapperService.map(json, json, json);
+            this.mapperService.storeMappedOutput(result);
+
             Response response = Response.ok(result.toString()).build();
             return response;
         }

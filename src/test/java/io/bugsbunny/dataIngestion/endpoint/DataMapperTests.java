@@ -1,6 +1,7 @@
 package io.bugsbunny.dataIngestion.endpoint;
 
 import com.google.gson.JsonParser;
+import io.bugsbunny.persistence.MongoDBJsonStore;
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -12,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonObject;
+
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
 import static io.restassured.RestAssured.given;
@@ -20,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusTest
 public class DataMapperTests {
     private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
+
+    @Inject
+    private MongoDBJsonStore mongoDBJsonStore;
 
     @Test
     public void testMapWithOneToOneFields() throws Exception{
@@ -103,5 +109,10 @@ public class DataMapperTests {
         logger.info(response.getStatusLine());
         logger.info(jsonResponse);
         logger.info("****");
+
+        JsonObject storedJson = this.mongoDBJsonStore.getIngestion("1");
+        logger.info("*******");
+        logger.info(storedJson.toString());
+        logger.info("*******");
     }
 }

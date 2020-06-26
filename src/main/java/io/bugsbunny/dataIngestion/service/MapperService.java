@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.bugsbunny.persistence.MongoDBJsonStore;
 import org.mitre.harmony.matchers.ElementPair;
 import org.mitre.harmony.matchers.MatcherManager;
 import org.mitre.harmony.matchers.MatcherScore;
@@ -23,12 +24,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.*;
 
 @ApplicationScoped
 public class MapperService {
     private static Logger logger = LoggerFactory.getLogger(MapperService.class);
+
+    @Inject
+    private MongoDBJsonStore mongoDBJsonStore;
 
     public JsonObject map(String sourceSchema, String destinationSchema, String sourceData)
     {
@@ -50,6 +55,19 @@ public class MapperService {
             JsonObject result = this.performMapping(scores, sourceData);
 
             return result;
+        }
+        catch(Exception e)
+        {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void storeMappedOutput(JsonObject jsonObject)
+    {
+        try
+        {
+            this.mongoDBJsonStore.storeIngestion(Arrays.asList(new JsonObject[]{jsonObject}));
         }
         catch(Exception e)
         {
