@@ -1,16 +1,10 @@
 package io.bugsbunny.restClient;
 
-//import io.quarkus.test.junit.QuarkusTest;
-//import org.junit.jupiter.api.Test;
-
-//import org.junit.platform.commons.logging.Logger;
-//import org.junit.platform.commons.logging.LoggerFactory;
-
-//import junit.*;
-import io.bugsbunny.cloud.kubernetes.DynamicSpinUpClient;
+import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -20,20 +14,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-//import java.net.http.HttpClient;
-//import java.net.http.HttpRequest;
-//import java.net.http.HttpResponse;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-//@QuarkusTest
+@QuarkusTest
 public class AzureSearchTests {
     private static Logger logger = LoggerFactory.getLogger(AzureSearchTests.class);
 
-    /*@Test
+    @Test
     public void testCreateDataSource() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
         String requestUrl = "https://alz.search.windows.net/datasources?api-version=2019-05-06";
         String blobContainerName = "azlBlobContainer";
@@ -72,6 +66,7 @@ public class AzureSearchTests {
         System.out.println("*******");
     }
 
+    /*
     //@Test
     public void testCreateSkillSet() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
         String requestUrl = "https://alz.search.windows.net/skillsets/azlds?api-version=2019-05-06";
