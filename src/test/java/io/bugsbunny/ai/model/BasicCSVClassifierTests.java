@@ -134,8 +134,42 @@ public class BasicCSVClassifierTests {
             setFittedClassifiers(output, animals);
             logAnimals(animals);
 
-            //OutputStream outputStream = new ObjectOutputStream();
-            //logger.info(model.)
+            String modelLocation = "tmp/model.ser";
+            FileOutputStream fileOut = null;
+            ObjectOutputStream out = null;
+            try {
+                fileOut = new FileOutputStream(modelLocation);
+                out = new ObjectOutputStream(fileOut);
+                out.writeObject(model);
+            }
+            finally
+            {
+                out.close();
+                fileOut.close();
+            }
+
+            //Restore serialized model
+            FileInputStream fileIn = null;
+            ObjectInputStream in = null;
+            MultiLayerNetwork restoredModel = null;
+            try {
+                fileIn = new FileInputStream(modelLocation);
+                in = new ObjectInputStream(fileIn);
+                restoredModel = (MultiLayerNetwork) in.readObject();
+            } finally
+            {
+                in.close();
+                fileIn.close();
+            }
+
+            restoredModel.fit(trainingData);
+
+            //evaluate the model on the test set
+            eval = new Evaluation(3);
+            output = restoredModel.output(testData.getFeatureMatrix());
+
+            eval.eval(testData.getLabels(), output);
+            log.info(eval.stats());
 
         } catch (Exception e){
             e.printStackTrace();
