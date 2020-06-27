@@ -68,7 +68,7 @@ public class BasicCSVClassifierTests {
     }
 
     @Test
-    public void testClassifirer() throws Exception
+    public void testClassifier() throws Exception
     {
 
         try {
@@ -134,32 +134,28 @@ public class BasicCSVClassifierTests {
             setFittedClassifiers(output, animals);
             logAnimals(animals);
 
-            String modelLocation = "tmp/model.ser";
-            FileOutputStream fileOut = null;
+            ByteArrayOutputStream modelStream = null;
             ObjectOutputStream out = null;
             try {
-                fileOut = new FileOutputStream(modelLocation);
-                out = new ObjectOutputStream(fileOut);
+                modelStream = new ByteArrayOutputStream();
+                out = new ObjectOutputStream(modelStream);
                 out.writeObject(model);
             }
             finally
             {
                 out.close();
-                fileOut.close();
+                modelStream.close();
             }
 
             //Restore serialized model
-            FileInputStream fileIn = null;
             ObjectInputStream in = null;
             MultiLayerNetwork restoredModel = null;
             try {
-                fileIn = new FileInputStream(modelLocation);
-                in = new ObjectInputStream(fileIn);
+                in = new ObjectInputStream(new ByteArrayInputStream(modelStream.toByteArray()));
                 restoredModel = (MultiLayerNetwork) in.readObject();
             } finally
             {
                 in.close();
-                fileIn.close();
             }
 
             restoredModel.fit(trainingData);

@@ -1,5 +1,7 @@
 package io.bugsbunny;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.bugsbunny.restClient.MLFlowRunClient;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -10,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 @QuarkusTest
 public class MLFlowRunClientTests {
@@ -38,6 +42,14 @@ public class MLFlowRunClientTests {
     }
 
     @Test
+    public void testGetRun()
+    {
+        MLFlowRunClient mlFlowRunClient = new MLFlowRunClient();
+        String runId = "1b117ece479c47aca912feb75bc55b0a";
+        mlFlowRunClient.getRun(runId);
+    }
+
+    @Test
     public void testLogModel() throws Exception
     {
         String yamlString = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("MLmodel")
@@ -46,10 +58,18 @@ public class MLFlowRunClientTests {
         Yaml yaml= new Yaml();
         Object obj = yaml.load(yamlString);
 
+        String modelLocation = "tmp/model.ser";
+        FileInputStream fileIn = new FileInputStream(modelLocation);
+        String model = IOUtils.toString(fileIn, StandardCharsets.UTF_8);
+
         String json = JSONValue.toJSONString(obj);
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        jsonObject.addProperty("modelSer", model);
+        json = jsonObject.toString();
         logger.info(json);
 
         String runId = "1b117ece479c47aca912feb75bc55b0a";
         mlFlowRunClient.logModel(runId, json);
+        mlFlowRunClient.getRun(runId);
     }
 }

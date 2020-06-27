@@ -93,6 +93,37 @@ public class MLFlowRunClient
         }
     }
 
+    public void getRun(String runId)
+    {
+        //Setup RestTemplate
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/runs/get?run_id="+runId;
+
+        //Setup POST request
+        try {
+            java.net.http.HttpRequest.Builder httpRequestBuilder = java.net.http.HttpRequest.newBuilder();
+            java.net.http.HttpRequest httpRequest = httpRequestBuilder.uri(new URI(restUrl))
+                    //.header("Content-Type", "application/json")
+                    //.header("api-key",primaryKey)
+                    .GET()
+                    .build();
+
+
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            String tokenJson = httpResponse.body();
+            int status = httpResponse.statusCode();
+
+            logger.info("***RESPONSE***");
+            logger.info("BODY: "+tokenJson);
+            logger.info("STATUS: "+status);
+            logger.info("**************");
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void createRun()
     {
         //Setup RestTemplate
