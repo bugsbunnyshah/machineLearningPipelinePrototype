@@ -1,14 +1,14 @@
-package io.bugsbunny.ai.model;
-
+package io.bugsbunny.dataScience.service;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.bugsbunny.persistence.MongoDBJsonStore;
-import io.quarkus.test.junit.QuarkusTest;
+import io.bugsbunny.restClient.MLFlowRunClient;
+import net.minidev.json.JSONValue;
 import org.apache.commons.io.IOUtils;
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
-import org.datavec.api.util.ClassPathResource;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.eval.Evaluation;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
@@ -18,8 +18,6 @@ import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
@@ -29,49 +27,39 @@ import org.nd4j.linalg.dataset.api.preprocessor.NormalizerStandardize;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-
-/**
- * This example is intended to be a simple CSV classifier that seperates the training data
- * from the test data for the classification of animals. It would be suitable as a beginner's
- * example because not only does it load CSV data into the network, it also shows how to extract the
- * data and display the results of the classification, as well as a simple method to map the lables
- * from the testing data into the results.
- *
- * @author Clay Graham
- */
-@QuarkusTest
-public class BasicCSVClassifierTests {
-
-    private static Logger log = LoggerFactory.getLogger(BasicCSVClassifierTests.class);
+@ApplicationScoped
+public class TrainingWorkflow {
+    private static Logger logger = LoggerFactory.getLogger(TrainingWorkflow.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
+    @Inject
+    private MLFlowRunClient mlFlowRunClient;
 
-    private Map<Integer,String> eats;
-    private Map<Integer,String> sounds;
-    private Map<Integer,String> classifiers;
+    private Map<Integer,String> eats = new HashMap<>();
+    private Map<Integer,String> sounds = new HashMap<>();
+    private Map<Integer,String> classifiers = new HashMap<>();
 
-    @BeforeEach
-    public void setUp()
+    public String startTraining()
     {
-        this.eats = this.readEnumCSV();
-        this.sounds = this.readEnumCSV();
-        this.classifiers = this.readEnumCSV();
-    }
+        try
+        {
+            String runId = null;
 
-    @Test
-    public void testClassifier() throws Exception
-    {
-
-        try {
+            this.eats = this.readEnumCSV();
+            this.sounds = this.readEnumCSV();
+            this.classifiers = this.readEnumCSV();
 
             //Second: the RecordReaderDataSetIterator handles conversion to DataSet objects, ready for use in neural network
             int labelIndex = 4;     //5 values in each row of the iris.txt CSV: 4 input features followed by an integer label (class) index. Labels are the 5th value (index 4) in each row
@@ -101,7 +89,7 @@ public class BasicCSVClassifierTests {
             int iterations = 1000;
             long seed = 6;
 
-            log.info("Build model....");
+            logger.info("Build model....");
             MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                     .seed(seed)
                     .iterations(iterations)
@@ -129,7 +117,7 @@ public class BasicCSVClassifierTests {
             INDArray output = model.output(testData.getFeatureMatrix());
 
             eval.eval(testData.getLabels(), output);
-            log.info(eval.stats());
+            logger.info(eval.stats());
 
             setFittedClassifiers(output, animals);
             logAnimals(animals);
@@ -148,7 +136,7 @@ public class BasicCSVClassifierTests {
             }
 
             //Restore serialized model
-            ObjectInputStream in = null;
+            /*ObjectInputStream in = null;
             MultiLayerNetwork restoredModel = null;
             try {
                 in = new ObjectInputStream(new ByteArrayInputStream(modelStream.toByteArray()));
@@ -156,59 +144,90 @@ public class BasicCSVClassifierTests {
             } finally
             {
                 in.close();
-            }
+            }*/
 
-            restoredModel.fit(trainingData);
+            //Store the model in the DataBricks Repository
+            runId = this.mlFlowRunClient.createRun();
 
-            //evaluate the model on the test set
-            eval = new Evaluation(3);
-            output = restoredModel.output(testData.getFeatureMatrix());
 
-            eval.eval(testData.getLabels(), output);
-            log.info(eval.stats());
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("artifact_path", "model");
+            jsonObject.addProperty("utc_time_created", "2020-06-26 18:00:56.056775");
+            jsonObject.addProperty("run_id", runId);
+            jsonObject.add("flavors", new JsonObject());
+            jsonObject.addProperty("modelSer", new String(modelStream.toByteArray(), StandardCharsets.UTF_8));
 
+            String json = jsonObject.toString();
+
+            //logger.info("*********************************************");
+            //logger.info(json);
+            //logger.info("*********************************************");
+
+            this.mlFlowRunClient.logModel(runId, json);
+
+            return runId;
         } catch (Exception e){
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
-
     }
 
-    private void logAnimals(Map<Integer,Map<String,Object>> animals){
-        for(Map<String,Object> a:animals.values())
-            log.info(a.toString());
-    }
-
-    private void setFittedClassifiers(INDArray output, Map<Integer,Map<String,Object>> animals){
-        for (int i = 0; i < output.rows() ; i++) {
-
-            // set the classification from the fitted results
-            animals.get(i).put("classifier",
-                    classifiers.get(maxIndex(getFloatArrayFromSlice(output.slice(i)))));
-
-        }
-
-    }
-
-    private float[] getFloatArrayFromSlice(INDArray rowSlice){
-        float[] result = new float[rowSlice.columns()];
-        for (int i = 0; i < rowSlice.columns(); i++) {
-            result[i] = rowSlice.getFloat(i);
-        }
-        return result;
-    }
-
-    private int maxIndex(float[] vals){
-        int maxIndex = 0;
-        for (int i = 1; i < vals.length; i++){
-            float newnumber = vals[i];
-            if ((newnumber > vals[maxIndex])){
-                maxIndex = i;
+    private String readIngestedData()
+    {
+        List<JsonObject> jsons = mongoDBJsonStore.getIngestionImages();
+        String data = "";
+        int length = jsons.size();
+        int counter = 0;
+        for(JsonObject local:jsons)
+        {
+            data += local.get("data").getAsString();
+            counter++;
+            if(counter < length)
+            {
+                data += "\n";
             }
         }
-        return maxIndex;
+        return data.trim();
     }
 
-    private Map<Integer,Map<String,Object>> makeAnimalsForTesting(DataSet testData){
+    private DataSet readCSVDataset(int batchSize, int labelIndex, int numClasses) throws IOException, InterruptedException
+    {
+        //make this hdfs
+        File file = new File("tmp/data");
+        FileOutputStream fos = new FileOutputStream(file);
+
+        String data = this.readIngestedData();
+        //logger.info(data);
+
+        IOUtils.write(data, fos, StandardCharsets.UTF_8);
+        RecordReader rr = new CSVRecordReader();
+        rr.initialize(new FileSplit(file));
+        DataSetIterator iterator = new RecordReaderDataSetIterator(rr, batchSize, labelIndex, numClasses);
+        return iterator.next();
+    }
+
+    private Map<Integer,String> readEnumCSV() throws IOException
+    {
+        String data = this.readIngestedData();
+        //logger.info(data);
+
+        InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        List<String> lines = IOUtils.readLines(is);
+        Map<Integer,String> enums = new HashMap<>();
+        for(String line:lines)
+        {
+            String[] parts = line.split(",");
+            if(parts[0].trim().length()==0)
+            {
+                break;
+            }
+            enums.put(Integer.parseInt(parts[0]),parts[1]);
+        }
+        return enums;
+    }
+
+    private Map<Integer,Map<String,Object>> makeAnimalsForTesting(DataSet testData)
+    {
         Map<Integer,Map<String,Object>> animals = new HashMap<>();
 
         INDArray features = testData.getFeatureMatrix();
@@ -225,42 +244,42 @@ public class BasicCSVClassifierTests {
             animals.put(i,animal);
         }
         return animals;
-
     }
 
-    private Map<Integer,String> readEnumCSV() {
-        try{
-            List<JsonObject> jsons = this.mongoDBJsonStore.getIngestionImages();
-            JsonObject json = jsons.get(0);
-            String data = json.get("data").getAsString();
-            InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
-            List<String> lines = IOUtils.readLines(is);
-            Map<Integer,String> enums = new HashMap<>();
-            for(String line:lines){
-                String[] parts = line.split(",");
-                enums.put(Integer.parseInt(parts[0]),parts[1]);
+    private int maxIndex(float[] vals)
+    {
+        int maxIndex = 0;
+        for (int i = 1; i < vals.length; i++){
+            float newnumber = vals[i];
+            if ((newnumber > vals[maxIndex])){
+                maxIndex = i;
             }
-            return enums;
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
+        }
+        return maxIndex;
+    }
+
+    private float[] getFloatArrayFromSlice(INDArray rowSlice)
+    {
+        float[] result = new float[rowSlice.columns()];
+        for (int i = 0; i < rowSlice.columns(); i++) {
+            result[i] = rowSlice.getFloat(i);
+        }
+        return result;
+    }
+
+    private void logAnimals(Map<Integer,Map<String,Object>> animals){
+        for(Map<String,Object> a:animals.values())
+            logger.info(a.toString());
+    }
+
+    private void setFittedClassifiers(INDArray output, Map<Integer,Map<String,Object>> animals){
+        for (int i = 0; i < output.rows() ; i++) {
+
+            // set the classification from the fitted results
+            animals.get(i).put("classifier",
+                    classifiers.get(maxIndex(getFloatArrayFromSlice(output.slice(i)))));
+
         }
 
-    }
-
-    private DataSet readCSVDataset(int batchSize, int labelIndex, int numClasses)
-            throws IOException, InterruptedException{
-        List<JsonObject> jsons = mongoDBJsonStore.getIngestionImages();
-        JsonObject json = jsons.get(0);
-        String data = json.get("data").getAsString();
-
-        File file = new File("tmp/data");
-        FileOutputStream fos = new FileOutputStream(file);
-        IOUtils.write(data, fos, StandardCharsets.UTF_8);
-
-        RecordReader rr = new CSVRecordReader();
-        rr.initialize(new FileSplit(file));
-        DataSetIterator iterator = new RecordReaderDataSetIterator(rr, batchSize, labelIndex, numClasses);
-        return iterator.next();
     }
 }

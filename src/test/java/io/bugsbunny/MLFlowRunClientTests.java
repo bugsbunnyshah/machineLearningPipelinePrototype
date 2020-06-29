@@ -16,6 +16,8 @@ import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @QuarkusTest
 public class MLFlowRunClientTests {
     private static Logger logger = LoggerFactory.getLogger(MLFlowRunClientTests.class);
@@ -38,7 +40,11 @@ public class MLFlowRunClientTests {
     public void testCreateRun()
     {
         MLFlowRunClient mlFlowRunClient = new MLFlowRunClient();
-        mlFlowRunClient.createRun();
+        String runId = mlFlowRunClient.createRun();
+        logger.info("*******");
+        logger.info("RunId: "+runId);
+        logger.info("*******");
+        assertNotNull(runId);
     }
 
     @Test
@@ -58,13 +64,9 @@ public class MLFlowRunClientTests {
         Yaml yaml= new Yaml();
         Object obj = yaml.load(yamlString);
 
-        String modelLocation = "tmp/model.ser";
-        FileInputStream fileIn = new FileInputStream(modelLocation);
-        String model = IOUtils.toString(fileIn, StandardCharsets.UTF_8);
-
         String json = JSONValue.toJSONString(obj);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        jsonObject.addProperty("modelSer", model);
+        jsonObject.addProperty("modelSer", UUID.randomUUID().toString());
         json = jsonObject.toString();
         logger.info(json);
 

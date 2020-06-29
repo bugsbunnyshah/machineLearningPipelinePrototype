@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,6 +20,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Instant;
 
+@ApplicationScoped
 public class MLFlowRunClient
 {
     private Logger logger = LoggerFactory.getLogger(MLFlowRunClient.class);
@@ -93,7 +96,7 @@ public class MLFlowRunClient
         }
     }
 
-    public void getRun(String runId)
+    public String getRun(String runId)
     {
         //Setup RestTemplate
         HttpClient httpClient = HttpClient.newBuilder().build();
@@ -110,13 +113,7 @@ public class MLFlowRunClient
 
 
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            String tokenJson = httpResponse.body();
-            int status = httpResponse.statusCode();
-
-            logger.info("***RESPONSE***");
-            logger.info("BODY: "+tokenJson);
-            logger.info("STATUS: "+status);
-            logger.info("**************");
+            return httpResponse.body();
         }
         catch(Exception e)
         {
@@ -124,8 +121,10 @@ public class MLFlowRunClient
         }
     }
 
-    public void createRun()
+    public String createRun()
     {
+        String runId = null;
+
         //Setup RestTemplate
         HttpClient httpClient = HttpClient.newBuilder().build();
         String restUrl = "http://127.0.0.1:5000/api/2.0/mlflow/runs/create";
@@ -146,13 +145,12 @@ public class MLFlowRunClient
 
 
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            String tokenJson = httpResponse.body();
-            int status = httpResponse.statusCode();
 
-            logger.info("***RESPONSE***");
-            logger.info("BODY: "+tokenJson);
-            logger.info("STATUS: "+status);
-            logger.info("**************");
+            logger.info(httpResponse.body());
+            JsonObject jsonObject = JsonParser.parseString(httpResponse.body()).getAsJsonObject();
+            runId = jsonObject.get("run").getAsJsonObject().get("info").getAsJsonObject().get("run_id").getAsString();
+
+            return runId;
         }
         catch(Exception e)
         {

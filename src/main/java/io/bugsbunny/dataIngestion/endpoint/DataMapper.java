@@ -1,5 +1,6 @@
 package io.bugsbunny.dataIngestion.endpoint;
 
+import io.bugsbunny.dataIngestion.service.IngestionService;
 import io.bugsbunny.dataIngestion.service.MapperService;
 
 import com.google.gson.JsonObject;
@@ -22,6 +23,9 @@ public class DataMapper {
 
     @Inject
     private MapperService mapperService;
+
+    @Inject
+    private IngestionService ingestionService;
 
     @Path("map")
     @POST
@@ -63,6 +67,31 @@ public class DataMapper {
             JsonObject result = this.mapperService.map(json, json, json);
             this.mapperService.storeMappedOutput(result);
 
+            Response response = Response.ok(result.toString()).build();
+            return response;
+        }
+        catch(Exception e)
+        {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("error", e.getMessage());
+            return Response.status(500).entity(jsonObject.toString()).build();
+        }
+    }
+
+    @Path("mapCsv")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response mapCsvSourceData(@RequestBody String input)
+    {
+        try {
+            JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
+
+            String sourceData = jsonObject.get("sourceData").getAsString();
+            //logger.info(sourceData);
+
+            this.ingestionService.ingestData(sourceData);
+
+            JsonObject result = new JsonObject();
             Response response = Response.ok(result.toString()).build();
             return response;
         }
