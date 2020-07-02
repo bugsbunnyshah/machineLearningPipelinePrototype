@@ -168,9 +168,9 @@ public class DataMapperTests {
         //Kickoff the Training
         String runId = this.trainingWorkflow.startTraining();
 
-        //logger.info("*******");
-        //logger.info("RunId: "+runId);
-        //logger.info("*******");
+        logger.info("*******");
+        logger.info("RunId: "+runId);
+        logger.info("*******");
         assertNotNull(runId);
 
         String runJson = this.mlFlowRunClient.getRun(runId);

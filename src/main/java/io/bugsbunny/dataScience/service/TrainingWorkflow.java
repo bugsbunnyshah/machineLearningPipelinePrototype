@@ -1,5 +1,6 @@
 package io.bugsbunny.dataScience.service;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.bugsbunny.persistence.MongoDBJsonStore;
@@ -167,6 +168,93 @@ public class TrainingWorkflow {
 
             return runId;
         } catch (Exception e){
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void processLiveModelRequest(JsonObject json)
+    {
+        try {
+            String runId = "0614ecd3d04e4df8b976ed547ad7497e";
+            String runJson = this.mlFlowRunClient.getRun(runId);
+            logger.info(runJson);
+
+            JsonObject modelJson = JsonParser.parseString(runJson).getAsJsonObject();
+            JsonObject data = modelJson.get("run").getAsJsonObject().get("data").getAsJsonObject();
+            String value = data.get("tags").getAsJsonArray().get(0).getAsJsonObject().get("value").getAsString();
+            JsonArray valueArray = JsonParser.parseString(value).getAsJsonArray();
+            String modelStream = valueArray.get(0).getAsJsonObject().get("modelSer").getAsString();
+            //logger.info(modelStream);
+
+            ObjectInputStream in = null;
+            MultiLayerNetwork model;
+            try {
+                in = new ObjectInputStream(new ByteArrayInputStream(modelStream.getBytes(StandardCharsets.UTF_8)));
+                model = (MultiLayerNetwork) in.readObject();
+            } finally
+            {
+                if(in != null) {
+                    in.close();
+                }
+            }
+
+            final double v = model.calcL1(true);
+
+            logger.info("*********************************************");
+            logger.info("Double: "+v);
+            logger.info("*********************************************");
+
+            //String value = tag.get("value").getAsJsonArray().get(0).getAsString();
+            //String modelSer = modelJson.get("modelSer").getAsString();
+
+
+            /*this.eats = this.readEnumCSV();
+            this.sounds = this.readEnumCSV();
+            this.classifiers = this.readEnumCSV();
+
+            //Second: the RecordReaderDataSetIterator handles conversion to DataSet objects, ready for use in neural network
+            int labelIndex = 4;     //5 values in each row of the iris.txt CSV: 4 input features followed by an integer label (class) index. Labels are the 5th value (index 4) in each row
+            int numClasses = 3;     //3 classes (types of iris flowers) in the iris data set. Classes have integer values 0, 1 or 2
+
+            int batchSizeTraining = 30;    //Iris data set: 150 examples total. We are loading all of them into one DataSet (not recommended for large data sets)
+            DataSet trainingData = this.readCSVDataset(batchSizeTraining, labelIndex, numClasses);
+
+            final int numInputs = 4;
+            int outputNum = 3;
+            int iterations = 1000;
+            long seed = 6;
+
+            MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
+                    .seed(seed)
+                    .iterations(iterations)
+                    .activation(Activation.TANH)
+                    .weightInit(WeightInit.XAVIER)
+                    .learningRate(0.1)
+                    .regularization(true).l2(1e-4)
+                    .list()
+                    .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(3).build())
+                    .layer(1, new DenseLayer.Builder().nIn(3).nOut(3).build())
+                    .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+                            .activation(Activation.SOFTMAX).nIn(3).nOut(outputNum).build())
+                    .backprop(true).pretrain(false)
+                    .build();
+
+            //run the model
+            MultiLayerNetwork model = new MultiLayerNetwork(conf);
+            model.init();
+            model.setListeners(new ScoreIterationListener(100));
+
+            model.fit(trainingData);
+
+            final double v = model.calcL1(true);*/
+
+            //logger.info("*********************************************");
+            //logger.info(value);
+            //logger.info("Double: "+v);
+            //logger.info("*********************************************");
+        }
+        catch (Exception e){
             logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
