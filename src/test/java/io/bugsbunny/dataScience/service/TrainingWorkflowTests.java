@@ -1,5 +1,6 @@
 package io.bugsbunny.dataScience.service;
 
+import com.google.gson.JsonObject;
 import io.bugsbunny.restClient.MLFlowRunClient;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
@@ -32,5 +33,11 @@ public class TrainingWorkflowTests {
 
         String runJson = this.mlFlowRunClient.getRun(runId);
         logger.info(runJson);
+    }
+
+    @Test
+    public void testProcessLiveModelRequest() throws Exception
+    {
+        this.trainingWorkflow.processLiveModelRequest(new JsonObject());
     }
 }
