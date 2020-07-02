@@ -38,6 +38,10 @@ public class TrainingWorkflowTests {
     @Test
     public void testProcessLiveModelRequest() throws Exception
     {
-        this.trainingWorkflow.processLiveModelRequest(new JsonObject());
+        Double result = this.trainingWorkflow.processLiveModelRequest(new JsonObject());
+
+        logger.info("*******");
+        logger.info(result.toString());
+        logger.info("*******");
     }
 }

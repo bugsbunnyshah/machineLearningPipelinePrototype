@@ -25,8 +25,11 @@ public class LiveModel {
     public Response calculate() throws Exception
     {
         try {
-            this.trainingWorkflow.processLiveModelRequest(new JsonObject());
-            return Response.ok(0.0).build();
+            Double calculation = this.trainingWorkflow.processLiveModelRequest(new JsonObject());
+
+            JsonObject result = new JsonObject();
+            result.addProperty("calculation", calculation);
+            return Response.ok(result.toString()).build();
         }
         catch(Exception e)
         {

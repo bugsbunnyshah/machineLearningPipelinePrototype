@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
+import org.castor.core.util.Base64Encoder;
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
@@ -33,10 +34,10 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * This example is intended to be a simple CSV classifier that seperates the training data
@@ -148,14 +149,20 @@ public class BasicCSVClassifierTests {
             }
 
             //Restore serialized model
+            Base64.Encoder encoder = Base64.getEncoder();
+            String modelString = encoder.encodeToString(modelStream.toByteArray());
             ObjectInputStream in = null;
             MultiLayerNetwork restoredModel = null;
             try {
-                in = new ObjectInputStream(new ByteArrayInputStream(modelStream.toByteArray()));
+                Base64.Decoder decoder = Base64.getDecoder();
+                in = new ObjectInputStream(new ByteArrayInputStream(decoder.decode(modelString)));
+                //in = new ObjectInputStream(new ByteArrayInputStream(modelStream.toByteArray()));
                 restoredModel = (MultiLayerNetwork) in.readObject();
             } finally
             {
-                in.close();
+                if(in != null) {
+                    in.close();
+                }
             }
 
             restoredModel.fit(trainingData);

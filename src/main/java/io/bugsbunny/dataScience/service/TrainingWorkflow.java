@@ -34,10 +34,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @ApplicationScoped
 public class TrainingWorkflow {
@@ -118,7 +115,7 @@ public class TrainingWorkflow {
             INDArray output = model.output(testData.getFeatureMatrix());
 
             eval.eval(testData.getLabels(), output);
-            logger.info(eval.stats());
+            //logger.info(eval.stats());
 
             setFittedClassifiers(output, animals);
             logAnimals(animals);
@@ -136,17 +133,6 @@ public class TrainingWorkflow {
                 modelStream.close();
             }
 
-            //Restore serialized model
-            /*ObjectInputStream in = null;
-            MultiLayerNetwork restoredModel = null;
-            try {
-                in = new ObjectInputStream(new ByteArrayInputStream(modelStream.toByteArray()));
-                restoredModel = (MultiLayerNetwork) in.readObject();
-            } finally
-            {
-                in.close();
-            }*/
-
             //Store the model in the DataBricks Repository
             runId = this.mlFlowRunClient.createRun();
 
@@ -156,7 +142,7 @@ public class TrainingWorkflow {
             jsonObject.addProperty("utc_time_created", "2020-06-26 18:00:56.056775");
             jsonObject.addProperty("run_id", runId);
             jsonObject.add("flavors", new JsonObject());
-            jsonObject.addProperty("modelSer", new String(modelStream.toByteArray(), StandardCharsets.UTF_8));
+            jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
 
             String json = jsonObject.toString();
 
@@ -173,24 +159,24 @@ public class TrainingWorkflow {
         }
     }
 
-    public void processLiveModelRequest(JsonObject json)
+    public Double processLiveModelRequest(JsonObject json)
     {
         try {
-            String runId = "0614ecd3d04e4df8b976ed547ad7497e";
+            String runId = "815f68f58d194640b0f3f34b9b6794a9";
             String runJson = this.mlFlowRunClient.getRun(runId);
-            logger.info(runJson);
+            //logger.info(runJson);
 
             JsonObject modelJson = JsonParser.parseString(runJson).getAsJsonObject();
             JsonObject data = modelJson.get("run").getAsJsonObject().get("data").getAsJsonObject();
             String value = data.get("tags").getAsJsonArray().get(0).getAsJsonObject().get("value").getAsString();
             JsonArray valueArray = JsonParser.parseString(value).getAsJsonArray();
-            String modelStream = valueArray.get(0).getAsJsonObject().get("modelSer").getAsString();
+            String encodedModelString = valueArray.get(0).getAsJsonObject().get("modelSer").getAsString();
             //logger.info(modelStream);
 
             ObjectInputStream in = null;
             MultiLayerNetwork model;
             try {
-                in = new ObjectInputStream(new ByteArrayInputStream(modelStream.getBytes(StandardCharsets.UTF_8)));
+                in = new ObjectInputStream(new ByteArrayInputStream(Base64.getDecoder().decode(encodedModelString)));
                 model = (MultiLayerNetwork) in.readObject();
             } finally
             {
@@ -201,56 +187,9 @@ public class TrainingWorkflow {
 
             final double v = model.calcL1(true);
 
-            logger.info("*********************************************");
-            logger.info("Double: "+v);
-            logger.info("*********************************************");
-
-            //String value = tag.get("value").getAsJsonArray().get(0).getAsString();
-            //String modelSer = modelJson.get("modelSer").getAsString();
-
-
-            /*this.eats = this.readEnumCSV();
-            this.sounds = this.readEnumCSV();
-            this.classifiers = this.readEnumCSV();
-
-            //Second: the RecordReaderDataSetIterator handles conversion to DataSet objects, ready for use in neural network
-            int labelIndex = 4;     //5 values in each row of the iris.txt CSV: 4 input features followed by an integer label (class) index. Labels are the 5th value (index 4) in each row
-            int numClasses = 3;     //3 classes (types of iris flowers) in the iris data set. Classes have integer values 0, 1 or 2
-
-            int batchSizeTraining = 30;    //Iris data set: 150 examples total. We are loading all of them into one DataSet (not recommended for large data sets)
-            DataSet trainingData = this.readCSVDataset(batchSizeTraining, labelIndex, numClasses);
-
-            final int numInputs = 4;
-            int outputNum = 3;
-            int iterations = 1000;
-            long seed = 6;
-
-            MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-                    .seed(seed)
-                    .iterations(iterations)
-                    .activation(Activation.TANH)
-                    .weightInit(WeightInit.XAVIER)
-                    .learningRate(0.1)
-                    .regularization(true).l2(1e-4)
-                    .list()
-                    .layer(0, new DenseLayer.Builder().nIn(numInputs).nOut(3).build())
-                    .layer(1, new DenseLayer.Builder().nIn(3).nOut(3).build())
-                    .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                            .activation(Activation.SOFTMAX).nIn(3).nOut(outputNum).build())
-                    .backprop(true).pretrain(false)
-                    .build();
-
-            //run the model
-            MultiLayerNetwork model = new MultiLayerNetwork(conf);
-            model.init();
-            model.setListeners(new ScoreIterationListener(100));
-
-            model.fit(trainingData);
-
-            final double v = model.calcL1(true);*/
+            return v;
 
             //logger.info("*********************************************");
-            //logger.info(value);
             //logger.info("Double: "+v);
             //logger.info("*********************************************");
         }
