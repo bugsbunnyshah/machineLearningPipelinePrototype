@@ -1,6 +1,5 @@
 package io.bugsbunny.cloud.kubernetes;
 
-import io.kubernetes.client.openapi.models.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
@@ -164,13 +164,13 @@ public class DynamicSpinUpClient {
         container.setImage(dockerImage);
         container.setName("test");*/
 
-        String dockerImage = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("code-with-quarkus-jvm.tar"),
-                StandardCharsets.UTF_8);
+        //String dockerImage = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("code-with-quarkus-jvm.tar"),
+        //        StandardCharsets.UTF_8);
 
         logger.info("*******");
         logger.info("POD_CREATION_IN_PROGRESS");
         logger.info("*******");
-        ApiClient client = ClientBuilder.defaultClient();
+        ApiClient client = ClientBuilder.cluster().build();
         Configuration.setDefaultApiClient(client);
 
         CoreV1Api api = new CoreV1Api();

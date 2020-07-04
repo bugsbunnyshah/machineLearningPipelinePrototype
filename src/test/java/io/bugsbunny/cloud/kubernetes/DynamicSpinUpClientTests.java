@@ -3,7 +3,7 @@ package io.bugsbunny.cloud.kubernetes;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
-public class DynamicSpinUpClientTest {
+public class DynamicSpinUpClientTests {
 
     //@Test
     public void testInvokeAlive() throws Exception
@@ -26,7 +26,7 @@ public class DynamicSpinUpClientTest {
         dynamicSpinUpClient.invokePostPod();
     }
 
-    //@Test
+    @Test
     public void testInvokePostPodUsingClientLibrary() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();

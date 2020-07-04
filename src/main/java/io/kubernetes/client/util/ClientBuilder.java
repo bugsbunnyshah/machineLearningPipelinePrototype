@@ -207,15 +207,17 @@ public class ClientBuilder {
     public static ClientBuilder cluster() throws IOException {
         final ClientBuilder builder = new ClientBuilder();
 
-        final String host = System.getenv(ENV_SERVICE_HOST);
-        final String port = System.getenv(ENV_SERVICE_PORT);
+        //final String host = System.getenv(ENV_SERVICE_HOST);
+        //final String port = System.getenv(ENV_SERVICE_PORT);
+        final String host = "localhost";
+        final String port = "443";
         builder.setBasePath(host, port);
 
-        final String token =
+        /*final String token =
                 new String(
                         Files.readAllBytes(Paths.get(SERVICEACCOUNT_TOKEN_PATH)), Charset.defaultCharset());
         builder.setCertificateAuthority(Files.readAllBytes(Paths.get(SERVICEACCOUNT_CA_PATH)));
-        builder.setAuthentication(new AccessTokenAuthentication(token));
+        builder.setAuthentication(new AccessTokenAuthentication(token));*/
 
         return builder;
     }
@@ -231,15 +233,6 @@ public class ClientBuilder {
         return this;
     }
 
-    /**
-     * Creates a builder which is pre-configured from a {@link KubeConfig}.
-     *
-     * <p>To load a <tt>KubeConfig</tt>, see {@link KubeConfig#loadKubeConfig(Reader)}.
-     *
-     * @param config The {@link KubeConfig} to configure the builder from.
-     * @return <tt>ClientBuilder</tt> configured from the provided <tt>KubeConfig</tt>
-     * @throws IOException if the files specified in the provided <tt>KubeConfig</tt> are not readable
-     */
     public static ClientBuilder kubeconfig(KubeConfig config) throws IOException {
         final ClientBuilder builder = new ClientBuilder();
 
@@ -308,15 +301,16 @@ public class ClientBuilder {
 
     public ApiClient build() {
         final ApiClient client = new ApiClient();
+        //client.getBasePath(). THIS_IS_THE_WORST_FUCKING_CODE_IN_THE_UNIVERSE_LOOKS_LIKE_A_BRAIN_DEAD_GODS_IDIOT_WROTE_THIS
 
-        if (basePath != null) {
+        /*if (basePath != null) {
             if (basePath.endsWith("/")) {
                 basePath = basePath.substring(0, basePath.length() - 1);
             }
             client.setBasePath(basePath);
-        }
+        }*/
 
-        client.setVerifyingSsl(verifyingSsl);
+        //client.setVerifyingSsl(verifyingSsl);
 
         //TODO: RESEARCH_THIS_HACK
         /*if (authentication != null) {
@@ -332,9 +326,9 @@ public class ClientBuilder {
         // upstream and remove this dependency.
         //
         // TODO: Add a test to ensure that this works correctly...
-        if (caCertBytes != null) {
+        /*if (caCertBytes != null) {
             client.setSslCaCert(new ByteArrayInputStream(caCertBytes));
-        }
+        }*/
 
         if (!Strings.isNullOrEmpty(overridePatchFormat)) {
             OkHttpClient withInterceptor =
