@@ -106,7 +106,7 @@ public class DynamicSpinUpClient {
 
     public void invokeGetPods() throws Exception
     {
-        ApiClient client = ClientBuilder.defaultClient();
+        ApiClient client = ClientBuilder.cluster().build();
         Configuration.setDefaultApiClient(client);
 
         CoreV1Api api = new CoreV1Api();
