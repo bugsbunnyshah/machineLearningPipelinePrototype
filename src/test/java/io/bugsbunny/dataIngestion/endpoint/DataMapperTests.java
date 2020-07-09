@@ -3,13 +3,10 @@ package io.bugsbunny.dataIngestion.endpoint;
 import com.google.gson.JsonParser;
 import io.bugsbunny.dataScience.service.TrainingWorkflow;
 import io.bugsbunny.persistence.MongoDBJsonStore;
-import io.bugsbunny.restClient.MLFlowRunClient;
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
-import org.json.JSONObject;
-import org.json.XML;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
@@ -33,9 +30,11 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+//import io.bugsbunny.restclient.MLFlowRunClient;
+
 @QuarkusTest
 public class DataMapperTests {
-    private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
+    /*private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
@@ -201,5 +200,5 @@ public class DataMapperTests {
             enums.put(Integer.parseInt(parts[0]),parts[1]);
         }
         return enums;
-    }
+    }*/
 }

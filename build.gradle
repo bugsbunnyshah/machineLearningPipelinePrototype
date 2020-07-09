@@ -108,6 +108,8 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
     //compile 'org.bytedeco:javacpp:1.5.4'
 
+    //implementation name: 'machineLearningStorage'
+
     testImplementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
     testImplementation 'io.quarkus:quarkus-junit5:1.4.2.Final'
     testImplementation 'io.rest-assured:rest-assured:4.3.0'

@@ -4,8 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.bugsbunny.persistence.MongoDBJsonStore;
-import io.bugsbunny.restClient.MLFlowRunClient;
-import net.minidev.json.JSONValue;
 import org.apache.commons.io.IOUtils;
 import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
@@ -28,7 +26,6 @@ import org.nd4j.linalg.dataset.api.preprocessor.NormalizerStandardize;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -36,14 +33,17 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+//import io.bugsbunny.restclient.MLFlowRunClient;
+
 @ApplicationScoped
 public class TrainingWorkflow {
     private static Logger logger = LoggerFactory.getLogger(TrainingWorkflow.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
-    @Inject
-    private MLFlowRunClient mlFlowRunClient;
+
+    //@Inject
+    //private MLFlowRunClient mlFlowRunClient;
 
     private Map<Integer,String> eats = new HashMap<>();
     private Map<Integer,String> sounds = new HashMap<>();
@@ -134,7 +134,7 @@ public class TrainingWorkflow {
             }
 
             //Store the model in the DataBricks Repository
-            runId = this.mlFlowRunClient.createRun();
+            //runId = this.mlFlowRunClient.createRun();
 
 
             JsonObject jsonObject = new JsonObject();
@@ -150,7 +150,7 @@ public class TrainingWorkflow {
             //logger.info(json);
             //logger.info("*********************************************");
 
-            this.mlFlowRunClient.logModel(runId, json);
+            //this.mlFlowRunClient.logModel(runId, json);
 
             return runId;
         } catch (Exception e){
@@ -162,7 +162,7 @@ public class TrainingWorkflow {
     public Double processLiveModelRequest(JsonObject json)
     {
         try {
-            String runId = "815f68f58d194640b0f3f34b9b6794a9";
+            /*String runId = "815f68f58d194640b0f3f34b9b6794a9";
             String runJson = this.mlFlowRunClient.getRun(runId);
             //logger.info(runJson);
 
@@ -187,11 +187,8 @@ public class TrainingWorkflow {
 
             final double v = model.calcL1(true);
 
-            return v;
-
-            //logger.info("*********************************************");
-            //logger.info("Double: "+v);
-            //logger.info("*********************************************");
+            return v;*/
+            return 0.0d;
         }
         catch (Exception e){
             logger.error(e.getMessage(), e);

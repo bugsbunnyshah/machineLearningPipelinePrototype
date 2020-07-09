@@ -1,7 +1,6 @@
 package io.bugsbunny.dataScience.service;
 
 import com.google.gson.JsonObject;
-import io.bugsbunny.restClient.MLFlowRunClient;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,9 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
+//import io.bugsbunny.restclient.MLFlowRunClient;
+
 @QuarkusTest
 public class TrainingWorkflowTests {
-    private static Logger logger = LoggerFactory.getLogger(TrainingWorkflowTests.class);
+    /*private static Logger logger = LoggerFactory.getLogger(TrainingWorkflowTests.class);
 
     @Inject
     private TrainingWorkflow trainingWorkflow;
@@ -43,5 +44,5 @@ public class TrainingWorkflowTests {
         logger.info("*******");
         logger.info(result.toString());
         logger.info("*******");
-    }
+    }*/
 }
