@@ -108,6 +108,9 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
     //compile 'org.bytedeco:javacpp:1.5.4'
 
+    compile 'org.apache.lucene:lucene-analyzers-common:8.5.1'
+    compile 'org.apache.lucene:lucene-queryparser:8.5.1'
+
     //implementation name: 'machineLearningStorage'
 
     testImplementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
