@@ -224,12 +224,14 @@ public class TrainingWorkflow {
             IndexWriter iwriter = new IndexWriter(directory, config);
             String text = phrase.toString();
             String text2 = phrase.toString();
-            Document doc = new Document();
-            doc.add(new Field("data", text, TextField.TYPE_STORED));
-            Document doc2 = new Document();
-            doc2.add(new Field("data", text2, TextField.TYPE_STORED));
-            iwriter.addDocument(doc);
-            iwriter.addDocument(doc2);
+
+            List<JsonObject> ingestedDataSet = this.mongoDBJsonStore.getIngestedDataSet();
+            for(JsonObject jsonObject:ingestedDataSet) {
+                String dataSet = jsonObject.get("data").getAsString();
+                Document doc = new Document();
+                doc.add(new Field("data", dataSet, TextField.TYPE_STORED));
+                iwriter.addDocument(doc);
+            }
             iwriter.close();
 
             // Now search the index:
