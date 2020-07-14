@@ -212,18 +212,17 @@ public class TrainingWorkflow {
         }
     }
 
-    public void generateLuceneIndex(JsonObject phrase)
+    public void generateLuceneIndex(JsonObject phrase) throws IOException
     {
+        IndexWriter iwriter = null;
         try
         {
             Analyzer analyzer = new StandardAnalyzer();
 
-            Path indexPath = Files.createTempDirectory("tempIndex");
+            Path indexPath = Files.createTempDirectory("tmp");
             Directory directory = FSDirectory.open(indexPath);
             IndexWriterConfig config = new IndexWriterConfig(analyzer);
-            IndexWriter iwriter = new IndexWriter(directory, config);
-            String text = phrase.toString();
-            String text2 = phrase.toString();
+            iwriter = new IndexWriter(directory, config);
 
             List<JsonObject> ingestedDataSet = this.mongoDBJsonStore.getIngestedDataSet();
             for(JsonObject jsonObject:ingestedDataSet) {
@@ -232,10 +231,8 @@ public class TrainingWorkflow {
                 doc.add(new Field("data", dataSet, TextField.TYPE_STORED));
                 iwriter.addDocument(doc);
             }
-            iwriter.close();
 
-            // Now search the index:
-            DirectoryReader ireader = DirectoryReader.open(directory);
+            /*DirectoryReader ireader = DirectoryReader.open(directory);
             IndexSearcher isearcher = new IndexSearcher(ireader);
             // Parse a simple query that searches for "text":
             QueryParser parser = new QueryParser("data", analyzer);
@@ -250,13 +247,19 @@ public class TrainingWorkflow {
                 logger.info("Value: " + hitDoc.get("data"));
             }
             ireader.close();
-            directory.close();
-            org.apache.lucene.util.IOUtils.rm(indexPath);
+            directory.close();*/
         }
         catch(Exception e)
         {
             logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
+        }
+        finally
+        {
+            if(iwriter != null)
+            {
+                iwriter.close();
+            }
         }
     }
 
