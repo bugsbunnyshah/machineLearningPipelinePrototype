@@ -75,9 +75,9 @@ public class MongoDBJsonStore {
         return ingestion;
     }
 
-    public List<JsonObject> getIngestedDataSet()
+    public JsonArray getIngestedDataSet()
     {
-        List<JsonObject> ingestedDataSet = new ArrayList<>();
+        JsonArray ingestedDataSet = new JsonArray();
 
         MongoDatabase database = mongoClient.getDatabase("machineLearningPipeline");
 
@@ -90,7 +90,10 @@ public class MongoDBJsonStore {
             Document document = cursor.next();
             String documentJson = document.toJson();
             JsonObject ingestion = JsonParser.parseString(documentJson).getAsJsonObject();
-            ingestedDataSet.add(ingestion);
+            JsonObject actual = new JsonObject();
+            actual.addProperty("ingestionId", ingestion.get("ingestionId").getAsString());
+            actual.addProperty("data", ingestion.get("data").getAsString());
+            ingestedDataSet.add(actual);
         }
         return ingestedDataSet;
     }

@@ -33,26 +33,5 @@ public class SearchIndexerDaemonTests {
     {
         this.searchIndexerDaemon.start();
         Thread.sleep(10000);
-
-        // Now search the index:
-        /*Analyzer analyzer = new StandardAnalyzer();
-        Path indexPath = Files.createTempDirectory("tmp");
-        Directory directory = FSDirectory.open(indexPath);
-        DirectoryReader ireader = DirectoryReader.open(directory);
-        IndexSearcher isearcher = new IndexSearcher(ireader);
-        // Parse a simple query that searches for "text":
-        QueryParser parser = new QueryParser("data", analyzer);
-        //Query query = parser.parse("\"\"");
-        Query query = parser.parse("better place");
-        ScoreDoc[] hits = isearcher.search(query, 10).scoreDocs;
-        logger.info("Number Of Hits: " + hits.length);
-        //assertEquals(1, hits.length);
-        // Iterate through the results:
-        for (int i = 0; i < hits.length; i++) {
-            Document hitDoc = isearcher.doc(hits[i].doc);
-            logger.info("Value: " + hitDoc.get("data"));
-        }
-        ireader.close();
-        directory.close();*/
     }
 }

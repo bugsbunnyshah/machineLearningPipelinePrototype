@@ -39,8 +39,9 @@ public class SearchIndexerDaemon {
         @Override
         public void run()
         {
-            try {
-                SearchIndexerDaemon.this.trainingWorkflow.generateLuceneIndex(new JsonObject());
+            try
+            {
+                SearchIndexerDaemon.this.trainingWorkflow.updateIndex();
             }
             catch(IOException ioe)
             {

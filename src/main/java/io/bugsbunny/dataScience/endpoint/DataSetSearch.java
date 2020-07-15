@@ -29,7 +29,7 @@ public class DataSetSearch {
     {
         try {
             JsonObject phrase = JsonParser.parseString(jsonBody).getAsJsonObject();
-            this.trainingWorkflow.generateLuceneIndex(phrase);
+            //this.trainingWorkflow.generateLuceneIndex(phrase);
 
             logger.info("****");
             logger.info(phrase.toString());

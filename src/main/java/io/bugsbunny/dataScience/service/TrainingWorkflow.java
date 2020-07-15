@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.bugsbunny.persistence.MongoDBJsonStore;
+import io.bugsbunny.restClient.ElasticSearchClient;
 import org.apache.commons.io.IOUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -57,6 +58,9 @@ public class TrainingWorkflow {
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
+
+    @Inject
+    private ElasticSearchClient elasticSearchClient;
 
     //@Inject
     //private MLFlowRunClient mlFlowRunClient;
@@ -212,55 +216,10 @@ public class TrainingWorkflow {
         }
     }
 
-    public void generateLuceneIndex(JsonObject phrase) throws IOException
+    public void updateIndex() throws IOException
     {
-        IndexWriter iwriter = null;
-        try
-        {
-            Analyzer analyzer = new StandardAnalyzer();
-
-            Path indexPath = Files.createTempDirectory("tmp");
-            Directory directory = FSDirectory.open(indexPath);
-            IndexWriterConfig config = new IndexWriterConfig(analyzer);
-            iwriter = new IndexWriter(directory, config);
-
-            List<JsonObject> ingestedDataSet = this.mongoDBJsonStore.getIngestedDataSet();
-            for(JsonObject jsonObject:ingestedDataSet) {
-                String dataSet = jsonObject.get("data").getAsString();
-                Document doc = new Document();
-                doc.add(new Field("data", dataSet, TextField.TYPE_STORED));
-                iwriter.addDocument(doc);
-            }
-
-            /*DirectoryReader ireader = DirectoryReader.open(directory);
-            IndexSearcher isearcher = new IndexSearcher(ireader);
-            // Parse a simple query that searches for "text":
-            QueryParser parser = new QueryParser("data", analyzer);
-            //Query query = parser.parse("\"\"");
-            Query query = parser.parse("better place");
-            ScoreDoc[] hits = isearcher.search(query, 10).scoreDocs;
-            logger.info("Number Of Hits: " + hits.length);
-            //assertEquals(1, hits.length);
-            // Iterate through the results:
-            for (int i = 0; i < hits.length; i++) {
-                Document hitDoc = isearcher.doc(hits[i].doc);
-                logger.info("Value: " + hitDoc.get("data"));
-            }
-            ireader.close();
-            directory.close();*/
-        }
-        catch(Exception e)
-        {
-            logger.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
-        finally
-        {
-            if(iwriter != null)
-            {
-                iwriter.close();
-            }
-        }
+        JsonArray dataSet = this.mongoDBJsonStore.getIngestedDataSet();
+        logger.info(this.elasticSearchClient.updateIndex(dataSet));
     }
 
     private String readIngestedData()
