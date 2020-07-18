@@ -15,11 +15,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-//import io.bugsbunny.restclient.MLFlowRunClient;
+import io.bugsbunny.restclient.MLFlowRunClient;
 
 @QuarkusTest
 public class MLFlowRunClientTests {
-    /*private static Logger logger = LoggerFactory.getLogger(MLFlowRunClientTests.class);
+    private static Logger logger = LoggerFactory.getLogger(MLFlowRunClientTests.class);
 
     @Test
     public void testCreateExperiment()
@@ -72,5 +72,5 @@ public class MLFlowRunClientTests {
         String runId = "1b117ece479c47aca912feb75bc55b0a";
         mlFlowRunClient.logModel(runId, json);
         mlFlowRunClient.getRun(runId);
-    }*/
+    }
 }

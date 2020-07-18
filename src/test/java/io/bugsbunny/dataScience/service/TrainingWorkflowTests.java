@@ -32,15 +32,14 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-//import io.bugsbunny.restclient.MLFlowRunClient;
+import io.bugsbunny.restclient.MLFlowRunClient;
 
 @QuarkusTest
 public class TrainingWorkflowTests {
-    /*private static Logger logger = LoggerFactory.getLogger(TrainingWorkflowTests.class);
+    private static Logger logger = LoggerFactory.getLogger(TrainingWorkflowTests.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
-    private static Logger logger = LoggerFactory.getLogger(TrainingWorkflowTests.class);
 
     @Inject
     private TrainingWorkflow trainingWorkflow;
@@ -70,5 +69,5 @@ public class TrainingWorkflowTests {
         logger.info("*******");
         logger.info(result.toString());
         logger.info("*******");
-    }*/
+    }
 }

@@ -50,7 +50,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-//import io.bugsbunny.restclient.MLFlowRunClient;
+import io.bugsbunny.restclient.MLFlowRunClient;
 
 @ApplicationScoped
 public class TrainingWorkflow {
@@ -62,8 +62,8 @@ public class TrainingWorkflow {
     @Inject
     private ElasticSearchClient elasticSearchClient;
 
-    //@Inject
-    //private MLFlowRunClient mlFlowRunClient;
+    @Inject
+    private MLFlowRunClient mlFlowRunClient;
 
     private Map<Integer,String> eats = new HashMap<>();
     private Map<Integer,String> sounds = new HashMap<>();
@@ -154,7 +154,7 @@ public class TrainingWorkflow {
             }
 
             //Store the model in the DataBricks Repository
-            //runId = this.mlFlowRunClient.createRun();
+            runId = this.mlFlowRunClient.createRun();
 
 
             JsonObject jsonObject = new JsonObject();
@@ -166,11 +166,11 @@ public class TrainingWorkflow {
 
             String json = jsonObject.toString();
 
-            //logger.info("*********************************************");
-            //logger.info(json);
-            //logger.info("*********************************************");
+            logger.info("*********************************************");
+            logger.info(json);
+            logger.info("*********************************************");
 
-            //this.mlFlowRunClient.logModel(runId, json);
+            this.mlFlowRunClient.logModel(runId, json);
 
             return runId;
         } catch (Exception e){
@@ -182,7 +182,7 @@ public class TrainingWorkflow {
     public Double processLiveModelRequest(JsonObject json)
     {
         try {
-            /*String runId = "815f68f58d194640b0f3f34b9b6794a9";
+            String runId = "815f68f58d194640b0f3f34b9b6794a9";
             String runJson = this.mlFlowRunClient.getRun(runId);
             //logger.info(runJson);
 
@@ -207,8 +207,7 @@ public class TrainingWorkflow {
 
             final double v = model.calcL1(true);
 
-            return v;*/
-            return 0.0d;
+            return v;
         }
         catch (Exception e){
             logger.error(e.getMessage(), e);
