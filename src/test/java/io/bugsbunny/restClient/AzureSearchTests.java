@@ -27,7 +27,7 @@ import java.security.cert.X509Certificate;
 public class AzureSearchTests {
     private static Logger logger = LoggerFactory.getLogger(AzureSearchTests.class);
 
-    @Test
+    //@Test
     public void testCreateDataSource() throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException, IOException, InterruptedException {
         String requestUrl = "https://alz.search.windows.net/datasources?api-version=2019-05-06";
         String blobContainerName = "azlBlobContainer";

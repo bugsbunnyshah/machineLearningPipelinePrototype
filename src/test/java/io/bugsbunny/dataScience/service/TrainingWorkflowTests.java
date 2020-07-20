@@ -60,14 +60,4 @@ public class TrainingWorkflowTests {
         String runJson = this.mlFlowRunClient.getRun(runId);
         logger.info(runJson);
     }
-
-    @Test
-    public void testProcessLiveModelRequest() throws Exception
-    {
-        Double result = this.trainingWorkflow.processLiveModelRequest(new JsonObject());
-
-        logger.info("*******");
-        logger.info(result.toString());
-        logger.info("*******");
-    }
 }

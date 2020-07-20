@@ -179,42 +179,6 @@ public class TrainingWorkflow {
         }
     }
 
-    public Double processLiveModelRequest(JsonObject json)
-    {
-        try {
-            String runId = "815f68f58d194640b0f3f34b9b6794a9";
-            String runJson = this.mlFlowRunClient.getRun(runId);
-            //logger.info(runJson);
-
-            JsonObject modelJson = JsonParser.parseString(runJson).getAsJsonObject();
-            JsonObject data = modelJson.get("run").getAsJsonObject().get("data").getAsJsonObject();
-            String value = data.get("tags").getAsJsonArray().get(0).getAsJsonObject().get("value").getAsString();
-            JsonArray valueArray = JsonParser.parseString(value).getAsJsonArray();
-            String encodedModelString = valueArray.get(0).getAsJsonObject().get("modelSer").getAsString();
-            //logger.info(modelStream);
-
-            ObjectInputStream in = null;
-            MultiLayerNetwork model;
-            try {
-                in = new ObjectInputStream(new ByteArrayInputStream(Base64.getDecoder().decode(encodedModelString)));
-                model = (MultiLayerNetwork) in.readObject();
-            } finally
-            {
-                if(in != null) {
-                    in.close();
-                }
-            }
-
-            final double v = model.calcL1(true);
-
-            return v;
-        }
-        catch (Exception e){
-            logger.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
-    }
-
     public void updateIndex() throws IOException
     {
         JsonArray dataSet = this.mongoDBJsonStore.getIngestedDataSet();
