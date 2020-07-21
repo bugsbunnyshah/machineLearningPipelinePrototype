@@ -117,27 +117,12 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured:4.3.0'
 }
 
-//application {
-//mainClassName = 'org.gradle.sample.Main'
-//}
-
-sourceSets {
-    integrationTest {
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
-    }
-}
-
 test {
     useJUnitPlatform()
     filter {
         //include specific method in any of the tests
         includeTestsMatching "*Tests"
     }
-}
-
-shadowJar {
-    zip64 true
 }
 
 compileJava {
