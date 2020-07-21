@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Base64;
 
-public class PortableAIModel
+public class PortableAIModel implements Serializable
 {
     private MultiLayerNetwork model;
 

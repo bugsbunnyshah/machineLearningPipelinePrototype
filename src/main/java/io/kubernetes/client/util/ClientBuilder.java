@@ -12,40 +12,23 @@ limitations under the License.
  */
 package io.kubernetes.client.util;
 
-import static io.kubernetes.client.util.Config.ENV_KUBECONFIG;
-import static io.kubernetes.client.util.Config.ENV_SERVICE_HOST;
-import static io.kubernetes.client.util.Config.ENV_SERVICE_PORT;
-import static io.kubernetes.client.util.Config.SERVICEACCOUNT_CA_PATH;
-import static io.kubernetes.client.util.Config.SERVICEACCOUNT_TOKEN_PATH;
-import static io.kubernetes.client.util.KubeConfig.ENV_HOME;
-import static io.kubernetes.client.util.KubeConfig.KUBECONFIG;
-import static io.kubernetes.client.util.KubeConfig.KUBEDIR;
-
 import com.google.common.base.Strings;
 import io.kubernetes.client.openapi.ApiClient;
+
 import io.kubernetes.client.util.credentials.AccessTokenAuthentication;
 import io.kubernetes.client.util.credentials.Authentication;
 import io.kubernetes.client.util.credentials.KubeconfigAuthentication;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.squareup.okhttp.RequestBody;
 
 /** A Builder which allows the construction of {@link ApiClient}s in a fluent fashion. */
 public class ClientBuilder {

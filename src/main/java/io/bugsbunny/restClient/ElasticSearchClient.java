@@ -2,6 +2,7 @@ package io.bugsbunny.restClient;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class ElasticSearchClient {
             }
 
             String data = dataBuilder.toString();
-            String requestUrl = "http://localhost:9200/bank/_bulk?pretty&refresh";
+            String requestUrl = "http://localhost:9200/alz@cat/_bulk?pretty&refresh";
             HttpClient httpClient = HttpClient.newBuilder().build();
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(requestUrl))

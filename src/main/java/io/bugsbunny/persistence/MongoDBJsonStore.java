@@ -4,9 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import com.mongodb.ClientSessionOptions;
 import com.mongodb.client.*;
-import com.mongodb.connection.ClusterDescription;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -18,9 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 @ApplicationScoped
 public class MongoDBJsonStore {
