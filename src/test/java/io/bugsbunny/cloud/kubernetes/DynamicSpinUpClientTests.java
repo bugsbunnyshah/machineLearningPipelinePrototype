@@ -26,7 +26,7 @@ public class DynamicSpinUpClientTests {
         dynamicSpinUpClient.invokePostPod();
     }
 
-    @Test
+    //@Test
     public void testInvokePostPodUsingClientLibrary() throws Exception
     {
         DynamicSpinUpClient dynamicSpinUpClient = new DynamicSpinUpClient();
