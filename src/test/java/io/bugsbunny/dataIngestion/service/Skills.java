@@ -1,4 +1,4 @@
-package io.bugsbunny.dataIngestion;
+package io.bugsbunny.dataIngestion.service;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
