@@ -27,9 +27,3 @@ Output
 ----
 ![Image of AIPipeline](https://raw.githubusercontent.com/bugsbunnyshah/machineLearningPipelinePrototype/first_iteration_towards_GA_release/output_preview_mode.png)
 
-
-
-
-
-
-
