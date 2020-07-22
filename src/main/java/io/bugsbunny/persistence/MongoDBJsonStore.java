@@ -122,4 +122,14 @@ public class MongoDBJsonStore {
         }
         return ingestion;
     }
+
+    public void storeDevModels(JsonObject jsonObject)
+    {
+        MongoDatabase database = mongoClient.getDatabase("machineLearningPipeline");
+
+        MongoCollection<Document> collection = database.getCollection("devModels");
+
+        Document doc = Document.parse(jsonObject.toString());
+        collection.insertOne(doc);
+    }
 }
