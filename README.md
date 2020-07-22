@@ -25,7 +25,7 @@ gradle quarkusDev
 
 Output
 ----
-![Image of AIPipeline](https://github.com/bugsbunnyshah/machineLearningPipelinePrototype/blob/master/output.png)
+![Image of AIPipeline](https://github.com/bugsbunnyshah/machineLearningPipelinePrototype/blob/master/output_preview_mode.png)
 
 
 
