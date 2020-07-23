@@ -15,13 +15,16 @@ public class ModelDeployer {
             String serveModelsCommand = "mlflow models serve";
             final Process process = Runtime.getRuntime().exec(serveModelsCommand);
             logger.info("**********");
-            logger.info("ISALIVE: " + process.isAlive());
+            logger.info("ISALIVE: MYASS: destroy_charlie_physically_emotionally_and_most_importantly_financially" + process.isAlive());
             logger.info("**********");
 
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
+                        logger.info("**********");
+                        logger.info("ISALIVE: MYASS: destroy_charlie_physically_emotionally_and_most_importantly_financially" + process.isAlive());
+                        logger.info("**********");
                         while (process.waitFor() != 0);
                     }
                     catch(InterruptedException iexception)
