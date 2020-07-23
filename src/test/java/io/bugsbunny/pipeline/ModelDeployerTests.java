@@ -1,28 +1,16 @@
 package io.bugsbunny.pipeline;
 
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
-import org.kamranzafar.jtar.TarEntry;
-import org.kamranzafar.jtar.TarInputStream;
-import org.kamranzafar.jtar.TarOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.*;
-import java.nio.charset.Charset;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Stream;
-import java.util.zip.GZIPInputStream;
 
-public class ModelDeployerTest {
-    private static Logger logger = LoggerFactory.getLogger(ModelDeployerTest.class);
+public class ModelDeployerTests {
+    private static Logger logger = LoggerFactory.getLogger(ModelDeployerTests.class);
 
-    //@Test
+    @Test
     public void testDeploy()
     {
         ModelDeployer deployer = new ModelDeployer();
