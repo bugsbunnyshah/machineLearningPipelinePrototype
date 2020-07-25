@@ -114,6 +114,7 @@ dependencies {
 
     testImplementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
     testImplementation 'io.quarkus:quarkus-junit5:1.4.2.Final'
+    testCompile group: 'junitperf', name: 'junitperf', version: '1.8'
     testImplementation 'io.rest-assured:rest-assured:4.3.0'
 }
 
