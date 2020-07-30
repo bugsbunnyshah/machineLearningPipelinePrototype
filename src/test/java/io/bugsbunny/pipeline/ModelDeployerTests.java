@@ -20,6 +20,16 @@ public class ModelDeployerTests {
         logger.info("****************");
     }
 
+    @Test
+    public void testDeployPythonTraining()
+    {
+        ModelDeployer deployer = new ModelDeployer();
+        int status = deployer.deployPythonTraining();
+        logger.info("****STATUS******");
+        logger.info("STATUS: "+status);
+        logger.info("****************");
+    }
+
     //@Test
     public void testReadTarFile() throws Exception
     {

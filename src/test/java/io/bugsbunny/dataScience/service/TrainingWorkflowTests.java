@@ -60,4 +60,18 @@ public class TrainingWorkflowTests {
         String runJson = this.mlFlowRunClient.getRun(runId);
         logger.info(runJson);
     }
+
+    @Test
+    public void testStartTrainingTensorFlowModel() throws Exception
+    {
+        String runId = this.trainingWorkflow.startTrainingTensorFlowModel();
+
+        logger.info("*******");
+        logger.info("RunId: "+runId);
+        logger.info("*******");
+        assertNotNull(runId);
+
+        //String runJson = this.mlFlowRunClient.getRun(runId);
+        //logger.info(runJson);
+    }
 }

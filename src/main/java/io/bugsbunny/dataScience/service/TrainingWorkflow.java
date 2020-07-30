@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
+import io.bugsbunny.pipeline.ModelDeployer;
 import io.bugsbunny.restClient.ElasticSearchClient;
 
 import org.apache.commons.io.IOUtils;
@@ -51,6 +52,9 @@ public class TrainingWorkflow {
 
     @Inject
     private MLFlowRunClient mlFlowRunClient;
+
+    @Inject
+    private ModelDeployer modelDeployer;
 
     private Map<Integer,String> eats = new HashMap<>();
     private Map<Integer,String> sounds = new HashMap<>();
@@ -281,5 +285,35 @@ public class TrainingWorkflow {
 
         }
 
+    }
+
+    public String startTrainingTensorFlowModel()
+    {
+        try {
+            this.modelDeployer.deployPythonTraining();
+            String model = IOUtils.toString(new FileInputStream("/var/folders/dk/3dhq4_2n4_b2fxqq_cd0zmjw0000gn/T/1/saved_model.pb"),
+                    StandardCharsets.UTF_8);
+
+            ByteArrayOutputStream modelStream = null;
+            ObjectOutputStream out = null;
+            try {
+                modelStream = new ByteArrayOutputStream();
+                out = new ObjectOutputStream(modelStream);
+                out.writeObject(model);
+            }
+            finally
+            {
+                out.close();
+                modelStream.close();
+            }
+            String modelSer = Base64.getEncoder().encodeToString(modelStream.toByteArray());
+            logger.info(modelSer);
+
+            return "";
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }
