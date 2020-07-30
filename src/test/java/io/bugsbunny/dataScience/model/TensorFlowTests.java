@@ -30,4 +30,21 @@ public class TensorFlowTests {
         HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         logger.info(httpResponse.body());
     }
+
+    @Test
+    public void testEndpoint2() throws Exception
+    {
+        logger.info("*******");
+        logger.info("testEndpoint2");
+        logger.info("*******");
+        String requestUrl = "http://localhost:8501/v1/models/half_plus_two";
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
+        HttpRequest httpRequest = httpRequestBuilder.uri(new URI(requestUrl))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        logger.info(httpResponse.body());
+    }
 }
