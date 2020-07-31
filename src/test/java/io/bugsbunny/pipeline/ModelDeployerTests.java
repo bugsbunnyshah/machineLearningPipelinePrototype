@@ -1,5 +1,6 @@
 package io.bugsbunny.pipeline;
 
+import io.quarkus.test.junit.QuarkusTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,10 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 
+@QuarkusTest
 public class ModelDeployerTests {
     private static Logger logger = LoggerFactory.getLogger(ModelDeployerTests.class);
 
-    @Test
+    //@Test
     public void testDeploy()
     {
         ModelDeployer deployer = new ModelDeployer();
