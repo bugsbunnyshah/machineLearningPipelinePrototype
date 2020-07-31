@@ -57,9 +57,12 @@ print('\nTest accuracy: {}'.format(test_acc))
 # Fetch the Keras session and save the model
 # The signature definition is defined by the input and output tensors,
 # and stored with the default serving key
-import tempfile
+#import tempfile
+import os
 
-MODEL_DIR = tempfile.gettempdir()
+
+#MODEL_DIR = tempfile.gettempdir()
+MODEL_DIR = os.getcwd() + "/" + "devModel"
 version = 1
 export_path = os.path.join(MODEL_DIR, str(version))
 print('export_path = {}\n'.format(export_path))

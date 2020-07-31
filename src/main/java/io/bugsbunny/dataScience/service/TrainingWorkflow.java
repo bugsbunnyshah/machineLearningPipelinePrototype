@@ -162,6 +162,7 @@ public class TrainingWorkflow {
             logger.info("*********************************************");
 
             this.mlFlowRunClient.logModel(runId, json);
+            this.mongoDBJsonStore.storeDevModels(jsonObject);
 
             return runId;
         } catch (Exception e){
@@ -290,8 +291,10 @@ public class TrainingWorkflow {
     public String startTrainingTensorFlowModel()
     {
         try {
+            String runId = this.mlFlowRunClient.createRun();
+
             this.modelDeployer.deployPythonTraining();
-            String model = IOUtils.toString(new FileInputStream("/var/folders/dk/3dhq4_2n4_b2fxqq_cd0zmjw0000gn/T/1/saved_model.pb"),
+            String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),
                     StandardCharsets.UTF_8);
 
             ByteArrayOutputStream modelStream = null;
@@ -306,10 +309,25 @@ public class TrainingWorkflow {
                 out.close();
                 modelStream.close();
             }
-            String modelSer = Base64.getEncoder().encodeToString(modelStream.toByteArray());
-            logger.info(modelSer);
 
-            return "";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("artifact_path", "model");
+            jsonObject.addProperty("utc_time_created", "2020-06-26 18:00:56.056775");
+            jsonObject.addProperty("run_id", runId);
+            jsonObject.add("flavors", new JsonObject());
+            jsonObject.addProperty("mlPlatform", "tensorflow");
+            //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
+
+            String json = jsonObject.toString();
+
+            logger.info("*********************************************");
+            logger.info(json);
+            logger.info("*********************************************");
+
+            this.mlFlowRunClient.logModel(runId, json);
+            this.mongoDBJsonStore.storeDevModels(jsonObject);
+
+            return runId;
         }
         catch(Exception e)
         {

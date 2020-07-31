@@ -112,6 +112,10 @@ dependencies {
 
     implementation(name: 'machineLearningStorage')
 
+    //compile 'org.tensorflow:tensorflow:1.14.0'
+    //compile 'org.tensorflow:libtensorflow:1.14.0'
+    //compile 'org.tensorflow:libtensorflow_jni_gpu:1.14.0'
+
     testCompile group: 'junitperf', name: 'junitperf', version: '1.8'
     testCompile group: 'junit', name: 'junit', version: '3.7'
     testImplementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
