@@ -171,12 +171,60 @@ public class TrainingWorkflow {
         }
     }
 
+    public String startTrainingTensorFlowModel()
+    {
+        try {
+            String runId = this.mlFlowRunClient.createRun();
+
+            this.modelDeployer.deployPythonTraining();
+            String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),
+                    StandardCharsets.UTF_8);
+
+            ByteArrayOutputStream modelStream = null;
+            ObjectOutputStream out = null;
+            try {
+                modelStream = new ByteArrayOutputStream();
+                out = new ObjectOutputStream(modelStream);
+                out.writeObject(model);
+            }
+            finally
+            {
+                out.close();
+                modelStream.close();
+            }
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("artifact_path", "model");
+            jsonObject.addProperty("utc_time_created", "2020-06-26 18:00:56.056775");
+            jsonObject.addProperty("run_id", runId);
+            jsonObject.add("flavors", new JsonObject());
+            jsonObject.addProperty("mlPlatform", "tensorflow");
+            //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
+
+            String json = jsonObject.toString();
+
+            logger.info("*********************************************");
+            logger.info(json);
+            logger.info("*********************************************");
+
+            this.mlFlowRunClient.logModel(runId, json);
+            this.mongoDBJsonStore.storeDevModels(jsonObject);
+
+            return runId;
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void updateIndex() throws IOException
     {
         JsonArray dataSet = this.mongoDBJsonStore.getIngestedDataSet();
         logger.info(this.elasticSearchClient.updateIndex(dataSet));
     }
 
+    //--------------------------------------------------------------------------------------------------------------------
     private String readIngestedData()
     {
         List<JsonObject> jsons = mongoDBJsonStore.getIngestionImages();
@@ -286,52 +334,5 @@ public class TrainingWorkflow {
 
         }
 
-    }
-
-    public String startTrainingTensorFlowModel()
-    {
-        try {
-            String runId = this.mlFlowRunClient.createRun();
-
-            this.modelDeployer.deployPythonTraining();
-            String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),
-                    StandardCharsets.UTF_8);
-
-            ByteArrayOutputStream modelStream = null;
-            ObjectOutputStream out = null;
-            try {
-                modelStream = new ByteArrayOutputStream();
-                out = new ObjectOutputStream(modelStream);
-                out.writeObject(model);
-            }
-            finally
-            {
-                out.close();
-                modelStream.close();
-            }
-
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("artifact_path", "model");
-            jsonObject.addProperty("utc_time_created", "2020-06-26 18:00:56.056775");
-            jsonObject.addProperty("run_id", runId);
-            jsonObject.add("flavors", new JsonObject());
-            jsonObject.addProperty("mlPlatform", "tensorflow");
-            //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
-
-            String json = jsonObject.toString();
-
-            logger.info("*********************************************");
-            logger.info(json);
-            logger.info("*********************************************");
-
-            this.mlFlowRunClient.logModel(runId, json);
-            this.mongoDBJsonStore.storeDevModels(jsonObject);
-
-            return runId;
-        }
-        catch(Exception e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 }
