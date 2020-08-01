@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 
-@QuarkusTest
+//@QuarkusTest
 public class ModelDeployerTests {
     private static Logger logger = LoggerFactory.getLogger(ModelDeployerTests.class);
 
@@ -22,7 +22,7 @@ public class ModelDeployerTests {
         logger.info("****************");
     }
 
-    @Test
+    //@Test
     public void testDeployPythonTraining()
     {
         ModelDeployer deployer = new ModelDeployer();
