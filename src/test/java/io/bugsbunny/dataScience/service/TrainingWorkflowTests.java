@@ -47,7 +47,7 @@ public class TrainingWorkflowTests {
     @Inject
     private MLFlowRunClient mlFlowRunClient;
 
-    @Test
+    //@Test
     public void testStartTraining() throws Exception
     {
         String runId = this.trainingWorkflow.startTraining();
@@ -61,7 +61,7 @@ public class TrainingWorkflowTests {
         logger.info(runJson);
     }
 
-    @Test
+    //@Test
     public void testStartTrainingTensorFlowModel() throws Exception
     {
         String runId = this.trainingWorkflow.startTrainingTensorFlowModel();

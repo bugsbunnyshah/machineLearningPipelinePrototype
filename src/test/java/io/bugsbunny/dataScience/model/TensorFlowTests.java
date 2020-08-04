@@ -14,7 +14,7 @@ import java.net.http.HttpResponse;
 public class TensorFlowTests {
     private static Logger logger = LoggerFactory.getLogger(TensorFlowTests.class);
 
-    @Test
+    //@Test
     public void testEndpoint1() throws Exception
     {
         logger.info("*******");
@@ -31,7 +31,7 @@ public class TensorFlowTests {
         logger.info(httpResponse.body());
     }
 
-    @Test
+    //@Test
     public void testEndpoint2() throws Exception
     {
         logger.info("*******");
