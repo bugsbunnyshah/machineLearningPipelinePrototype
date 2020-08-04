@@ -20,6 +20,7 @@ public class TrainModelTests {
     {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("script","learningTime()cause_I_am_a_lazy_python");
+        jsonObject.addProperty("mlPlatform","tensorflow");
         Response response = given().body(jsonObject.toString()).when().post("/trainModel/train")
                 .andReturn();
         String jsonResponse = response.getBody().prettyPrint();

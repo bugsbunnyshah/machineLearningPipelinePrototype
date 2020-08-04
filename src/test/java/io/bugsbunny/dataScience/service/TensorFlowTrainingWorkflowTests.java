@@ -35,7 +35,7 @@ public class TensorFlowTrainingWorkflowTests
     @Test
     public void testStartTraining() throws Exception
     {
-        String runId = this.tensorFlowTrainingWorkflow.startTraining();
+        String runId = this.tensorFlowTrainingWorkflow.startTraining(null);
 
         logger.info("*******");
         logger.info("RunId: "+runId);

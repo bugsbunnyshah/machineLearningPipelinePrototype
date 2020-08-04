@@ -2,7 +2,7 @@ package io.bugsbunny.dataScience.endpoint;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.bugsbunny.dataScience.service.ProductionAIService;
+import io.bugsbunny.dataScience.service.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class TrainModel {
     private Logger logger = LoggerFactory.getLogger(LiveModel.class);
 
     @Inject
-    private ProductionAIService productionAIService;
+    private TensorFlowTrainingWorkflow tensorFlowTrainingWorkflow;
 
     @Path("train")
     @POST
@@ -29,10 +29,13 @@ public class TrainModel {
     {
         try {
             JsonObject inputJson = JsonParser.parseString(trainingInput).getAsJsonObject();
+            tensorFlowTrainingWorkflow.startTraining(inputJson);
 
             JsonObject result = new JsonObject();
-            result.add("results", inputJson);
-            return Response.ok(result.toString()).build();
+            result.addProperty("mlPlatform", inputJson.get("mlPlatform").getAsString());
+            result.addProperty("success", 200);
+            result.add("results", result);
+            return Response.ok(result).build();
         }
         catch(Exception e)
         {

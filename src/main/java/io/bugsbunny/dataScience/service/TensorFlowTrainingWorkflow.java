@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ApplicationScoped
-public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
+public class TensorFlowTrainingWorkflow
 {
     private static Logger logger = LoggerFactory.getLogger(TensorFlowTrainingWorkflow.class);
 
@@ -43,8 +43,8 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
     private Map<Integer,String> sounds = new HashMap<>();
     private Map<Integer,String> classifiers = new HashMap<>();
 
-    @Override
-    public String startTraining()
+    //@Override
+    public String startTraining(JsonObject trainingMetaData)
     {
         ByteArrayOutputStream modelStream = null;
         ObjectOutputStream out = null;
