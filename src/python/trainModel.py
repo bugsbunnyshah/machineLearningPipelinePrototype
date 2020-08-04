@@ -1,3 +1,5 @@
+#!/usr/bin/env pypy
+
 import sys
 
 # Confirm that we're using Python 3

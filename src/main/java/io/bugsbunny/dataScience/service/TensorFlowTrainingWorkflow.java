@@ -51,7 +51,7 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
         try
         {
             //Train the said Model
-            this.modelDeployer.deployPythonTraining();
+            //this.modelDeployer.deployPythonTraining();
 
             //TODO: Delete this file once it is entered into the Repositories
             String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),

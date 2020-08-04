@@ -54,7 +54,7 @@ public class ModelDeployer {
     public int deployPythonTraining()
     {
         try {
-            String serveModelsCommand = "python3 /Users/babyboy/mamasboy/appgallabsForProfit/genomics_research/machineLearningPipelinePrototype/src/main/java/io/bugsbunny/dataScience/model/trainModel.py";
+            String serveModelsCommand = "jep /Users/babyboy/mamasboy/appgallabsForProfit/genomics_research/machineLearningPipelinePrototype/src/main/java/io/bugsbunny/dataScience/model/trainModel.py";
             final Process process = Runtime.getRuntime().exec(serveModelsCommand);
             logger.info("**********");
             logger.info("ISALIVE:" + process.isAlive());

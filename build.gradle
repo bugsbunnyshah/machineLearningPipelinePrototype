@@ -110,6 +110,8 @@ dependencies {
     compile 'org.apache.lucene:lucene-analyzers-common:8.5.1'
     compile 'org.apache.lucene:lucene-queryparser:8.5.1'
 
+    implementation name: 'jep'
+
     implementation(name: 'machineLearningStorage')
 
     //compile 'org.tensorflow:tensorflow:1.14.0'
