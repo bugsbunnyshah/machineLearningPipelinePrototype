@@ -30,11 +30,11 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//import io.bugsbunny.restclient.MLFlowRunClient;
+import io.bugsbunny.restclient.MLFlowRunClient;
 
 @QuarkusTest
 public class DataMapperTests {
-    /*private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
+    private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
@@ -200,5 +200,5 @@ public class DataMapperTests {
             enums.put(Integer.parseInt(parts[0]),parts[1]);
         }
         return enums;
-    }*/
+    }
 }
