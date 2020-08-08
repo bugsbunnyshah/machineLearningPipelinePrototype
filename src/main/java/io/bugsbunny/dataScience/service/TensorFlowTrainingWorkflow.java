@@ -70,6 +70,7 @@ public class TensorFlowTrainingWorkflow
             jsonObject.add("flavors", new JsonObject());
             jsonObject.addProperty("mlPlatform", trainingMetaData.get("mlPlatform").getAsString());
             jsonObject.addProperty("script", trainingMetaData.get("script").getAsString());
+            jsonObject.addProperty("data", trainingMetaData.get("data").getAsString());
             //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
 
             String json = jsonObject.toString();
@@ -110,5 +111,16 @@ public class TensorFlowTrainingWorkflow
                 }
             }
         }
+    }
+
+    public String getData(String runId)
+    {
+        JsonObject devModel = this.mongoDBJsonStore.getDevModel(runId);
+        if(devModel != null && devModel.has("data"))
+        {
+            String data = devModel.get("data").getAsString();
+            return data;
+        }
+        return null;
     }
 }

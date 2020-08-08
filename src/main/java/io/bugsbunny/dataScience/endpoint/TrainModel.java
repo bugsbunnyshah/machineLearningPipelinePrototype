@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,13 +31,13 @@ public class TrainModel {
     {
         try {
             JsonObject inputJson = JsonParser.parseString(trainingInput).getAsJsonObject();
-            tensorFlowTrainingWorkflow.startTraining(inputJson);
+            String runId = tensorFlowTrainingWorkflow.startTraining(inputJson);
 
             JsonObject result = new JsonObject();
             result.addProperty("mlPlatform", inputJson.get("mlPlatform").getAsString());
+            result.addProperty("runId", runId);
             result.addProperty("success", 200);
-            result.add("results", result);
-            return Response.ok(result).build();
+            return Response.ok(result.toString()).build();
         }
         catch(Exception e)
         {
@@ -46,4 +48,16 @@ public class TrainModel {
         }
     }
 
+    @Path("data/{runId}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getData(@PathParam("runId") String runId) throws Exception
+    {
+        String data = this.tensorFlowTrainingWorkflow.getData(runId);
+        if(data == null)
+        {
+            return Response.status(404).build();
+        }
+        return Response.ok(data).build();
+    }
 }

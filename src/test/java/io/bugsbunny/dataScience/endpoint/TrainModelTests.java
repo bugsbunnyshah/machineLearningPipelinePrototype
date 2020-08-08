@@ -24,9 +24,14 @@ public class TrainModelTests {
         String script = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("tensorflow/trainModel.py"),
                 StandardCharsets.UTF_8);
+
+        String data = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("tensorflow/data.txt"),
+                StandardCharsets.UTF_8);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("script",script);
         jsonObject.addProperty("mlPlatform","tensorflow");
+        jsonObject.addProperty("data",data);
         Response response = given().body(jsonObject.toString()).when().post("/trainModel/train")
                 .andReturn();
         String jsonResponse = response.getBody().prettyPrint();
@@ -35,7 +40,15 @@ public class TrainModelTests {
         logger.info(jsonResponse);
         logger.info("****");
 
-        //JsonObject result = JsonParser.parseString(jsonResponse).getAsJsonObject();
-        //assertNotNull(result.get("results"));
+        JsonObject result = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        String runId = result.get("runId").getAsString();
+
+        response = given().get("/trainModel/data/"+runId)
+                .andReturn();
+        String dataResponse = response.getBody().asString();
+        logger.info("****");
+        logger.info(response.getStatusLine());
+        logger.info(dataResponse);
+        logger.info("****");
     }
 }
