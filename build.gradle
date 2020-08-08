@@ -112,6 +112,8 @@ dependencies {
 
     implementation name: 'jep'
 
+    compile 'io.delta:delta-core_2.12:0.7.0'
+
     implementation(name: 'machineLearningStorage')
 
     //compile 'org.tensorflow:tensorflow:1.14.0'

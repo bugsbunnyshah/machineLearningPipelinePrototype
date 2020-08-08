@@ -68,8 +68,9 @@ public class TensorFlowTrainingWorkflow
             jsonObject.addProperty("utc_time_created", "2020-06-26 18:00:56.056775");
             jsonObject.addProperty("run_id", runId);
             jsonObject.add("flavors", new JsonObject());
-            jsonObject.addProperty("mlPlatform", "tensorflow");
-            jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
+            jsonObject.addProperty("mlPlatform", trainingMetaData.get("mlPlatform").getAsString());
+            jsonObject.addProperty("script", trainingMetaData.get("script").getAsString());
+            //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
 
             String json = jsonObject.toString();
             this.mlFlowRunClient.logModel(runId, json);

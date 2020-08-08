@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.apache.commons.io.IOUtils;
+import java.nio.charset.StandardCharsets;
+
 @QuarkusTest
 public class TrainModelTests {
     private Logger logger = LoggerFactory.getLogger(TrainModelTests.class);
@@ -18,8 +21,11 @@ public class TrainModelTests {
     @Test
     public void testTrain() throws Exception
     {
+        String script = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("tensorflow/trainModel.py"),
+                StandardCharsets.UTF_8);
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("script","learningTime()cause_I_am_a_lazy_python");
+        jsonObject.addProperty("script",script);
         jsonObject.addProperty("mlPlatform","tensorflow");
         Response response = given().body(jsonObject.toString()).when().post("/trainModel/train")
                 .andReturn();
@@ -32,5 +38,4 @@ public class TrainModelTests {
         //JsonObject result = JsonParser.parseString(jsonResponse).getAsJsonObject();
         //assertNotNull(result.get("results"));
     }
-
 }
