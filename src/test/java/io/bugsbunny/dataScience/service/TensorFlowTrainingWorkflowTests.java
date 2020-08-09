@@ -49,6 +49,15 @@ public class TensorFlowTrainingWorkflowTests
         assertEquals(runId, storedRunId);
     }
 
+    @Test
+    public void testExecuteScript() throws Exception
+    {
+        int exitCode = this.tensorFlowTrainingWorkflow.executeScript("print('Hello,World')");
+        logger.info("*******");
+        logger.info("ExitCode: "+exitCode);
+        logger.info("*******");
+    }
+
     /*@Test
     public void testJep() throws Exception
     {
