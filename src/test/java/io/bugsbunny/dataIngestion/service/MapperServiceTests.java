@@ -16,6 +16,10 @@ import java.nio.charset.StandardCharsets;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.json.CDL;
+import org.json.JSONArray;
+import org.json.JSONTokener;
+
 @QuarkusTest
 public class MapperServiceTests {
     private static Logger logger = LoggerFactory.getLogger(MapperServiceTests.class);
@@ -53,5 +57,26 @@ public class MapperServiceTests {
         assertEquals("James", jsonObject.get("firstname").getAsString());
         //assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
         //assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
+    }
+
+    @Test
+    public void testMapSpaceData() throws Exception
+    {
+        //Case 4: CSV without header
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put("empId");
+        jsonArray.put("name");
+        jsonArray.put("age");
+        String csvData = "1, Mark, 22 \n" + "2, Robert, 35 \n" + "3, Julia, 18";
+        logger.info(CDL.toJSONArray(jsonArray,csvData).toString());
+
+        JSONArray array = CDL.toJSONArray(jsonArray,csvData);
+        String json = array.get(0).toString();
+        logger.info(json);
+
+        JsonObject jsonObject = this.mapperService.map(json, json, json);
+        logger.info("*******");
+        logger.info(jsonObject.toString());
+        logger.info("*******");
     }
 }
