@@ -38,22 +38,27 @@ public class MapperService {
 
     public JsonObject map(String sourceSchema, String destinationSchema, JsonArray sourceData)
     {
+        JsonObject result = new JsonObject();
         try
         {
-            String root = sourceData.get(0).toString();
+            int size = sourceData.size();
+            for(int i=0; i<size; i++)
+            {
+                JsonObject root = sourceData.get(i).getAsJsonObject();
 
-            HierarchicalSchemaInfo sourceSchemaInfo = this.populateHierarchialSchema(root,
-                    sourceData.toString(),null);
-            HierarchicalSchemaInfo destinationSchemaInfo = this.populateHierarchialSchema(root,
-                    sourceData.toString(),null);
+                HierarchicalSchemaInfo sourceSchemaInfo = this.populateHierarchialSchema(root.toString(),
+                        root.toString(), null);
+                HierarchicalSchemaInfo destinationSchemaInfo = this.populateHierarchialSchema(root.toString(),
+                        root.toString(), null);
 
 
-            FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
-            f1.addElements(sourceSchemaInfo.getElements(Entity.class));
-            FilteredSchemaInfo f2 = new FilteredSchemaInfo(destinationSchemaInfo);
-            f2.addElements(destinationSchemaInfo.getElements(Entity.class));
-            Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaInfo.getElements(Entity.class));
-            JsonObject result = this.performMapping(scores, sourceData.toString());
+                /*FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
+                f1.addElements(sourceSchemaInfo.getElements(Entity.class));
+                FilteredSchemaInfo f2 = new FilteredSchemaInfo(destinationSchemaInfo);
+                f2.addElements(destinationSchemaInfo.getElements(Entity.class));
+                Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaInfo.getElements(Entity.class));
+                result = this.performMapping(scores, sourceData.toString());*/
+            }
 
             return result;
         }

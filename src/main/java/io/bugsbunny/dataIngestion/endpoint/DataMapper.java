@@ -110,13 +110,6 @@ public class DataMapper {
                 }
                 array.add(jsonObject);
             }
-            //logger.info(array.toString());
-            /*JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
-
-            String sourceData = jsonObject.get("sourceData").getAsString();
-            //logger.info(sourceData);
-
-            this.ingestionService.ingestData(sourceData);*/
             this.mapperService.map("","",array);
 
             JsonObject result = new JsonObject();
