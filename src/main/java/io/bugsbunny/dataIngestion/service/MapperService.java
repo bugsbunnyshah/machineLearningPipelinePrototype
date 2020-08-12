@@ -3,6 +3,7 @@ package io.bugsbunny.dataIngestion.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import org.mitre.harmony.matchers.ElementPair;
@@ -35,16 +36,16 @@ public class MapperService {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    public JsonObject map(String sourceSchema, String destinationSchema, String sourceData)
+    public JsonObject map(String sourceSchema, String destinationSchema, JsonArray sourceData)
     {
         try
         {
-            String root = JsonParser.parseString(sourceData).getAsJsonObject().keySet().iterator().next();
+            String root = sourceData.get(0).toString();
 
             HierarchicalSchemaInfo sourceSchemaInfo = this.populateHierarchialSchema(root,
-                    sourceData,null);
+                    sourceData.toString(),null);
             HierarchicalSchemaInfo destinationSchemaInfo = this.populateHierarchialSchema(root,
-                    sourceData,null);
+                    sourceData.toString(),null);
 
 
             FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
@@ -52,7 +53,7 @@ public class MapperService {
             FilteredSchemaInfo f2 = new FilteredSchemaInfo(destinationSchemaInfo);
             f2.addElements(destinationSchemaInfo.getElements(Entity.class));
             Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaInfo.getElements(Entity.class));
-            JsonObject result = this.performMapping(scores, sourceData);
+            JsonObject result = this.performMapping(scores, sourceData.toString());
 
             return result;
         }

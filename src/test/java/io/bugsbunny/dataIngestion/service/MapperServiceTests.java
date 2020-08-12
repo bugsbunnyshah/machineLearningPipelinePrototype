@@ -31,13 +31,14 @@ public class MapperServiceTests {
     @Inject
     private MapperService mapperService;
 
-    //@Test
+    @Test
     public void testMapAirlineData() throws Exception
     {
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
                 "airlinesData.json"),
                 StandardCharsets.UTF_8);
-        JsonObject jsonObject = this.mapperService.map(json, json, json);
+        JsonArray jsonArray = JsonParser.parseString(sourceData).getAsJsonArray();
+        JsonObject jsonObject = this.mapperService.map("", "", jsonArray);
         logger.info("*******");
         logger.info(jsonObject.toString());
         logger.info("*******");
@@ -47,7 +48,7 @@ public class MapperServiceTests {
         assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
     }
 
-    //@Test
+    /*@Test
     public void testMapPeopleData() throws Exception
     {
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
@@ -93,7 +94,7 @@ public class MapperServiceTests {
             //JSONArray jsonArray = new JSONArray();
             //logger.info(CDL.toJSONArray(jsonArray, spaceData).toString());
 
-            /*JSONArray array = CDL.toJSONArray(new JSONArray(), spaceData);
+            JSONArray array = CDL.toJSONArray(new JSONArray(), spaceData);
             System.out.println(array);
             String json = array.get(0).toString();
             logger.info(json);
@@ -101,12 +102,12 @@ public class MapperServiceTests {
             JsonObject jsonObject = this.mapperService.map(json, json, json);
             logger.info("*******");
             logger.info(jsonObject.toString());
-            logger.info("*******");*/
+            logger.info("*******");
         }
         catch(Exception e)
         {
             //logger.error(e.getMessage(),e);
             //throw new RuntimeException(e);
         }
-    }
+    }*/
 }

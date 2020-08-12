@@ -42,8 +42,9 @@ public class DataMapper {
             String sourceSchema = jsonObject.get("sourceSchema").getAsString();
             String destinationSchema = jsonObject.get("destinationSchema").getAsString();
             String sourceData = jsonObject.get("sourceData").getAsString();
+            JsonArray array = JsonParser.parseString(sourceData).getAsJsonArray();
 
-            JsonObject result = this.mapperService.map(sourceSchema, destinationSchema, sourceData);
+            JsonObject result = this.mapperService.map(sourceSchema, destinationSchema, array);
             Response response = Response.ok(result.toString()).build();
             return response;
         }
@@ -67,8 +68,9 @@ public class DataMapper {
             JSONObject sourceJson = XML.toJSONObject(sourceData);
             String json = sourceJson.toString(4);
             logger.info(json);
+            JsonArray array = JsonParser.parseString(json).getAsJsonArray();
 
-            JsonObject result = this.mapperService.map(json, json, json);
+            JsonObject result = this.mapperService.map(json, json, array);
             this.mapperService.storeMappedOutput(result);
 
             Response response = Response.ok(result.toString()).build();
@@ -108,13 +110,14 @@ public class DataMapper {
                 }
                 array.add(jsonObject);
             }
-            logger.info(array.toString());
+            //logger.info(array.toString());
             /*JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
 
             String sourceData = jsonObject.get("sourceData").getAsString();
             //logger.info(sourceData);
 
             this.ingestionService.ingestData(sourceData);*/
+            this.mapperService.map("","",array);
 
             JsonObject result = new JsonObject();
             Response response = Response.ok(result.toString()).build();
