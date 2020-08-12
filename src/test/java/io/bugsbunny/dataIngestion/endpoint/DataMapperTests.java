@@ -147,32 +147,32 @@ public class DataMapperTests {
         //DataSet dataSet = this.readCSVDataset(batchSizeTraining, labelIndex, numClasses);
         //logger.info(dataSet.toString());
 
-        File file = new File("tmp/data");
+        /*File file = new File("tmp/data");
         FileInputStream fis = new FileInputStream(file);
         String data = IOUtils.toString(fis, StandardCharsets.UTF_8);
         JsonObject input = new JsonObject();
         input.addProperty("sourceSchema", data);
         input.addProperty("destinationSchema", data);
-        input.addProperty("sourceData", data);
+        input.addProperty("sourceData", data);*/
 
-        Response response = given().body(input.toString()).when().post("/dataMapper/mapCsv")
+        Response response = given().body("").when().post("/dataMapper/mapCsv")
                 .andReturn();
 
-        String jsonResponse = response.getBody().prettyPrint();
+        //String jsonResponse = response.getBody().prettyPrint();
         //logger.info("****");
         //logger.info(response.getStatusLine());
         //logger.info(jsonResponse);
         //logger.info("****");
 
         //Kickoff the Training
-        String runId = this.trainingWorkflow.startTraining();
+        //String runId = this.trainingWorkflow.startTraining();
 
-        logger.info("*******");
-        logger.info("RunId: "+runId);
-        logger.info("*******");
-        assertNotNull(runId);
+        //logger.info("*******");
+        //logger.info("RunId: "+runId);
+        //logger.info("*******");
+        //assertNotNull(runId);
 
-        String runJson = this.mlFlowRunClient.getRun(runId);
+        //String runJson = this.mlFlowRunClient.getRun(runId);
         //logger.info(runJson);
     }
 

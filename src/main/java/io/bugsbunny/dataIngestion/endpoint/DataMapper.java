@@ -5,6 +5,7 @@ import io.bugsbunny.dataIngestion.service.MapperService;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -16,6 +17,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import org.apache.commons.io.IOUtils;
+import java.nio.charset.StandardCharsets;
 
 @Path("dataMapper")
 public class DataMapper {
@@ -84,12 +88,33 @@ public class DataMapper {
     public Response mapCsvSourceData(@RequestBody String input)
     {
         try {
-            JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
+            String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                    "dataMapper/index3.csv"),
+                    StandardCharsets.UTF_8);
+
+            String[] lines = spaceData.split("\n");
+            String header = lines[0];
+            String[] columns = header.split(",");
+            JsonArray array = new JsonArray();
+            int length = lines.length;
+            for(int i=1; i<length; i++)
+            {
+                String line = lines[i];
+                String[] data = line.split(",");
+                JsonObject jsonObject = new JsonObject();
+                for(int j=0; j<data.length; j++)
+                {
+                    jsonObject.addProperty(columns[j],data[j]);
+                }
+                array.add(jsonObject);
+            }
+            logger.info(array.toString());
+            /*JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
 
             String sourceData = jsonObject.get("sourceData").getAsString();
             //logger.info(sourceData);
 
-            this.ingestionService.ingestData(sourceData);
+            this.ingestionService.ingestData(sourceData);*/
 
             JsonObject result = new JsonObject();
             Response response = Response.ok(result.toString()).build();
