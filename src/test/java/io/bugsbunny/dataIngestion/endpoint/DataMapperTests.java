@@ -135,7 +135,7 @@ public class DataMapperTests {
     }
 
     @Test
-    public void testModelTraining() throws Exception
+    public void testMapCsvSourceData() throws Exception
     {
         //Map<Integer,String> dataMap = this.readEnumCSV();
         //logger.info(dataMap.toString());

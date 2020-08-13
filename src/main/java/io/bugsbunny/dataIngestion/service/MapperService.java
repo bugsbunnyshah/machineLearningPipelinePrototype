@@ -36,9 +36,9 @@ public class MapperService {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    public JsonObject map(String sourceSchema, String destinationSchema, JsonArray sourceData)
+    public JsonArray map(String sourceSchema, String destinationSchema, JsonArray sourceData)
     {
-        JsonObject result = new JsonObject();
+        JsonArray result = new JsonArray();
         try
         {
             int size = sourceData.size();
@@ -52,12 +52,14 @@ public class MapperService {
                         root.toString(), null);
 
 
-                /*FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
+                FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
                 f1.addElements(sourceSchemaInfo.getElements(Entity.class));
                 FilteredSchemaInfo f2 = new FilteredSchemaInfo(destinationSchemaInfo);
                 f2.addElements(destinationSchemaInfo.getElements(Entity.class));
                 Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaInfo.getElements(Entity.class));
-                result = this.performMapping(scores, sourceData.toString());*/
+                logger.info(scores.toString());
+                JsonObject local = this.performMapping(scores, root.toString());
+                result.add(local);
             }
 
             return result;

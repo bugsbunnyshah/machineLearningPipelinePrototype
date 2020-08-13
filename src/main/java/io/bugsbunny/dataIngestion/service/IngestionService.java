@@ -21,4 +21,11 @@ public class IngestionService {
         jsonObject.addProperty("data", data);
         this.mongoDBJsonStore.storeIngestionImage(jsonObject);
     }
+
+    public void ingestDevModelData(String data)
+    {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("data", data);
+        this.mongoDBJsonStore.storeDevModels(jsonObject);
+    }
 }
