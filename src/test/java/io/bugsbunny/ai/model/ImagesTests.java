@@ -1,7 +1,9 @@
 package io.bugsbunny.ai.model;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
+
 import org.apache.commons.io.IOUtils;
+
 import org.datavec.api.io.filters.BalancedPathFilter;
 import org.datavec.api.io.labels.ParentPathLabelGenerator;
 import org.datavec.api.records.reader.RecordReader;
@@ -12,11 +14,16 @@ import org.datavec.api.util.ClassPathResource;
 import org.datavec.image.loader.BaseImageLoader;
 import org.datavec.image.recordreader.ImageRecordReader;
 import org.datavec.image.transform.*;
-import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
-import org.junit.jupiter.api.Test;
+
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
+
+import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
+
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-//@QuarkusTest
+@QuarkusTest
 public class ImagesTests implements Serializable {
     protected static final Logger log = LoggerFactory.getLogger(ImagesTests.class);
 
@@ -53,7 +60,7 @@ public class ImagesTests implements Serializable {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    //@Test
+    @Test
     public void testImagePipeline() throws Exception
     {
         //DIRECTORY STRUCTURE:

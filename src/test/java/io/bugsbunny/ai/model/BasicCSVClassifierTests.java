@@ -68,7 +68,7 @@ public class BasicCSVClassifierTests {
         this.classifiers = this.readEnumCSV();
     }
 
-    //@Test
+    @Test
     public void testClassifier() throws Exception
     {
 
