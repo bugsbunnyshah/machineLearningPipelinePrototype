@@ -136,7 +136,7 @@ public class TensorFlowTrainingWorkflow
     int executeScript(String script)
     {
         try {
-            /*String command = "jep /Users/babyboy/mamasboy/appgallabsForProfit/genomics_research/machineLearningPipelinePrototype/src/test/resources/tensorflow/loadData.py";
+            String command = "jep /Users/babyboy/mamasboy/appgallabsForProfit/genomics_research/machineLearningPipelinePrototype/src/test/resources/tensorflow/loadData.py";
             final Process process = Runtime.getRuntime().exec(command);
             logger.info("**********");
             logger.info("ISALIVE:" + process.isAlive());
@@ -161,12 +161,12 @@ public class TensorFlowTrainingWorkflow
 
             t.join();
 
-            return process.exitValue();*/
+            return process.exitValue();
 
-            MainInterpreter.setJepLibraryPath("jep");
+            /*MainInterpreter.setJepLibraryPath("jep");
             Jep jep = new SharedInterpreter();
             jep.runScript(script);
-            return 0;
+            return 0;*/
         }
         catch(Exception ioe)
         {

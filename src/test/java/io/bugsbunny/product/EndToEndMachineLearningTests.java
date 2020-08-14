@@ -2,6 +2,8 @@ package io.bugsbunny.product;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
+
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -11,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.google.gson.JsonParser;
 import io.bugsbunny.dataScience.service.TrainingWorkflow;
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import org.datavec.api.records.reader.RecordReader;
@@ -57,31 +58,38 @@ public class EndToEndMachineLearningTests
     @Inject
     private MLFlowRunClient mlFlowRunClient;
 
-    //@Test
+    @Test
     public void testIngestionTrainingAndProdPush() throws Exception
     {
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream("airlinesDataOneToOneFields.json"),
+        String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceSchema.json"),
                 StandardCharsets.UTF_8);
-        logger.info(json);
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceData.json"),
+                StandardCharsets.UTF_8);
+        logger.info("****************");
+        logger.info(sourceSchema);
+        logger.info(sourceData);
+        logger.info("****************");
 
         JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", json);
-        input.addProperty("destinationSchema", json);
-        input.addProperty("sourceData", json);
+        input.addProperty("sourceSchema", sourceSchema);
+        input.addProperty("destinationSchema", sourceSchema);
+        input.addProperty("sourceData", sourceData);
 
 
         Response response = given().body(input.toString()).when().post("/dataMapper/map")
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
+        logger.info("**************");
         logger.info(response.getStatusLine());
         logger.info(jsonResponse);
-        logger.info("****");
+        logger.info("***************");
 
         //assert the body
-        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        JsonArray array = JsonParser.parseString(jsonResponse).getAsJsonArray();
+        JsonObject jsonObject = array.get(0).getAsJsonObject();
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
         assertEquals("123456789", jsonObject.get("Id").getAsString());

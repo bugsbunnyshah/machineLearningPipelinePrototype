@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class MatchingTests {
     private static Logger logger = LoggerFactory.getLogger(MatchingTests.class);
 
-    //@Test
+    @Test
     public void testMatchingScenerioSimple() throws Exception
     {
         try

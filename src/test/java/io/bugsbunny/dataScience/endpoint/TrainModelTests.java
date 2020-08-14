@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.commons.io.IOUtils;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 public class TrainModelTests {
     private Logger logger = LoggerFactory.getLogger(TrainModelTests.class);
 
-    //@Test
+    @Test
     public void testTrain() throws Exception
     {
         String script = IOUtils.toString(Thread.currentThread().getContextClassLoader().
@@ -40,6 +41,12 @@ public class TrainModelTests {
         logger.info(jsonResponse);
         logger.info("****");
 
+        //assert the response
+        jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        int statusCode = response.getStatusCode();
+        assertEquals(200, statusCode);
+        assertEquals("tensorflow", jsonObject.get("mlPlatform").getAsString());
+
         JsonObject result = JsonParser.parseString(jsonResponse).getAsJsonObject();
         String runId = result.get("runId").getAsString();
 
@@ -50,5 +57,8 @@ public class TrainModelTests {
         logger.info(response.getStatusLine());
         logger.info(dataResponse);
         logger.info("****");
+
+        //assert the response
+        assertEquals("Propitiation also to the King", dataResponse);
     }
 }
