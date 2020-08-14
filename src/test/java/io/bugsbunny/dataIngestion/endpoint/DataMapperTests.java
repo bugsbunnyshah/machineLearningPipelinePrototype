@@ -69,10 +69,10 @@ public class DataMapperTests {
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
+        logger.info("**************");
         logger.info(response.getStatusLine());
         logger.info(jsonResponse);
-        logger.info("****");
+        logger.info("***************");
 
         //assert the body
         JsonArray array = JsonParser.parseString(jsonResponse).getAsJsonArray();
@@ -86,28 +86,35 @@ public class DataMapperTests {
 
     @Test
     public void testMapWithScatteredFields() throws Exception{
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream("airlinesDataScatteredFields.json"),
+        String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceSchema.json"),
                 StandardCharsets.UTF_8);
-        logger.info(json);
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceDataWithScatteredFields.json"),
+                StandardCharsets.UTF_8);
+        logger.info("****************");
+        logger.info(sourceSchema);
+        logger.info(sourceData);
+        logger.info("****************");
 
         JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", json);
-        input.addProperty("destinationSchema", json);
-        input.addProperty("sourceData", json);
+        input.addProperty("sourceSchema", sourceSchema);
+        input.addProperty("destinationSchema", sourceSchema);
+        input.addProperty("sourceData", sourceData);
 
 
         Response response = given().body(input.toString()).when().post("/dataMapper/map")
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
+        logger.info("***************");
         logger.info(response.getStatusLine());
         logger.info(jsonResponse);
-        logger.info("****");
+        logger.info("***************");
 
         //assert the body
-        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        JsonArray array = JsonParser.parseString(jsonResponse).getAsJsonArray();
+        JsonObject jsonObject = array.get(0).getAsJsonObject();
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
         assertEquals("123456789", jsonObject.get("Id").getAsString());
