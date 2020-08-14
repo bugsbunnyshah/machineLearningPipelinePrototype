@@ -93,7 +93,7 @@ public class DataMapper {
     {
         try {
             String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                    "dataMapper/index3.csv"),
+                    "dataMapper/data.csv"),
                     StandardCharsets.UTF_8);
 
             String[] lines = spaceData.split("\n");

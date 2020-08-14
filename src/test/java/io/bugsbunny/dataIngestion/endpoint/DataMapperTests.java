@@ -1,6 +1,9 @@
 package io.bugsbunny.dataIngestion.endpoint;
 
 import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+
 import io.bugsbunny.dataScience.service.TrainingWorkflow;
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import org.datavec.api.records.reader.RecordReader;
@@ -16,8 +19,6 @@ import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.JsonObject;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -68,7 +69,8 @@ public class DataMapperTests {
         logger.info("****");
 
         //assert the body
-        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        JsonArray array = JsonParser.parseString(jsonResponse).getAsJsonArray();
+        JsonObject jsonObject = array.get(0).getAsJsonObject();
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
         assertEquals("123456789", jsonObject.get("Id").getAsString());
