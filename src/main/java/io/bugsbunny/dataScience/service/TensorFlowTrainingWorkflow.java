@@ -1,12 +1,14 @@
 package io.bugsbunny.dataScience.service;
 
 import com.google.gson.JsonObject;
+
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import io.bugsbunny.pipeline.ModelDeployer;
 import io.bugsbunny.restClient.ElasticSearchClient;
 import io.bugsbunny.restclient.MLFlowRunClient;
 
 import org.apache.commons.io.IOUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,13 +24,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import jep.Jep;
-import jep.MainInterpreter;
-import jep.SharedInterpreter;
-import jep.SubInterpreter;
-
 @ApplicationScoped
-public class TensorFlowTrainingWorkflow
+public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
 {
     private static Logger logger = LoggerFactory.getLogger(TensorFlowTrainingWorkflow.class);
 
@@ -48,7 +45,7 @@ public class TensorFlowTrainingWorkflow
     private Map<Integer,String> sounds = new HashMap<>();
     private Map<Integer,String> classifiers = new HashMap<>();
 
-    //@Override
+    @Override
     public String startTraining(JsonObject trainingMetaData)
     {
         ByteArrayOutputStream modelStream = null;
@@ -121,6 +118,7 @@ public class TensorFlowTrainingWorkflow
         }
     }
 
+    @Override
     public String getData(String runId)
     {
         JsonObject devModel = this.mongoDBJsonStore.getDevModel(runId);

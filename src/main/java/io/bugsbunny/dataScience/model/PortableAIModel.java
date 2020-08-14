@@ -10,12 +10,13 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Base64;
 
-public class PortableAIModel implements Serializable
+public class PortableAIModel implements PortableAIModelInterface,Serializable
 {
     private MultiLayerNetwork model;
 
     private Logger logger = LoggerFactory.getLogger(PortableAIModel.class);
 
+    @Override
     public void load(String encodedModelString)
     {
         ObjectInputStream in = null;
@@ -42,11 +43,13 @@ public class PortableAIModel implements Serializable
         }
     }
 
+    @Override
     public void unload()
     {
 
     }
 
+    @Override
     public double calculate()
     {
         return this.model.calcL1(true);
