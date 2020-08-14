@@ -1,8 +1,8 @@
 package io.bugsbunny.dataScience.service;
 
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+
 import io.bugsbunny.restclient.MLFlowRunClient;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
@@ -27,15 +27,18 @@ public class AIAgnosticTrainingWorkflowTests
     private static Logger logger = LoggerFactory.getLogger(AIAgnosticTrainingWorkflowTests.class);
 
     @Inject
-    private TensorFlowTrainingWorkflow tensorFlowTrainingWorkflow;
+    private DeepLearning4JTrainingWorkflow trainingWorkflow;
 
     @Inject
     private MLFlowRunClient mlFlowRunClient;
 
-    //@Test
+    @Test
     public void testStartTraining() throws Exception
     {
-        String runId = this.tensorFlowTrainingWorkflow.startTraining(null);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("script","dl4j");
+        jsonObject.addProperty("mlPlatform","dl4j");
+        String runId = this.trainingWorkflow.startTraining(jsonObject);
 
         logger.info("*******");
         logger.info("RunId: "+runId);
@@ -43,28 +46,9 @@ public class AIAgnosticTrainingWorkflowTests
         assertNotNull(runId);
 
         String runJson = this.mlFlowRunClient.getRun(runId);
-        JsonObject jsonObject = JsonParser.parseString(runJson).getAsJsonObject();
+        jsonObject = JsonParser.parseString(runJson).getAsJsonObject();
         String storedRunId = jsonObject.get("run").getAsJsonObject().get("info").getAsJsonObject().get("run_id").getAsString();
         logger.info(storedRunId);
         assertEquals(runId, storedRunId);
     }
-
-    //@Test
-    public void testExecuteScript() throws Exception
-    {
-        int exitCode = this.tensorFlowTrainingWorkflow.executeScript("print('Hello,World')");
-        logger.info("*******");
-        logger.info("ExitCode: "+exitCode);
-        logger.info("*******");
-    }
-
-    /*@Test
-    public void testJep() throws Exception
-    {
-        String script = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("helloworld.py"),
-                StandardCharsets.UTF_8);
-
-        Jep jep = new Jep();
-        jep.runScript(script);
-    }*/
 }

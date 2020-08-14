@@ -160,11 +160,6 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
             t.join();
 
             return process.exitValue();
-
-            /*MainInterpreter.setJepLibraryPath("jep");
-            Jep jep = new SharedInterpreter();
-            jep.runScript(script);
-            return 0;*/
         }
         catch(Exception ioe)
         {
