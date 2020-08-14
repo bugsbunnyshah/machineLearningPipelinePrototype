@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class MatchingTests {
     private static Logger logger = LoggerFactory.getLogger(MatchingTests.class);
 
-    @Test
+    //@Test
     public void testMatchingScenerioSimple() throws Exception
     {
         try
@@ -134,7 +134,7 @@ public class MatchingTests {
         }
     }
 
-    @Test
+    //@Test
     public void testFirstEndToEndMapping() throws Exception
     {
         ArrayList<SchemaElement> schemaElements = this.parseSchemaElements();
