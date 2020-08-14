@@ -119,7 +119,7 @@ public class MnistTests {
         }
     }
 
-    /*@Test
+    @Test
     public void testDeepAutoEncoder() throws Exception
     {
         final int numRows = 28;
@@ -161,9 +161,9 @@ public class MnistTests {
         model.setListeners(new ScoreIterationListener(listenerFreq));
 
         log.info("Train model....");
-        while(iter.hasNext()) {
+        /*while(iter.hasNext()) {
             DataSet next = iter.next();
             model.fit(new DataSet(next.getFeatures(),next.getFeatures()));
-        }
-    }*/
+        }*/
+    }
 }
