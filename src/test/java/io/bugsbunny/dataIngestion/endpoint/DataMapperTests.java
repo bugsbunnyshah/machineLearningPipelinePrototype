@@ -48,15 +48,21 @@ public class DataMapperTests {
 
     @Test
     public void testMapWithOneToOneFields() throws Exception{
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream("airlinesDataOneToOneFields.json"),
+        String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceSchema.json"),
                 StandardCharsets.UTF_8);
-        logger.info(json);
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceData.json"),
+                StandardCharsets.UTF_8);
+        logger.info("****************");
+        logger.info(sourceSchema);
+        logger.info(sourceData);
+        logger.info("****************");
 
         JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", json);
-        input.addProperty("destinationSchema", json);
-        input.addProperty("sourceData", json);
+        input.addProperty("sourceSchema", sourceSchema);
+        input.addProperty("destinationSchema", sourceSchema);
+        input.addProperty("sourceData", sourceData);
 
 
         Response response = given().body(input.toString()).when().post("/dataMapper/map")
