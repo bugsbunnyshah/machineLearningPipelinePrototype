@@ -22,9 +22,9 @@ import jep.Jep;
 
 
 @QuarkusTest
-public class TensorFlowTrainingWorkflowTests
+public class AIAgnosticTrainingWorkflowTests
 {
-    private static Logger logger = LoggerFactory.getLogger(TensorFlowTrainingWorkflowTests.class);
+    private static Logger logger = LoggerFactory.getLogger(AIAgnosticTrainingWorkflowTests.class);
 
     @Inject
     private TensorFlowTrainingWorkflow tensorFlowTrainingWorkflow;
