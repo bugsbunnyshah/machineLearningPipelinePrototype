@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'io.quarkus' version '1.4.2.Final'
+    id 'io.quarkus' version '1.7.0.Final'
     id 'maven-publish'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation enforcedPlatform('io.quarkus:quarkus-bom:1.4.2.Final')
+    implementation enforcedPlatform('io.quarkus:quarkus-bom:1.7.0.Final')
     implementation 'io.quarkus:quarkus-resteasy:1.4.2.Final'
     //implementation enforcedPlatform('io.quarkus:quarkus-bom:1.5.0.Final')
     //implementation 'io.quarkus:quarkus-resteasy:1.5.0.Final'
@@ -148,4 +148,11 @@ compileTestJava {
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
+}
+
+quarkusBuild {
+    nativeArgs {
+        containerBuild = true 
+        buildImage = "quay.io/quarkus/ubi-quarkus-native-image:20.1.0-java11" 
+    }
 }
