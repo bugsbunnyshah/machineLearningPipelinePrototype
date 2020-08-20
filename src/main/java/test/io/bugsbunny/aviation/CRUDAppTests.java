@@ -1,22 +1,24 @@
-package io.bugsbunny.aviation;
+package test.io.bugsbunny.aviation;
 
 import io.delta.tables.DeltaTable;
 import org.apache.commons.io.IOUtils;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.streaming.StreamingQuery;
 import org.apache.spark.sql.types.DataType;
+import org.apache.spark.sql.types.StringType;
 import org.apache.spark.sql.types.StructType;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.JsonObject;
+import com.google.gson.*;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.*;
 
 import com.github.opendevl.JFlat;
 
@@ -28,7 +30,7 @@ public class CRUDAppTests
     public void testQueries() throws Exception
     {
         try {
-            String location = "hdfs://localhost:9000/hdfs-table-"+ UUID.randomUUID().toString();
+            /*String location = "hdfs://localhost:9000/hdfs-table-"+ UUID.randomUUID().toString();
 
             System.setProperty("spark.delta.logStore.class","org.apache.spark.sql.delta.storage.HDFSLogStore");
 
@@ -40,8 +42,20 @@ public class CRUDAppTests
                     .getOrCreate();
 
 
-            String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
-                    StandardCharsets.UTF_8);
+            //String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
+            //        StandardCharsets.UTF_8);
+            String json = "[\n" +
+                    "    {\n" +
+                    "        \"Id\": 123456789,\n" +
+                    "        \"Rcvr\": 1234567,\n" +
+                    "        \"HasSig\": true\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "        \"Id\": 7777777,\n" +
+                    "        \"Rcvr\": 77777,\n" +
+                    "        \"HasSig\": false\n" +
+                    "    }\n" +
+                    "]";
             JFlat flatMe = new JFlat(json);
 
             //get the 2D representation of JSON document
@@ -62,7 +76,7 @@ public class CRUDAppTests
             df.show();
 
             Dataset<Row> result = df.select("_c0");
-            result.show();
+            result.show();*/
 
             // Java Bean (data class) used to apply schema to JSON data
             /*Encoder<JSONtoDataSet.Employee> employeeEncoder = Encoders.bean(JSONtoDataSet.Employee.class);
@@ -137,6 +151,28 @@ public class CRUDAppTests
             df = spark.read().format("delta").option("versionAsOf", 1).load(location);
             df.show();*/
 
+            String location = "/tmp/delta-table-"+ UUID.randomUUID().toString();
+
+            SparkSession spark = SparkSession.builder()
+                    .master("local")
+                    .appName("CRUDApp")
+                    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+                    .getOrCreate();
+
+            //Initialize the Data
+            System.out.println("INIT_DATA");
+            Dataset<Long> data = spark.range(0, 5);
+            /*JsonObject jsonObject = new JsonObject();
+            String json = jsonObject.toString();
+            Dataset<Row> data = spark.read().json(json);*/
+
+            //List<StructType> stringData = new ArrayList<>();
+            //stringData.add((StructType)DataType.fromJson(json));
+            //Dataset<Row> data = spark.createDataFrame(stringData,DataType.class);
+            /*data.write().format("delta").save(location);
+            Dataset<Row> df = spark.read().format("delta").load(location);
+            df.show();*/
+
             spark.close();
         }
         catch(Exception e)
@@ -173,5 +209,20 @@ public class CRUDAppTests
     public static class Employee implements Serializable {
         public String name;
         public int salary;
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        CRUDAppTests test = new CRUDAppTests();
+
+        test.testQueries();
+        logger.info("****************");
+        //test.testDeepAutoEncoder();
+        /*logger.info("****************");
+        test.testGetExperiments();
+        logger.info("****************");
+        test.testGetRun();
+        logger.info("****************");
+        test.testLogModel();*/
     }
 }

@@ -23,7 +23,7 @@ repositories {
         url "https://oss.sonatype.org/content/repositories/releases/"
     }
     flatDir {
-        dirs 'thirdparty-libs'
+        dirs 'thirdpartylibs'
     }
 }
 
