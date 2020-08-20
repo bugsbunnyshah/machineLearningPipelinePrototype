@@ -1,4 +1,4 @@
-package io.bugsbunny.ai.model;
+package test.io.bugsbunny.ai.model;
 
 
 import com.google.gson.JsonObject;
@@ -257,10 +257,11 @@ public class BasicCSVClassifierTests {
 
     private DataSet readCSVDataset(int batchSize, int labelIndex, int numClasses)
             throws IOException, InterruptedException{
-        List<JsonObject> jsons = mongoDBJsonStore.getIngestionImages();
-        JsonObject json = jsons.get(0);
-        String data = json.get("data").getAsString();
+        //List<JsonObject> jsons = mongoDBJsonStore.getIngestionImages();
+        //JsonObject json = jsons.get(0);
+        //String data = json.get("data").getAsString();
 
+        String data = "19,0,1,10,0\\n9,1,2,60,0\\n";
         File file = new File("tmp/data");
         FileOutputStream fos = new FileOutputStream(file);
         IOUtils.write(data, fos, StandardCharsets.UTF_8);
@@ -269,5 +270,20 @@ public class BasicCSVClassifierTests {
         rr.initialize(new FileSplit(file));
         DataSetIterator iterator = new RecordReaderDataSetIterator(rr, batchSize, labelIndex, numClasses);
         return iterator.next();
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        BasicCSVClassifierTests test = new BasicCSVClassifierTests();
+
+        test.testClassifier();
+        log.info("****************");
+        /*test.testCreateRun();
+        logger.info("****************");
+        test.testGetExperiments();
+        logger.info("****************");
+        test.testGetRun();
+        logger.info("****************");
+        test.testLogModel();*/
     }
 }

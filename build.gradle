@@ -55,7 +55,7 @@ dependencies {
 
     implementation 'org.apache.xbean:xbean-asm6-shaded:4.10'
     implementation 'com.github.opendevl:json2flat:1.0.3'
-    compile group: 'org.json', name: 'json', version: '20200518'
+    implementation 'org.json:json:20200518'
 
     implementation name: 'eclipse-swt-macos'
     implementation name: 'jface-3.7.0'
@@ -83,26 +83,22 @@ dependencies {
     implementation name: 'org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611'
     implementation name: 'GoogleTranslate'
 
-    //compile 'org.nd4j:nd4j-native-platform:0.7.2'
-    //compile 'org.nd4j:nd4j-native:0.7.2'
-    //compile 'org.deeplearning4j:deeplearning4j-core:0.7.2'
+    implementation 'org.nd4j:nd4j-native-platform:0.7.2'
+    implementation 'org.nd4j:nd4j-native:0.7.2'
+    implementation 'org.deeplearning4j:deeplearning4j-core:0.7.2'
+    implementation 'org.datavec:datavec-api:0.7.2'
 
-    compile 'org.datavec:datavec-api:0.7.2'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.11.0'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.0'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
-
-    compile 'org.apache.lucene:lucene-analyzers-common:8.5.1'
-    compile 'org.apache.lucene:lucene-queryparser:8.5.1'
+    implementation 'org.apache.lucene:lucene-analyzers-common:8.5.1'
+    implementation 'org.apache.lucene:lucene-queryparser:8.5.1'
 
     implementation name: 'jep'
 
-    compile 'io.delta:delta-core_2.12:0.7.0'
+    implementation 'io.delta:delta-core_2.12:0.7.0'
 
     implementation(name: 'machineLearningStorage')
 
-    compile group: 'junitperf', name: 'junitperf', version: '1.8'
-    compile group: 'junit', name: 'junit', version: '3.7'
+    implementation 'junitperf:junitperf:1.8'
+    implementation 'junit:junit:3.7'
     implementation enforcedPlatform('io.quarkus:quarkus-bom:1.7.0.Final')
     implementation 'io.quarkus:quarkus-junit5:1.7.0.Final'
     implementation 'io.rest-assured:rest-assured:4.3.0'
@@ -126,6 +122,9 @@ dependencies {
     //implementation 'io.kubernetes:client-java:5.0.0'
     //implementation 'io.kubernetes:client-java-api:7.0.0'
     //implementation 'org.kamranzafar:jtar:2.3'
+    //compile 'com.fasterxml.jackson.core:jackson-core:2.11.0'
+    //compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.0'
+    //compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
 }
 
 test {

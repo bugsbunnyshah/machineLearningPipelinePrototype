@@ -1,4 +1,4 @@
-package io.bugsbunny.ai.model;
+package test.io.bugsbunny.ai.model;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
@@ -242,5 +242,20 @@ public class DataTests implements Serializable {
         rr.initialize(new FileSplit(new ClassPathResource(csvFileClasspath).getFile()));
         DataSetIterator iterator = new RecordReaderDataSetIterator(rr,batchSize,labelIndex,numClasses);
         return iterator.next();
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        DataTests test = new DataTests();
+
+        test.testImagePipeline();
+        log.info("****************");
+        /*test.testCreateRun();
+        logger.info("****************");
+        test.testGetExperiments();
+        logger.info("****************");
+        test.testGetRun();
+        logger.info("****************");
+        test.testLogModel();*/
     }
 }
