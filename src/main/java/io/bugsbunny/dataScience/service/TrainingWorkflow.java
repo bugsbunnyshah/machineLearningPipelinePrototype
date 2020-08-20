@@ -1,6 +1,6 @@
 package io.bugsbunny.dataScience.service;
 
-import com.google.gson.JsonArray;
+/*import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
@@ -38,11 +38,16 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import io.bugsbunny.restclient.MLFlowRunClient;
+import io.bugsbunny.restclient.MLFlowRunClient;*/
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @ApplicationScoped
 public class TrainingWorkflow {
-    private static Logger logger = LoggerFactory.getLogger(TrainingWorkflow.class);
+    /*private static Logger logger = LoggerFactory.getLogger(TrainingWorkflow.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
@@ -334,5 +339,11 @@ public class TrainingWorkflow {
 
         }
 
+    }*/
+
+    public void updateIndex() throws IOException
+    {
+        //JsonArray dataSet = this.mongoDBJsonStore.getIngestedDataSet();
+        //logger.info(this.elasticSearchClient.updateIndex(dataSet));
     }
 }

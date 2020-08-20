@@ -1,4 +1,4 @@
-package io.bugsbunny;
+package test.io.bugsbunny;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -57,8 +57,21 @@ public class MLFlowRunClientTests {
     @Test
     public void testLogModel() throws Exception
     {
-        String yamlString = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("MLmodel")
-                , StandardCharsets.UTF_8);
+        //String yamlString = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("mlmodel")
+        //        , StandardCharsets.UTF_8);
+        String yamlString = "artifact_path: model\n" +
+                "flavors:\n" +
+                "  python_function:\n" +
+                "    data: model.pkl\n" +
+                "    env: conda.yaml\n" +
+                "    loader_module: mlflow.sklearn\n" +
+                "    python_version: 3.6.10\n" +
+                "  sklearn:\n" +
+                "    pickled_model: model.pkl\n" +
+                "    serialization_format: cloudpickle\n" +
+                "    sklearn_version: 0.19.1\n" +
+                "run_id: 1b117ece479c47aca912feb75bc55b0a\n" +
+                "utc_time_created: '2020-06-26 18:00:56.056775'";
         MLFlowRunClient mlFlowRunClient = new MLFlowRunClient();
         Yaml yaml= new Yaml();
         Object obj = yaml.load(yamlString);
@@ -72,5 +85,20 @@ public class MLFlowRunClientTests {
         String runId = "1b117ece479c47aca912feb75bc55b0a";
         mlFlowRunClient.logModel(runId, json);
         mlFlowRunClient.getRun(runId);
+    }
+
+    public static void main(String[] args) throws Exception
+    {
+        MLFlowRunClientTests test = new MLFlowRunClientTests();
+
+        test.testCreateExperiment();
+        logger.info("****************");
+        test.testCreateRun();
+        logger.info("****************");
+        test.testGetExperiments();
+        logger.info("****************");
+        test.testGetRun();
+        logger.info("****************");
+        test.testLogModel();
     }
 }
