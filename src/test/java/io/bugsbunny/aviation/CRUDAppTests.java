@@ -1,4 +1,4 @@
-package test.io.bugsbunny.aviation;
+package io.bugsbunny.aviation;
 
 import io.delta.tables.DeltaTable;
 import org.apache.commons.io.IOUtils;
@@ -22,11 +22,15 @@ import java.util.*;
 
 import com.github.opendevl.JFlat;
 
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
+
+@QuarkusTest
 public class CRUDAppTests
 {
     private static Logger logger = LoggerFactory.getLogger(CRUDAppTests.class);
 
-    //@Test
+    @Test
     public void testQueries() throws Exception
     {
         try {
@@ -209,20 +213,5 @@ public class CRUDAppTests
     public static class Employee implements Serializable {
         public String name;
         public int salary;
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        CRUDAppTests test = new CRUDAppTests();
-
-        test.testQueries();
-        logger.info("****************");
-        //test.testDeepAutoEncoder();
-        /*logger.info("****************");
-        test.testGetExperiments();
-        logger.info("****************");
-        test.testGetRun();
-        logger.info("****************");
-        test.testLogModel();*/
     }
 }

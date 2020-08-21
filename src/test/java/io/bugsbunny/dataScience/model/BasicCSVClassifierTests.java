@@ -1,4 +1,4 @@
-package test.io.bugsbunny.ai.model;
+package io.bugsbunny.dataScience.model;
 
 
 import com.google.gson.JsonObject;
@@ -270,20 +270,5 @@ public class BasicCSVClassifierTests {
         rr.initialize(new FileSplit(file));
         DataSetIterator iterator = new RecordReaderDataSetIterator(rr, batchSize, labelIndex, numClasses);
         return iterator.next();
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        BasicCSVClassifierTests test = new BasicCSVClassifierTests();
-
-        test.testClassifier();
-        log.info("****************");
-        /*test.testCreateRun();
-        logger.info("****************");
-        test.testGetExperiments();
-        logger.info("****************");
-        test.testGetRun();
-        logger.info("****************");
-        test.testLogModel();*/
     }
 }

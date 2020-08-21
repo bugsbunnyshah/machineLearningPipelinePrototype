@@ -83,10 +83,16 @@ dependencies {
     implementation name: 'org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611'
     implementation name: 'GoogleTranslate'
 
+    implementation 'org.datavec:datavec-api:0.7.2'
+    implementation 'org.deeplearning4j:deeplearning4j-core:0.7.2'
+    implementation 'org.deeplearning4j:deeplearning4j-nlp:0.7.2'
+    implementation 'org.deeplearning4j:deeplearning4j-nn:0.7.2'
+    implementation 'org.deeplearning4j:rl4j-core:0.7.2'
+    implementation 'org.deeplearning4j:rl4j-gym:0.7.2'
     implementation 'org.nd4j:nd4j-native-platform:0.7.2'
     implementation 'org.nd4j:nd4j-native:0.7.2'
-    implementation 'org.deeplearning4j:deeplearning4j-core:0.7.2'
-    implementation 'org.datavec:datavec-api:0.7.2'
+    implementation 'org.nd4j:nd4j-x86:0.4-rc3.8'
+    //implementation 'org.nd4j:jcuda:6.5'
 
     implementation 'org.apache.lucene:lucene-analyzers-common:8.5.1'
     implementation 'org.apache.lucene:lucene-queryparser:8.5.1'

@@ -1,4 +1,4 @@
-package test.io.bugsbunny;
+package io.bugsbunny.restClient;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

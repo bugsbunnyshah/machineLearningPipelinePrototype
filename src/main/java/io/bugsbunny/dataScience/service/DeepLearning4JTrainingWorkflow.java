@@ -1,6 +1,6 @@
 package io.bugsbunny.dataScience.service;
 
-/*import com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import io.bugsbunny.pipeline.ModelDeployer;
@@ -52,7 +52,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.castor.core.util.Base64Encoder;*/
+import org.castor.core.util.Base64Encoder;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -61,7 +61,7 @@ import com.google.gson.JsonObject;
 @ApplicationScoped
 public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
 {
-    /*private static Logger log = LoggerFactory.getLogger(TensorFlowTrainingWorkflow.class);
+    private static Logger log = LoggerFactory.getLogger(TensorFlowTrainingWorkflow.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
@@ -366,17 +366,5 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
         rr.initialize(new FileSplit(file));
         DataSetIterator iterator = new RecordReaderDataSetIterator(rr, batchSize, labelIndex, numClasses);
         return iterator.next();
-    }*/
-
-    @Override
-    public String startTraining(JsonObject trainingMetaData)
-    {
-        return null;
-    }
-
-    @Override
-    public String getData(String runId)
-    {
-        return null;
     }
 }

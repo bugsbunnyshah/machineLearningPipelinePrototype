@@ -1,4 +1,4 @@
-package test.io.bugsbunny.ai.model;
+package io.bugsbunny.dataScience.model;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
 
@@ -250,20 +250,5 @@ public class ImagesTests implements Serializable {
         rr.initialize(new FileSplit(new ClassPathResource(csvFileClasspath).getFile()));
         DataSetIterator iterator = new RecordReaderDataSetIterator(rr,batchSize,labelIndex,numClasses);
         return iterator.next();
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        ImagesTests test = new ImagesTests();
-
-        test.testImagePipeline();
-        log.info("****************");
-        /*test.testCreateRun();
-        logger.info("****************");
-        test.testGetExperiments();
-        logger.info("****************");
-        test.testGetRun();
-        logger.info("****************");
-        test.testLogModel();*/
     }
 }

@@ -32,7 +32,7 @@ public class AIAgnosticTrainingWorkflowTests
     @Inject
     private MLFlowRunClient mlFlowRunClient;
 
-    //@Test
+    @Test
     public void testStartTraining() throws Exception
     {
         JsonObject jsonObject = new JsonObject();

@@ -10,10 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
+
+@QuarkusTest
 public class SampleDataTests {
     private static Logger logger = LoggerFactory.getLogger(SampleDataTests.class);
 
-    //@Test
+    @Test
     public void testFirst() throws Exception
     {
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),

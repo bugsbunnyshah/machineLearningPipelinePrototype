@@ -7,6 +7,10 @@ import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
 
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
+
+@QuarkusTest
 public class JSONtoDataSet {
 
     public static class Employee implements Serializable{
@@ -14,7 +18,8 @@ public class JSONtoDataSet {
         public int salary;
     }
 
-    public static void main(String[] args) throws Exception{
+    @Test
+    public void testDataSet() throws Exception{
         try {
             // configure spark
             SparkSession spark = SparkSession

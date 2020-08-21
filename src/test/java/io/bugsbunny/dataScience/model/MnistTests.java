@@ -1,4 +1,4 @@
-package test.io.bugsbunny.ai.model;
+package io.bugsbunny.dataScience.model;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
@@ -165,20 +165,5 @@ public class MnistTests {
             DataSet next = iter.next();
             model.fit(new DataSet(next.getFeatures(),next.getFeatures()));
         }*/
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        MnistTests test = new MnistTests();
-
-        //test.testMnistHelloWorld();
-        log.info("****************");
-        test.testDeepAutoEncoder();
-        /*logger.info("****************");
-        test.testGetExperiments();
-        logger.info("****************");
-        test.testGetRun();
-        logger.info("****************");
-        test.testLogModel();*/
     }
 }
