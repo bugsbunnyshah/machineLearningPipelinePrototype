@@ -38,7 +38,7 @@ public class AWSAIClientTests {
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         AWSAIClientTests awsaiClientTests = new AWSAIClientTests();
         awsaiClientTests.testComprehend();
