@@ -58,7 +58,7 @@ public class EndToEndMachineLearningTests
     @Inject
     private MLFlowRunClient mlFlowRunClient;
 
-    @Test
+    //@Test
     public void testIngestionTrainingAndProdPush() throws Exception
     {
         String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().

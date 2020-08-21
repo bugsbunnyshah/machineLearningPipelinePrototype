@@ -26,7 +26,7 @@ public class AWSAIClientTests {
     @Test
     public void testComprehend() throws Exception
     {
-        String message = "I_USED_TO_THINK_I_AM_GOD_BUT_I_KNOW_NOW_I_DONT_BELONG_HERE_I_AM_NOT_HIP_ENOUGH_FOR_APP_GAL_AKA_MOTHER_EARTH";
+        /*String message = "I_USED_TO_THINK_I_AM_GOD_BUT_I_KNOW_NOW_I_DONT_BELONG_HERE_I_AM_NOT_HIP_ENOUGH_FOR_APP_GAL_AKA_MOTHER_EARTH";
         String json = "{message=\"I_USED_TO_THINK_I_AM_GOD_BUT_I_KNOW_NOW_I_DONT_BELONG_HERE_I_AM_NOT_HIP_ENOUGH_FOR_APP_GAL_AKA_MOTHER_EARTH\"}";
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         while(true)
@@ -35,12 +35,6 @@ public class AWSAIClientTests {
             //logger.info("I_USED_TO_THINK_I_AM_GOD_BUT_I_KNOW_NOW_I_DONT_BELONG_HERE_I_AM_NOT_HIP_ENOUGH_FOR_APP_GAL_AKA_MOTHER_EARTH");
             logger.info(jsonObject.toString());
             logger.info("****************");
-        }
-    }
-
-    public static void main(String[] args) throws Exception
-    {
-        AWSAIClientTests awsaiClientTests = new AWSAIClientTests();
-        awsaiClientTests.testComprehend();
+        }*/
     }
 }

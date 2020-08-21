@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 public class TrainModelTests {
     private Logger logger = LoggerFactory.getLogger(TrainModelTests.class);
 
-    @Test
+    //@Test
     public void testTrain() throws Exception
     {
         String script = IOUtils.toString(Thread.currentThread().getContextClassLoader().
