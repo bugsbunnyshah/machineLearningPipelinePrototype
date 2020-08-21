@@ -2,6 +2,7 @@ package io.bugsbunny.aviation;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ public class SampleDataTests {
         String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("airlinesData.json"),
                 StandardCharsets.UTF_8);
 
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        JsonArray array = JsonParser.parseString(json).getAsJsonArray();
+        JsonObject jsonObject = array.get(0).getAsJsonObject();
 
         logger.info("*******");
         logger.info(jsonObject.get("Id").getAsString());
