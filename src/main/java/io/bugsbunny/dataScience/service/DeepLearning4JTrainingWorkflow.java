@@ -98,7 +98,7 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
             jsonObject.addProperty("script", script);
             //jsonObject.addProperty("data", trainingMetaData.get("data").getAsString());
 
-            this.testClassifier();
+            //this.testClassifier();
 
             //Process the Training Results
             //TODO: Delete this file once it is entered into the Repositories

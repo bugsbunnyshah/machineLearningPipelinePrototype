@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public class MnistTests {
     private static final Logger log = LoggerFactory.getLogger(MnistTests.class);
 
-    @Test
+    //@Test
     public void testMnistHelloWorld() throws Exception
     {
         int nChannels = 1; // Number of input channels
@@ -119,7 +119,7 @@ public class MnistTests {
         }
     }
 
-    @Test
+    //@Test
     public void testDeepAutoEncoder() throws Exception
     {
         final int numRows = 28;

@@ -54,7 +54,7 @@ public class DataTests implements Serializable {
     private static Map<Integer,String> sounds = readEnumCSV("/DataExamples/animals/sounds.csv");
     private static Map<Integer,String> classifiers = readEnumCSV("/DataExamples/animals/classifiers.csv");
 
-    @Test
+    //@Test
     public void testImagePipeline() throws Exception
     {
         //DIRECTORY STRUCTURE:

@@ -60,7 +60,7 @@ public class ImagesTests implements Serializable {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    @Test
+    //@Test
     public void testImagePipeline() throws Exception
     {
         //DIRECTORY STRUCTURE:
