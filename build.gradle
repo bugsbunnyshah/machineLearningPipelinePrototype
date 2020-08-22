@@ -88,12 +88,7 @@ dependencies {
     implementation 'org.deeplearning4j:deeplearning4j-core:0.7.2'
     implementation 'org.deeplearning4j:deeplearning4j-nlp:0.7.2'
     implementation 'org.deeplearning4j:deeplearning4j-nn:0.7.2'
-    implementation 'org.deeplearning4j:rl4j-core:0.7.2'
-    implementation 'org.deeplearning4j:rl4j-gym:0.7.2'
-    implementation 'org.nd4j:nd4j-native-platform:0.7.2'
     implementation 'org.nd4j:nd4j-native:0.7.2'
-    implementation 'org.nd4j:nd4j-x86:0.4-rc3.8'
-    //implementation 'org.nd4j:jcuda:6.5'
 
     implementation 'org.apache.lucene:lucene-analyzers-common:8.5.1'
     implementation 'org.apache.lucene:lucene-queryparser:8.5.1'
@@ -132,6 +127,11 @@ dependencies {
     //compile 'com.fasterxml.jackson.core:jackson-core:2.11.0'
     //compile 'com.fasterxml.jackson.core:jackson-annotations:2.11.0'
     //compile 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+    //implementation 'org.nd4j:nd4j-x86:0.4-rc3.8'
+    //implementation 'org.nd4j:jcuda:6.5'
+    //implementation 'org.deeplearning4j:rl4j-core:0.7.2'
+    //implementation 'org.deeplearning4j:rl4j-gym:0.7.2'
+    //implementation 'org.nd4j:nd4j-native-platform:0.7.2'
 }
 
 test {
