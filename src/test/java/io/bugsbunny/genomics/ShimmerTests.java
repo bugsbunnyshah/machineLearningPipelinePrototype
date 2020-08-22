@@ -44,7 +44,7 @@ public class ShimmerTests
         int baseCount;*/
 
         String geneticData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                "genomics/runoutput"),
+                "genomics/testref.fa.fai"),
                 StandardCharsets.UTF_8);
 
         String[] lines = geneticData.split("\n");
@@ -67,9 +67,10 @@ public class ShimmerTests
                 fieldNo++;
             }
 
+            //Process the Chromosome DataSet
             if (fieldNo == 0)
             {
-                //logger.info("****PROCESSING*****");
+                logger.info("****PROCESSING*****");
                 /* populate chromosome with the current chromosome */
                 chromosome = new String(characters, 0, 1000);
                 chromosomePointer = 1001;
@@ -84,9 +85,10 @@ public class ShimmerTests
                     }
                 }
                 chromosome = chromosome + restOfTheChromosome.toString();
-                //logger.info("***CHROMOSOME****");
-                //logger.info(chromosome);
+                logger.info("***CHROMOSOME****");
+                logger.info(chromosome);
 
+                //Progress to the next set
                 fieldNo++;
             }
 
@@ -95,10 +97,11 @@ public class ShimmerTests
                 continue;
             }
 
+            //Process the POS DataSet
             if (fieldNo == 1)
             {
                 /* populate position with current position */
-                StringBuilder buffer = new StringBuilder();
+                StringBuilder buffer = new StringBuilder("hello");
                 while (characters[chromosomePointer] != '\t')
                 {
                     buffer.append(characters[chromosomePointer]);
@@ -108,10 +111,12 @@ public class ShimmerTests
                         break;
                     }
                 }
-                fieldNo = 2;
                 posString = buffer.toString();
                 logger.info("***POS_STRING****");
                 logger.info(posString);
+
+                //Progress to the next set
+                fieldNo++;
             }
         }
     }
