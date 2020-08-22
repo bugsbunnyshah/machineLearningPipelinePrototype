@@ -24,6 +24,11 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import jep.Jep;
+import jep.MainInterpreter;
+import jep.SharedInterpreter;
+import jep.SubInterpreter;
+
 @ApplicationScoped
 public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
 {
@@ -133,7 +138,7 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
     //--------------------------------------------------------------------
     int executeScript(String script)
     {
-        try {
+        /*try {
             String command = "jep /Users/babyboy/mamasboy/appgallabsForProfit/genomics_research/machineLearningPipelinePrototype/src/test/resources/tensorflow/loadData.py";
             final Process process = Runtime.getRuntime().exec(command);
             logger.info("**********");
@@ -164,6 +169,11 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
         catch(Exception ioe)
         {
             throw new RuntimeException(ioe.getMessage());
-        }
+        }*/
+        MainInterpreter.setJepLibraryPath("/Users/mkd/miniconda3/lib/python3.7/site-packages/jep");
+
+        String script = "print('hello world')";
+        Jep jep = new SharedInterpreter();
+        jep.runScript(script);
     }
 }
