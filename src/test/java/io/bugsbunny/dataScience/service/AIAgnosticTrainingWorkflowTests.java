@@ -30,6 +30,9 @@ public class AIAgnosticTrainingWorkflowTests
     private DeepLearning4JTrainingWorkflow trainingWorkflow;
 
     @Inject
+    private TensorFlowTrainingWorkflow tensorFlowTrainingWorkflow;
+
+    @Inject
     private MLFlowRunClient mlFlowRunClient;
 
     @Test
@@ -39,6 +42,26 @@ public class AIAgnosticTrainingWorkflowTests
         jsonObject.addProperty("script","dl4j");
         jsonObject.addProperty("mlPlatform","dl4j");
         String runId = this.trainingWorkflow.startTraining(jsonObject);
+
+        logger.info("*******");
+        logger.info("RunId: "+runId);
+        logger.info("*******");
+        assertNotNull(runId);
+
+        String runJson = this.mlFlowRunClient.getRun(runId);
+        jsonObject = JsonParser.parseString(runJson).getAsJsonObject();
+        String storedRunId = jsonObject.get("run").getAsJsonObject().get("info").getAsJsonObject().get("run_id").getAsString();
+        logger.info(storedRunId);
+        assertEquals(runId, storedRunId);
+    }
+
+    @Test
+    public void testStartTrainingTensorFlow() throws Exception
+    {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("script","tensorflow");
+        jsonObject.addProperty("mlPlatform","tensorflow");
+        String runId = this.tensorFlowTrainingWorkflow.startTraining(jsonObject);
 
         logger.info("*******");
         logger.info("RunId: "+runId);

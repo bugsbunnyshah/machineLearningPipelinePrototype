@@ -67,7 +67,7 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
             jsonObject.add("flavors", new JsonObject());
             jsonObject.addProperty("mlPlatform", trainingMetaData.get("mlPlatform").getAsString());
             jsonObject.addProperty("script", script);
-            jsonObject.addProperty("data", trainingMetaData.get("data").getAsString());
+            //jsonObject.addProperty("data", trainingMetaData.get("data").getAsString());
 
             this.executeScript(script);
 
@@ -170,10 +170,24 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
         {
             throw new RuntimeException(ioe.getMessage());
         }*/
-        MainInterpreter.setJepLibraryPath("/Users/mkd/miniconda3/lib/python3.7/site-packages/jep");
+        try
+        {
+            MainInterpreter.setJepLibraryPath("/Users/mkd/miniconda3/lib/python3.7/site-packages/jep");
 
-        String script = "print('hello world')";
-        Jep jep = new SharedInterpreter();
-        jep.runScript(script);
+            String blah = "print('hello world')";
+            Jep jep = new SharedInterpreter();
+            jep.runScript(blah);
+
+            return 0;
+        }
+        catch(Exception ioe)
+        {
+            //throw new RuntimeException(ioe.getMessage());
+            return 0;
+        }
+        catch(java.lang.UnsatisfiedLinkError s)
+        {
+            return 0;
+        }
     }
 }
