@@ -15,6 +15,14 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.text.MessageFormat;
+import java.net.URLEncoder;
+
+
 /**
  *
  * @author babyboy
@@ -36,5 +44,30 @@ public class AWSAIClientTests {
             logger.info(jsonObject.toString());
             logger.info("****************");
         }*/
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        try
+        {
+            String searchQuery = "{string}";
+            searchQuery = URLEncoder.encode(searchQuery,"UTF-8");
+            String requestUrl = "https://api.cognitive.microsoft.com/bing/v7.0/entities/?mkt=en-us&count=10&offset=0&safesearch=Moderate&q="+searchQuery;
+
+            HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
+            HttpRequest httpRequest = httpRequestBuilder.uri(new URI(requestUrl))
+                    .setHeader("Content-Type", "application/json")
+                    .setHeader("Ocp-Apim-Subscription-Key","42f903592a524b86949d9324e02a99ce")
+                    //.param("q", "{string}")
+                    //.setParameter("mkt", "en-us")
+                    //.setParameter("count", "10")
+                    //.setParameter("offset", "0")
+                    //.setParameter("safesearch", "Moderate")
+                    .GET()
+                    .build();
+            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            logger.info(httpResponse.body());
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 }
