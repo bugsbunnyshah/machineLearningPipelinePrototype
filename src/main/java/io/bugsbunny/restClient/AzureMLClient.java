@@ -29,7 +29,7 @@ public class AzureMLClient
 {
     private static Logger logger = LoggerFactory.getLogger(AzureMLClient.class);
 
-    public void search(String query)
+    public JsonObject search(String query)
     {
         HttpClient httpClient = HttpClient.newBuilder().build();
         try
@@ -44,7 +44,8 @@ public class AzureMLClient
                     .GET()
                     .build();
             HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-            logger.info(httpResponse.body());
+            JsonObject jsonObject = JsonParser.parseString(httpResponse.body()).getAsJsonObject();
+            return jsonObject;
         }
         catch (Exception e)
         {

@@ -3,7 +3,6 @@ package io.bugsbunny.dataScience.service;
 
 import com.google.gson.*;
 
-import io.bugsbunny.restclient.MLFlowRunClient;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ public class AIAgnosticTrainingWorkflowTests
     private TensorFlowTrainingWorkflow tensorFlowTrainingWorkflow;
 
     @Inject
-    private MLFlowRunClient mlFlowRunClient;
+    private AzureML azureML;
 
     @Test
     public void testStartTraining() throws Exception
@@ -73,5 +72,20 @@ public class AIAgnosticTrainingWorkflowTests
         String storedRunId = jsonObject.get("run").getAsJsonObject().get("info").getAsJsonObject().get("run_id").getAsString();
         logger.info(storedRunId);
         assertEquals(runId, storedRunId);*/
+    }
+
+    @Test
+    public void testGetDataAzureML() throws Exception
+    {
+        String query = "{microsoft}";
+        String response = this.azureML.getData(query);
+        //logger.info("****************");
+        //logger.info(response);
+        //logger.info("****************");
+
+        JsonObject responseJson = JsonParser.parseString(response).getAsJsonObject();
+        JsonObject entities = responseJson.get("entities").getAsJsonObject();
+        JsonArray entityArray = entities.get("value").getAsJsonArray();
+        logger.info(entityArray.get(0).toString());
     }
 }
