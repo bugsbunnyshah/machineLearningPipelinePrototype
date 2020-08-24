@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import io.bugsbunny.pipeline.ModelDeployer;
 import io.bugsbunny.restClient.ElasticSearchClient;
-import io.bugsbunny.restclient.MLFlowRunClient;
 
 import org.apache.commons.io.IOUtils;
 
@@ -41,9 +40,6 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
     private ElasticSearchClient elasticSearchClient;
 
     @Inject
-    private MLFlowRunClient mlFlowRunClient;
-
-    @Inject
     private ModelDeployer modelDeployer;
 
     private Map<Integer,String> eats = new HashMap<>();
@@ -58,7 +54,7 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
         try
         {
             String script = trainingMetaData.get("script").getAsString();
-            String runId = this.mlFlowRunClient.createRun();
+            String runId = "blah";
 
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("artifact_path", "model");
@@ -84,7 +80,6 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
             //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
 
             String json = jsonObject.toString();
-            this.mlFlowRunClient.logModel(runId, json);
 
             //Register the Trained Model with the BugsBunny Repository
             this.mongoDBJsonStore.storeDevModels(jsonObject);

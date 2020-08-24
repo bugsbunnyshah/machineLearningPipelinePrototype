@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import io.bugsbunny.dataScience.model.PortableAIModel;
-import io.bugsbunny.restclient.MLFlowRunClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,6 @@ public class ProductionAIService
 {
     private static Logger logger = LoggerFactory.getLogger(ProductionAIService.class);
 
-    @Inject
-    private MLFlowRunClient mlFlowRunClient;
-
     private PortableAIModel aiModel;
 
     public ProductionAIService()
@@ -33,7 +29,7 @@ public class ProductionAIService
     public void start()
     {
         String runId = "815f68f58d194640b0f3f34b9b6794a9";
-        String runJson = this.mlFlowRunClient.getRun(runId);
+        String runJson = "{}";
         JsonObject modelJson = JsonParser.parseString(runJson).getAsJsonObject();
         JsonObject data = modelJson.get("run").getAsJsonObject().get("data").getAsJsonObject();
         String value = data.get("tags").getAsJsonArray().get(0).getAsJsonObject().get("value").getAsString();

@@ -24,7 +24,7 @@ public class DataBricksClientTests {
     @Inject
     private DataBricksClient dataBricksClient;
 
-    @Test
+    //@Test
     public void testCreateExperiment()
     {
         this.dataBricksClient.createExperiment();

@@ -38,7 +38,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import io.bugsbunny.restclient.MLFlowRunClient;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
@@ -54,9 +53,6 @@ public class TrainingWorkflow {
 
     @Inject
     private ElasticSearchClient elasticSearchClient;
-
-    @Inject
-    private MLFlowRunClient mlFlowRunClient;
 
     @Inject
     private ModelDeployer modelDeployer;
@@ -150,7 +146,7 @@ public class TrainingWorkflow {
             }
 
             //Store the model in the DataBricks Repository
-            runId = this.mlFlowRunClient.createRun();
+            //runId = this.mlFlowRunClient.createRun();
 
 
             JsonObject jsonObject = new JsonObject();
@@ -166,7 +162,7 @@ public class TrainingWorkflow {
             logger.info(json);
             logger.info("*********************************************");
 
-            this.mlFlowRunClient.logModel(runId, json);
+            //this.mlFlowRunClient.logModel(runId, json);
             this.mongoDBJsonStore.storeDevModels(jsonObject);
 
             return runId;
@@ -179,7 +175,7 @@ public class TrainingWorkflow {
     public String startTrainingTensorFlowModel()
     {
         try {
-            String runId = this.mlFlowRunClient.createRun();
+            String runId = "blah";
 
             this.modelDeployer.deployPythonTraining();
             String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),
@@ -212,7 +208,7 @@ public class TrainingWorkflow {
             logger.info(json);
             logger.info("*********************************************");
 
-            this.mlFlowRunClient.logModel(runId, json);
+            //this.mlFlowRunClient.logModel(runId, json);
             this.mongoDBJsonStore.storeDevModels(jsonObject);
 
             return runId;
