@@ -49,7 +49,7 @@ public class AWSAIClientTests {
         {
             String searchQuery = "{string}";
             searchQuery = URLEncoder.encode(searchQuery,"UTF-8");
-            String requestUrl = "https://api.cognitive.microsoft.com/bing/v7.0/entities/?mkt=en-us&count=10&offset=0&safesearch=Moderate&q="+searchQuery;
+            String requestUrl = "https://appgalentitysearch.cognitiveservices.azure.com/bing/v7.0/entities/?mkt=en-us&count=10&offset=0&safesearch=Moderate&q="+searchQuery;
 
             HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder();
             HttpRequest httpRequest = httpRequestBuilder.uri(new URI(requestUrl))

@@ -15,20 +15,22 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import io.bugsbunny.restclient.MLFlowRunClient;
+import javax.inject.Inject;
 
 @QuarkusTest
-public class MLFlowRunClientTests {
-    private static Logger logger = LoggerFactory.getLogger(MLFlowRunClientTests.class);
+public class DataBricksClientTests {
+    private static Logger logger = LoggerFactory.getLogger(DataBricksClientTests.class);
+
+    @Inject
+    private DataBricksClient dataBricksClient;
 
     @Test
     public void testCreateExperiment()
     {
-        MLFlowRunClient mlFlowRunClient = new MLFlowRunClient();
-        mlFlowRunClient.createExperiment();
+        this.dataBricksClient.createExperiment();
     }
 
-    @Test
+    /*@Test
     public void testGetExperiments()
     {
         MLFlowRunClient mlFlowRunClient = new MLFlowRunClient();
@@ -100,5 +102,5 @@ public class MLFlowRunClientTests {
         test.testGetRun();
         logger.info("****************");
         test.testLogModel();
-    }
+    }*/
 }
