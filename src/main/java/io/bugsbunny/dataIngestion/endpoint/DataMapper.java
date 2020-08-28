@@ -137,7 +137,6 @@ public class DataMapper {
     {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("jalwa","armaan");
-
         String response = jsonObject.toString();
         System.out.println(response);
         return Response.ok(response).build();
