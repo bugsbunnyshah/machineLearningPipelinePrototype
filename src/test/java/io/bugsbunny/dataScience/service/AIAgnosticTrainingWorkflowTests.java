@@ -84,8 +84,8 @@ public class AIAgnosticTrainingWorkflowTests
         //logger.info("****************");
 
         JsonObject responseJson = JsonParser.parseString(response).getAsJsonObject();
-        JsonObject entities = responseJson.get("entities").getAsJsonObject();
-        JsonArray entityArray = entities.get("value").getAsJsonArray();
-        logger.info(entityArray.get(0).toString());
+        //JsonObject entities = responseJson.get("entities").getAsJsonObject();
+        //JsonArray entityArray = entities.get("value").getAsJsonArray();
+        logger.info(responseJson.toString());
     }
 }
