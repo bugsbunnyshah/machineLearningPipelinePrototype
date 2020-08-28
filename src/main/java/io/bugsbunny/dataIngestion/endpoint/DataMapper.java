@@ -45,6 +45,8 @@ public class DataMapper {
             JsonArray array = JsonParser.parseString(sourceData).getAsJsonArray();
 
             JsonArray result = this.mapperService.map(sourceSchema, destinationSchema, array);
+            this.ingestionService.ingestDevModelData(result.toString());
+
             Response response = Response.ok(result.toString()).build();
             return response;
         }
@@ -71,6 +73,7 @@ public class DataMapper {
             JsonArray array = JsonParser.parseString(json).getAsJsonArray();
 
             JsonArray result = this.mapperService.map(json, json, array);
+            this.ingestionService.ingestDevModelData(result.toString());
 
             //TODO: GET_BACK_TO_ME_BOY
             //this.mapperService.storeMappedOutput(result);
@@ -125,5 +128,18 @@ public class DataMapper {
             jsonObject.addProperty("error", e.getMessage());
             return Response.status(500).entity(jsonObject.toString()).build();
         }
+    }
+
+    @Path("map")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response map()
+    {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("jalwa","armaan");
+
+        String response = jsonObject.toString();
+        System.out.println(response);
+        return Response.ok(response).build();
     }
 }

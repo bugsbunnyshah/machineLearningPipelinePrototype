@@ -40,6 +40,8 @@ import static java.util.Arrays.asList;
 
 import java.io.Serializable;
 
+import com.google.gson.*;
+
 public class DeltaLakeStartedTests implements Serializable
 {
     private static Logger logger = LoggerFactory.getLogger(DeltaLakeStartedTests.class);
@@ -58,14 +60,21 @@ public class DeltaLakeStartedTests implements Serializable
                 .getOrCreate();
         JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
 
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("email","c.s@data.world");
+        String json = jsonObject.toString();
+
         //Initialize the Data
         System.out.println("INIT_DATA");
-        Dataset<Long> data = spark.range(0, 5);
-        data.write().format("delta").save(location);
-        Dataset<Row> df = spark.read().format("delta").load(location);
+        //Dataset<Long> data = spark.range(0, 5);
+        //data.write().format("delta").save(location);
+        //Dataset<Row> df = spark.read().format("delta").load(location);
+        Dataset<Row> df = spark.read().text(Thread.currentThread().
+                getContextClassLoader().
+                getResource("dataLake/email.json").getFile());
         df.show();
 
-        System.out.println("OVERWRITE_DATA");
+        /*System.out.println("OVERWRITE_DATA");
         data = spark.range(5, 10);
         //location = "/tmp/delta-table-"+ UUID.randomUUID().toString();
         data.write().format("delta").mode("overwrite").save(location);
@@ -97,7 +106,7 @@ public class DeltaLakeStartedTests implements Serializable
         //Read in the latest/live data set
         System.out.println("TIMETRAVEL_DATA_LATEST_LIVE");
         df = spark.read().format("delta").option("versionAsOf", 2).load(location);
-        df.show();
+        df.show();*/
 
         // Create a custom WriteConfig
         Map<String, String> writeOverrides = new HashMap<String, String>();

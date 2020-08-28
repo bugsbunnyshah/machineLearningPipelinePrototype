@@ -1,8 +1,6 @@
 package io.bugsbunny.dataIngestion.endpoint;
 
-import com.google.gson.JsonParser;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
+import com.google.gson.*;
 
 import io.bugsbunny.dataScience.service.TrainingWorkflow;
 import io.bugsbunny.persistence.MongoDBJsonStore;
@@ -54,10 +52,10 @@ public class DataMapperTests {
         String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().
                         getResourceAsStream("dataMapper/sourceData.json"),
                 StandardCharsets.UTF_8);
-        logger.info("****************");
-        logger.info(sourceSchema);
-        logger.info(sourceData);
-        logger.info("****************");
+        //logger.info("****************");
+        //logger.info(sourceSchema);
+        //logger.info(sourceData);
+        //logger.info("****************");
 
         JsonObject input = new JsonObject();
         input.addProperty("sourceSchema", sourceSchema);
@@ -69,10 +67,10 @@ public class DataMapperTests {
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();
-        logger.info("**************");
-        logger.info(response.getStatusLine());
-        logger.info(jsonResponse);
-        logger.info("***************");
+        //logger.info("**************");
+        //logger.info(response.getStatusLine());
+        //logger.info(jsonResponse);
+        //logger.info("***************");
 
         //assert the body
         JsonArray array = JsonParser.parseString(jsonResponse).getAsJsonArray();
@@ -82,6 +80,30 @@ public class DataMapperTests {
         assertEquals("123456789", jsonObject.get("Id").getAsString());
         assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
         assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
+
+        //Make sure the source data was ingested
+        Response sourceResponse = given().get("/dataMapper/map")
+                .andReturn();
+
+        String sourceDataSaved = response.getBody().asString();
+        //logger.info("**************");
+        //logger.info(sourceResponse.getStatusLine());
+        logger.info(sourceDataSaved);
+        //logger.info("***************");
+
+        //assert the body
+        JsonElement sourceDataElement = JsonParser.parseString(sourceDataSaved);
+        statusCode = sourceResponse.getStatusCode();
+        assertEquals(200, statusCode);
+
+        JsonObject fuckyou = new JsonObject();
+        fuckyou.addProperty("jalwa","armaan");
+        sourceDataSaved = fuckyou.toString();
+
+        assertEquals(sourceData, sourceDataSaved);
+        //assertEquals("123456789", jsonObject.get("Id").getAsString());
+        //assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
+        //assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
     }
 
     @Test
