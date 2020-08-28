@@ -1,6 +1,6 @@
 package io.bugsbunny.aviation;
 
-import java.io.Serializable;
+/*import java.io.Serializable;
 
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
@@ -10,10 +10,10 @@ import org.apache.spark.sql.SparkSession;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
-@QuarkusTest
+@QuarkusTest*/
 public class JSONtoDataSet {
 
-    public static class Employee implements Serializable{
+    /*public static class Employee implements Serializable{
         public String name;
         public int salary;
     }
@@ -42,5 +42,5 @@ public class JSONtoDataSet {
             e.printStackTrace();
             throw e;
         }
-    }
+    }*/
 }

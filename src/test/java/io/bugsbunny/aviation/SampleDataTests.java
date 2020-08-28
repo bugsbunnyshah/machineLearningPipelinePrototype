@@ -1,6 +1,6 @@
 package io.bugsbunny.aviation;
 
-import com.google.gson.JsonObject;
+/*import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonArray;
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,9 +14,9 @@ import java.nio.charset.StandardCharsets;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
-@QuarkusTest
+@QuarkusTest*/
 public class SampleDataTests {
-    private static Logger logger = LoggerFactory.getLogger(SampleDataTests.class);
+   /* private static Logger logger = LoggerFactory.getLogger(SampleDataTests.class);
 
     @Test
     public void testFirst() throws Exception
@@ -32,5 +32,5 @@ public class SampleDataTests {
         logger.info(jsonObject.get("Rcvr").getAsString());
         logger.info(""+jsonObject.get("HasSig").getAsBoolean());
         logger.info("*******");
-    }
+    }*/
 }

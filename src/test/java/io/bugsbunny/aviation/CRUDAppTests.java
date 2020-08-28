@@ -1,6 +1,6 @@
 package io.bugsbunny.aviation;
 
-import io.delta.tables.DeltaTable;
+/*import io.delta.tables.DeltaTable;
 import org.apache.commons.io.IOUtils;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.streaming.StreamingQuery;
@@ -37,10 +37,10 @@ import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.*;
 
-@QuarkusTest
+@QuarkusTest*/
 public class CRUDAppTests
 {
-    private static Logger logger = LoggerFactory.getLogger(CRUDAppTests.class);
+    /*private static Logger logger = LoggerFactory.getLogger(CRUDAppTests.class);
 
     @Test
     public void testQueries() throws Exception
@@ -112,10 +112,10 @@ public class CRUDAppTests
                 format("console").start();
 
         spark.close();
-    }*/
+    }
 
     public static class Employee implements Serializable {
         public String name;
         public int salary;
-    }
+    }*/
 }

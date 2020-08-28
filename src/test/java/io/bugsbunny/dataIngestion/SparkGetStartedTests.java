@@ -1,6 +1,6 @@
 package io.bugsbunny.dataIngestion;
 
-import io.bugsbunny.dataIngestion.service.Skills;
+/*import io.bugsbunny.dataIngestion.service.Skills;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
+import java.util.List;*/
 
-public class SparkGetStartedTests implements Serializable {
-    private static Logger logger = LoggerFactory.getLogger(SparkGetStartedTests.class);
+public class SparkGetStartedTests{
+   /* private static Logger logger = LoggerFactory.getLogger(SparkGetStartedTests.class);
 
     //@Test
     public void testFirstStart() throws Exception
@@ -105,5 +105,5 @@ public class SparkGetStartedTests implements Serializable {
         String[] columns = {"name","iata","icao","alternativeName","country","callSign"};
 
         spark.close();
-    }
+    }*/
 }
