@@ -53,7 +53,10 @@ public class DeltaLakeStartedTests implements Serializable
                 .master("local")
                 .appName("CRUDApp")
                 .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+                .config("spark.mongodb.input.uri", "mongodb://127.0.0.1/test.myCollection")
+                .config("spark.mongodb.output.uri", "mongodb://127.0.0.1/test.myCollection")
                 .getOrCreate();
+        JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
 
         //Initialize the Data
         System.out.println("INIT_DATA");
@@ -95,6 +98,16 @@ public class DeltaLakeStartedTests implements Serializable
         System.out.println("TIMETRAVEL_DATA_LATEST_LIVE");
         df = spark.read().format("delta").option("versionAsOf", 2).load(location);
         df.show();
+
+        // Create a custom WriteConfig
+        Map<String, String> writeOverrides = new HashMap<String, String>();
+        writeOverrides.put("collection", "spark");
+        writeOverrides.put("writeConcern.w", "majority");
+        WriteConfig writeConfig = WriteConfig.create(jsc).withOptions(writeOverrides);
+
+        /*Start Example: Save data from RDD to MongoDB*****************/
+        MongoSpark.save(df, writeConfig);
+        /*End Example**************************************************/
 
         spark.close();
 
