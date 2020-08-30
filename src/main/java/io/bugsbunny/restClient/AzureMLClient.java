@@ -1,9 +1,8 @@
 package io.bugsbunny.restClient;
 
 import com.google.gson.*;
-import io.quarkus.test.junit.QuarkusTest;
+
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

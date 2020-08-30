@@ -23,10 +23,10 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import jep.Jep;
-import jep.MainInterpreter;
-import jep.SharedInterpreter;
-import jep.SubInterpreter;
+//import jep.Jep;
+//import jep.MainInterpreter;
+//import jep.SharedInterpreter;
+//import jep.SubInterpreter;
 
 @ApplicationScoped
 public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
@@ -165,7 +165,7 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
         {
             throw new RuntimeException(ioe.getMessage());
         }*/
-        try
+        /*try
         {
             MainInterpreter.setJepLibraryPath("/Users/mkd/miniconda3/lib/python3.7/site-packages/jep");
 
@@ -183,6 +183,7 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
         catch(java.lang.UnsatisfiedLinkError s)
         {
             return 0;
-        }
+        }*/
+        return 0;
     }
 }

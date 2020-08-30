@@ -17,32 +17,6 @@ public class ShimmerTests
     @Test
     public void testShimmer() throws Exception
     {
-        /*int i,j,k;
-        int baseLength;
-        long chunkSize;
-        long position;
-        long lastPosition;
-        int totalBases;
-        char charPtr;
-        char[] cmd = new char[1000000];
-        char mapQual, baseQual;
-        int baseQualNo;
-        char nextChar;
-        char refBase;
-        int[] noBases = new int[10];
-        int indelLength;
-        int posLength;
-        int refID;
-        int sampleShift;
-        char[] posBases = new char[3000000];
-        char[] posString = new char[3000000];
-        String baseArray = "ATGCN";
-        int maxBases;
-        int maxBase;
-        int nextMaxBases;
-        int nextMaxBase;
-        int baseCount;*/
-
         String geneticData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
                 "genomics/testref.fa.fai"),
                 StandardCharsets.UTF_8);
@@ -60,9 +34,9 @@ public class ShimmerTests
             String posString;
 
             int chromosomePointer = 0;
-            char[] characters = line.toCharArray();
+            //char[] characters = line.toCharArray();
 
-            if (characters[0] == '\t')
+            if (line.charAt(0) == '\t')
             {
                 fieldNo++;
             }
@@ -72,27 +46,28 @@ public class ShimmerTests
             {
                 logger.info("****PROCESSING*****");
                 /* populate chromosome with the current chromosome */
-                chromosome = new String(characters, 0, 1000);
+                chromosome = line.substring(0, 1000);
                 chromosomePointer = 1001;
-                StringBuilder restOfTheChromosome = new StringBuilder();
-                while (characters[chromosomePointer] != '\t')
+                String restOfTheChromosome = null;
+                while (line.charAt(chromosomePointer) != '\t')
                 {
-                    restOfTheChromosome.append(characters[chromosomePointer]);
+                    restOfTheChromosome = line.substring(chromosomePointer);
                     chromosomePointer++;
-                    if(chromosomePointer == characters.length)
+                    if(chromosomePointer == line.length())
                     {
                         break;
                     }
                 }
-                chromosome = chromosome + restOfTheChromosome.toString();
+                chromosome = restOfTheChromosome.toString();
                 logger.info("***CHROMOSOME****");
-                logger.info(chromosome);
+                logger.info(chromosome.length()+"");
+                System.out.println(chromosome);
 
                 //Progress to the next set
                 fieldNo++;
             }
 
-            if(chromosomePointer == characters.length)
+            if(chromosomePointer == line.length())
             {
                 continue;
             }
@@ -101,20 +76,32 @@ public class ShimmerTests
             if (fieldNo == 1)
             {
                 /* populate position with current position */
-                StringBuilder buffer = new StringBuilder("hello");
-                while (characters[chromosomePointer] != '\t')
+                int tabIndex = line.indexOf(chromosomePointer);
+
+                if(tabIndex == -1)
                 {
-                    buffer.append(characters[chromosomePointer]);
+                    String restOfTheChromosome = line.substring(chromosomePointer);
+                    logger.info("***POS_STRING****");
+                    logger.info(restOfTheChromosome.length()+"");
+                    logger.info(restOfTheChromosome);
+                }
+                else
+                {
+                    String restOfTheChromosome = line.substring(chromosomePointer, tabIndex);
+                    logger.info("***POS_STRING****");
+                    logger.info(restOfTheChromosome.length()+"");
+                    logger.info(restOfTheChromosome);
+                }
+
+                /*while (line.charAt(chromosomePointer) != '\t')
+                {
+                    restOfTheChromosome += line.substring(chromosomePointer);
                     chromosomePointer++;
-                    if(chromosomePointer == characters.length)
+                    if(chromosomePointer == line.length())
                     {
                         break;
                     }
-                }
-                posString = buffer.toString();
-                logger.info("***POS_STRING****");
-                logger.info(posString);
-
+                }*/
                 //Progress to the next set
                 fieldNo++;
             }
