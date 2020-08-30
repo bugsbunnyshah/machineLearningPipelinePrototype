@@ -3,15 +3,17 @@ package io.bugsbunny.restClient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import io.bugsbunny.restclient.MLFlowRunClient;
+
 import io.quarkus.test.junit.QuarkusTest;
-import net.minidev.json.JSONValue;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+
+import net.minidev.json.JSONValue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +32,7 @@ public class DataBricksClientTests {
         this.dataBricksClient.createExperiment();
     }
 
-    /*@Test
+    @Test
     public void testGetExperiments()
     {
         MLFlowRunClient mlFlowRunClient = new MLFlowRunClient();
@@ -88,19 +90,4 @@ public class DataBricksClientTests {
         mlFlowRunClient.logModel(runId, json);
         mlFlowRunClient.getRun(runId);
     }
-
-    public static void main(String[] args) throws Exception
-    {
-        MLFlowRunClientTests test = new MLFlowRunClientTests();
-
-        test.testCreateExperiment();
-        logger.info("****************");
-        test.testCreateRun();
-        logger.info("****************");
-        test.testGetExperiments();
-        logger.info("****************");
-        test.testGetRun();
-        logger.info("****************");
-        test.testLogModel();
-    }*/
 }

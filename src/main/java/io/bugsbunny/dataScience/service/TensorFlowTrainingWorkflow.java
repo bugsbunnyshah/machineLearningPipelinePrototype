@@ -6,6 +6,7 @@ import io.bugsbunny.persistence.MongoDBJsonStore;
 import io.bugsbunny.pipeline.ModelDeployer;
 import io.bugsbunny.restClient.ElasticSearchClient;
 
+import io.bugsbunny.restclient.MLFlowRunClient;
 import org.apache.commons.io.IOUtils;
 
 import org.slf4j.Logger;
@@ -42,6 +43,9 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
     @Inject
     private ModelDeployer modelDeployer;
 
+    @Inject
+    private MLFlowRunClient mlFlowRunClient;
+
     private Map<Integer,String> eats = new HashMap<>();
     private Map<Integer,String> sounds = new HashMap<>();
     private Map<Integer,String> classifiers = new HashMap<>();
@@ -69,17 +73,18 @@ public class TensorFlowTrainingWorkflow extends TrainingWorkflowBase
 
             //Process the Training Results
             //TODO: Delete this file once it is entered into the Repositories
-            /*String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),
+            String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),
                     StandardCharsets.UTF_8);
 
             //Register the Trained Model with the DataBricks Repository
-            String runId = this.mlFlowRunClient.createRun();
+            runId = this.mlFlowRunClient.createRun();
             modelStream = new ByteArrayOutputStream();
             out = new ObjectOutputStream(modelStream);
-            out.writeObject(model);*/
-            //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
+            out.writeObject(model);
+            jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
 
             String json = jsonObject.toString();
+            this.mlFlowRunClient.logModel(runId, json);
 
             //Register the Trained Model with the BugsBunny Repository
             this.mongoDBJsonStore.storeDevModels(jsonObject);
