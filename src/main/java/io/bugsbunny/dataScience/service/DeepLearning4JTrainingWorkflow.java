@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,9 +77,9 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
     @Inject
     private MLFlowRunClient mlFlowRunClient;
 
-    private Map<Integer,String> eats = new HashMap<>();
+    /*private Map<Integer,String> eats = new HashMap<>();
     private Map<Integer,String> sounds = new HashMap<>();
-    private Map<Integer,String> classifiers = new HashMap<>();
+    private Map<Integer,String> classifiers = new HashMap<>();*/
 
     @Override
     public String startTraining(JsonObject trainingMetaData)
@@ -86,8 +88,8 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
         ObjectOutputStream out = null;
         try
         {
+            String runId = this.mlFlowRunClient.createRun();;
             String script = trainingMetaData.get("script").getAsString();
-            String runId = "blah";
 
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("artifact_path", "model");
@@ -106,7 +108,6 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
                     StandardCharsets.UTF_8);
 
             //Register the Trained Model with the DataBricks Repository
-            runId = this.mlFlowRunClient.createRun();
             modelStream = new ByteArrayOutputStream();
             out = new ObjectOutputStream(modelStream);
             out.writeObject(model);
@@ -166,7 +167,7 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
     }
 
     //--------------------------------------------------------------------
-    private void testClassifier() throws Exception
+    /*private void testClassifier() throws Exception
     {
 
         try {
@@ -275,14 +276,14 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
             e.printStackTrace();
         }
 
-    }
+    }*/
 
-    private void logAnimals(Map<Integer,Map<String,Object>> animals){
+    /*private void logAnimals(Map<Integer,Map<String,Object>> animals){
         for(Map<String,Object> a:animals.values())
             log.info(a.toString());
-    }
+    }*/
 
-    private void setFittedClassifiers(INDArray output, Map<Integer,Map<String,Object>> animals){
+    /*private void setFittedClassifiers(INDArray output, Map<Integer,Map<String,Object>> animals){
         for (int i = 0; i < output.rows() ; i++) {
 
             // set the classification from the fitted results
@@ -291,17 +292,17 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
 
         }
 
-    }
+    }*/
 
-    private float[] getFloatArrayFromSlice(INDArray rowSlice){
+    /*private float[] getFloatArrayFromSlice(INDArray rowSlice){
         float[] result = new float[rowSlice.columns()];
         for (int i = 0; i < rowSlice.columns(); i++) {
             result[i] = rowSlice.getFloat(i);
         }
         return result;
-    }
+    }*/
 
-    private int maxIndex(float[] vals){
+    /*private int maxIndex(float[] vals){
         int maxIndex = 0;
         for (int i = 1; i < vals.length; i++){
             float newnumber = vals[i];
@@ -310,9 +311,9 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
             }
         }
         return maxIndex;
-    }
+    }*/
 
-    private Map<Integer,Map<String,Object>> makeAnimalsForTesting(DataSet testData){
+    /*private Map<Integer,Map<String,Object>> makeAnimalsForTesting(DataSet testData){
         Map<Integer,Map<String,Object>> animals = new HashMap<>();
 
         INDArray features = testData.getFeatureMatrix();
@@ -330,9 +331,9 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
         }
         return animals;
 
-    }
+    }*/
 
-    private Map<Integer,String> readEnumCSV() {
+    /*private Map<Integer,String> readEnumCSV() {
         try{
             List<JsonObject> jsons = this.mongoDBJsonStore.getIngestionImages();
             JsonObject json = jsons.get(0);
@@ -350,9 +351,9 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
             return null;
         }
 
-    }
+    }*/
 
-    private DataSet readCSVDataset(int batchSize, int labelIndex, int numClasses)
+    /*private DataSet readCSVDataset(int batchSize, int labelIndex, int numClasses)
             throws IOException, InterruptedException{
         List<JsonObject> jsons = mongoDBJsonStore.getIngestionImages();
         JsonObject json = jsons.get(0);
@@ -366,5 +367,5 @@ public class DeepLearning4JTrainingWorkflow extends TrainingWorkflowBase
         rr.initialize(new FileSplit(file));
         DataSetIterator iterator = new RecordReaderDataSetIterator(rr, batchSize, labelIndex, numClasses);
         return iterator.next();
-    }
+    }*/
 }
