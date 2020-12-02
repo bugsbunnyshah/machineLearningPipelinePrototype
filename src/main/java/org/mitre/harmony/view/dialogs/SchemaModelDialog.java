@@ -64,15 +64,15 @@ public class SchemaModelDialog extends JInternalFrame
 		this.harmonyModel = harmonyModel;
 		SchemaModel model = harmonyModel.getSchemaManager().getSchemaInfo(schemaID).getModel();
 		HierarchicalSchemaInfo schemaInfo = harmonyModel.getSchemaManager().getSchemaInfo(schemaID);
-		if (!schemaInfo.shouldExpandAll()){
+		/*if (!schemaInfo.shouldExpandAll()){
 			schemaInfo.setModel(null);
-		}
+		}*/
 		ArrayList<SchemaModel> possibleModels = HierarchicalSchemaInfo.getSchemaModels();
 		Vector<SchemaModel> acceptableModels = new Vector<SchemaModel>();
 		for (SchemaModel testModel: possibleModels) {
-			if (schemaInfo.shouldExpandAll(testModel)) {
+			/*if (schemaInfo.shouldExpandAll(testModel)) {
 				acceptableModels.add(testModel);
-			}
+			}*/
 		}
 		// Initializes the mapping list
 		modelList = new JList(acceptableModels);

@@ -5,6 +5,7 @@ import io.bugsbunny.dataIngestion.service.MapperService;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -16,6 +17,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import org.apache.commons.io.IOUtils;
+import java.nio.charset.StandardCharsets;
 
 @Path("dataMapper")
 public class DataMapper {
@@ -38,8 +42,11 @@ public class DataMapper {
             String sourceSchema = jsonObject.get("sourceSchema").getAsString();
             String destinationSchema = jsonObject.get("destinationSchema").getAsString();
             String sourceData = jsonObject.get("sourceData").getAsString();
+            JsonArray array = JsonParser.parseString(sourceData).getAsJsonArray();
 
-            JsonObject result = this.mapperService.map(sourceSchema, destinationSchema, sourceData);
+            JsonArray result = this.mapperService.map(sourceSchema, destinationSchema, array);
+            this.ingestionService.ingestDevModelData(result.toString());
+
             Response response = Response.ok(result.toString()).build();
             return response;
         }
@@ -63,9 +70,13 @@ public class DataMapper {
             JSONObject sourceJson = XML.toJSONObject(sourceData);
             String json = sourceJson.toString(4);
             logger.info(json);
+            JsonArray array = JsonParser.parseString(json).getAsJsonArray();
 
-            JsonObject result = this.mapperService.map(json, json, json);
-            this.mapperService.storeMappedOutput(result);
+            JsonArray result = this.mapperService.map(json, json, array);
+            this.ingestionService.ingestDevModelData(result.toString());
+
+            //TODO: GET_BACK_TO_ME_BOY
+            //this.mapperService.storeMappedOutput(result);
 
             Response response = Response.ok(result.toString()).build();
             return response;
@@ -84,12 +95,28 @@ public class DataMapper {
     public Response mapCsvSourceData(@RequestBody String input)
     {
         try {
-            JsonObject jsonObject = JsonParser.parseString(input).getAsJsonObject();
+            String spaceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                    "dataMapper/data.csv"),
+                    StandardCharsets.UTF_8);
 
-            String sourceData = jsonObject.get("sourceData").getAsString();
-            //logger.info(sourceData);
-
-            this.ingestionService.ingestData(sourceData);
+            String[] lines = spaceData.split("\n");
+            String header = lines[0];
+            String[] columns = header.split(",");
+            JsonArray array = new JsonArray();
+            int length = lines.length;
+            for(int i=1; i<length; i++)
+            {
+                String line = lines[i];
+                String[] data = line.split(",");
+                JsonObject jsonObject = new JsonObject();
+                for(int j=0; j<data.length; j++)
+                {
+                    jsonObject.addProperty(columns[j],data[j]);
+                }
+                array.add(jsonObject);
+            }
+            JsonArray mappedData = this.mapperService.map("","",array);
+            this.ingestionService.ingestDevModelData(mappedData.toString());
 
             JsonObject result = new JsonObject();
             Response response = Response.ok(result.toString()).build();
@@ -101,5 +128,17 @@ public class DataMapper {
             jsonObject.addProperty("error", e.getMessage());
             return Response.status(500).entity(jsonObject.toString()).build();
         }
+    }
+
+    @Path("map")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response map()
+    {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("jalwa","armaan");
+        String response = jsonObject.toString();
+        System.out.println(response);
+        return Response.ok(response).build();
     }
 }

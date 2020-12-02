@@ -3,8 +3,10 @@ package io.bugsbunny.dataIngestion.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonArray;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
+
 import org.mitre.harmony.matchers.ElementPair;
 import org.mitre.harmony.matchers.MatcherManager;
 import org.mitre.harmony.matchers.MatcherScore;
@@ -35,24 +37,31 @@ public class MapperService {
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
 
-    public JsonObject map(String sourceSchema, String destinationSchema, String sourceData)
+    public JsonArray map(String sourceSchema, String destinationSchema, JsonArray sourceData)
     {
+        JsonArray result = new JsonArray();
         try
         {
-            String root = JsonParser.parseString(sourceData).getAsJsonObject().keySet().iterator().next();
+            int size = sourceData.size();
+            for(int i=0; i<size; i++)
+            {
+                JsonObject root = sourceData.get(i).getAsJsonObject();
 
-            HierarchicalSchemaInfo sourceSchemaInfo = this.populateHierarchialSchema(root,
-                    sourceData,null);
-            HierarchicalSchemaInfo destinationSchemaInfo = this.populateHierarchialSchema(root,
-                    sourceData,null);
+                HierarchicalSchemaInfo sourceSchemaInfo = this.populateHierarchialSchema(root.toString(),
+                        root.toString(), null);
+                HierarchicalSchemaInfo destinationSchemaInfo = this.populateHierarchialSchema(root.toString(),
+                        root.toString(), null);
 
 
-            FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
-            f1.addElements(sourceSchemaInfo.getElements(Entity.class));
-            FilteredSchemaInfo f2 = new FilteredSchemaInfo(destinationSchemaInfo);
-            f2.addElements(destinationSchemaInfo.getElements(Entity.class));
-            Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaInfo.getElements(Entity.class));
-            JsonObject result = this.performMapping(scores, sourceData);
+                FilteredSchemaInfo f1 = new FilteredSchemaInfo(sourceSchemaInfo);
+                f1.addElements(sourceSchemaInfo.getElements(Entity.class));
+                FilteredSchemaInfo f2 = new FilteredSchemaInfo(destinationSchemaInfo);
+                f2.addElements(destinationSchemaInfo.getElements(Entity.class));
+                Map<SchemaElement, Double> scores = this.findMatches(f1, f2, sourceSchemaInfo.getElements(Entity.class));
+                logger.info(scores.toString());
+                JsonObject local = this.performMapping(scores, root.toString());
+                result.add(local);
+            }
 
             return result;
         }

@@ -1,6 +1,6 @@
 package io.bugsbunny.dataIngestion.service;
 
-import org.apache.spark.SparkConf;
+/*import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
@@ -8,10 +8,10 @@ import org.apache.spark.api.java.function.Function2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
+import java.io.Serializable;*/
 
-public class Skills implements Serializable {
-    private static Logger logger = LoggerFactory.getLogger(Skills.class);
+public class Skills{
+    /*private static Logger logger = LoggerFactory.getLogger(Skills.class);
 
     private JavaRDD<String> lines;
 
@@ -38,5 +38,5 @@ public class Skills implements Serializable {
         sc.stop();
 
         return totalLength;
-    }
+    }*/
 }

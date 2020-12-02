@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import io.bugsbunny.persistence.MongoDBJsonStore;
+import io.bugsbunny.pipeline.ModelDeployer;
 import io.bugsbunny.restClient.ElasticSearchClient;
 
 import org.apache.commons.io.IOUtils;
@@ -37,7 +38,11 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import io.bugsbunny.restclient.MLFlowRunClient;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @ApplicationScoped
 public class TrainingWorkflow {
@@ -50,7 +55,7 @@ public class TrainingWorkflow {
     private ElasticSearchClient elasticSearchClient;
 
     @Inject
-    private MLFlowRunClient mlFlowRunClient;
+    private ModelDeployer modelDeployer;
 
     private Map<Integer,String> eats = new HashMap<>();
     private Map<Integer,String> sounds = new HashMap<>();
@@ -141,7 +146,7 @@ public class TrainingWorkflow {
             }
 
             //Store the model in the DataBricks Repository
-            runId = this.mlFlowRunClient.createRun();
+            //runId = this.mlFlowRunClient.createRun();
 
 
             JsonObject jsonObject = new JsonObject();
@@ -157,11 +162,59 @@ public class TrainingWorkflow {
             logger.info(json);
             logger.info("*********************************************");
 
-            this.mlFlowRunClient.logModel(runId, json);
+            //this.mlFlowRunClient.logModel(runId, json);
+            this.mongoDBJsonStore.storeDevModels(jsonObject);
 
             return runId;
         } catch (Exception e){
             logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String startTrainingTensorFlowModel()
+    {
+        try {
+            String runId = "blah";
+
+            this.modelDeployer.deployPythonTraining();
+            String model = IOUtils.toString(new FileInputStream("devModel/1/saved_model.pb"),
+                    StandardCharsets.UTF_8);
+
+            ByteArrayOutputStream modelStream = null;
+            ObjectOutputStream out = null;
+            try {
+                modelStream = new ByteArrayOutputStream();
+                out = new ObjectOutputStream(modelStream);
+                out.writeObject(model);
+            }
+            finally
+            {
+                out.close();
+                modelStream.close();
+            }
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("artifact_path", "model");
+            jsonObject.addProperty("utc_time_created", "2020-06-26 18:00:56.056775");
+            jsonObject.addProperty("run_id", runId);
+            jsonObject.add("flavors", new JsonObject());
+            jsonObject.addProperty("mlPlatform", "tensorflow");
+            //jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
+
+            String json = jsonObject.toString();
+
+            logger.info("*********************************************");
+            logger.info(json);
+            logger.info("*********************************************");
+
+            //this.mlFlowRunClient.logModel(runId, json);
+            this.mongoDBJsonStore.storeDevModels(jsonObject);
+
+            return runId;
+        }
+        catch(Exception e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -172,6 +225,7 @@ public class TrainingWorkflow {
         logger.info(this.elasticSearchClient.updateIndex(dataSet));
     }
 
+    //--------------------------------------------------------------------------------------------------------------------
     private String readIngestedData()
     {
         List<JsonObject> jsons = mongoDBJsonStore.getIngestionImages();

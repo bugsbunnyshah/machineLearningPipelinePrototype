@@ -26,7 +26,7 @@ public class ProductionAIServiceTests {
     private MLFlowRunClient mlFlowRunClient;
 
 
-    @Test
+    //@Test
     public void testProcessLiveModelRequest() throws Exception
     {
         Double result = this.productionAIService.processLiveModelRequest(new JsonObject());

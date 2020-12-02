@@ -1,20 +1,25 @@
 package io.bugsbunny.aviation;
 
-import java.io.Serializable;
+/*import java.io.Serializable;
 
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoder;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
 
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
+
+@QuarkusTest*/
 public class JSONtoDataSet {
 
-    public static class Employee implements Serializable{
+    /*public static class Employee implements Serializable{
         public String name;
         public int salary;
     }
 
-    public static void main(String[] args) throws Exception{
+    @Test
+    public void testDataSet() throws Exception{
         try {
             // configure spark
             SparkSession spark = SparkSession
@@ -37,5 +42,5 @@ public class JSONtoDataSet {
             e.printStackTrace();
             throw e;
         }
-    }
+    }*/
 }

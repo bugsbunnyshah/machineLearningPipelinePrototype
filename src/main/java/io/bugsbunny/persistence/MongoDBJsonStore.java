@@ -122,4 +122,36 @@ public class MongoDBJsonStore {
         }
         return ingestion;
     }
+
+    public void storeDevModels(JsonObject jsonObject)
+    {
+        MongoDatabase database = mongoClient.getDatabase("machineLearningPipeline");
+
+        MongoCollection<Document> collection = database.getCollection("devModels");
+
+        Document doc = Document.parse(jsonObject.toString());
+        collection.insertOne(doc);
+    }
+
+    public JsonObject getDevModel(String runId)
+    {
+        JsonObject devModel = new JsonObject();
+
+        MongoDatabase database = mongoClient.getDatabase("machineLearningPipeline");
+
+        MongoCollection<Document> collection = database.getCollection("devModels");
+
+        String queryJson = "{\"run_id\":\""+runId+"\"}";
+        Bson bson = Document.parse(queryJson);
+        FindIterable<Document> iterable = collection.find(bson);
+        MongoCursor<Document> cursor = iterable.cursor();
+        while(cursor.hasNext())
+        {
+            Document document = cursor.next();
+            String documentJson = document.toJson();
+            devModel = JsonParser.parseString(documentJson).getAsJsonObject();
+            return devModel;
+        }
+        return devModel;
+    }
 }

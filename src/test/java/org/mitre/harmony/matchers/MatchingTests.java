@@ -134,7 +134,7 @@ public class MatchingTests {
         }
     }
 
-    @Test
+    //@Test
     public void testFirstEndToEndMapping() throws Exception
     {
         ArrayList<SchemaElement> schemaElements = this.parseSchemaElements();

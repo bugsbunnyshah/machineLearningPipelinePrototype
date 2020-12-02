@@ -1,6 +1,7 @@
 package io.bugsbunny.dataIngestion.endpoint;
 
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+
 import io.bugsbunny.dataScience.service.TrainingWorkflow;
 import io.bugsbunny.persistence.MongoDBJsonStore;
 import org.datavec.api.records.reader.RecordReader;
@@ -17,8 +18,6 @@ import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonObject;
-
 import javax.inject.Inject;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -30,11 +29,11 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//import io.bugsbunny.restclient.MLFlowRunClient;
+import io.bugsbunny.restclient.MLFlowRunClient;
 
 @QuarkusTest
 public class DataMapperTests {
-    /*private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
+    private static Logger logger = LoggerFactory.getLogger(DataMapperTests.class);
 
     @Inject
     private MongoDBJsonStore mongoDBJsonStore;
@@ -47,59 +46,93 @@ public class DataMapperTests {
 
     @Test
     public void testMapWithOneToOneFields() throws Exception{
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream("airlinesDataOneToOneFields.json"),
+        String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceSchema.json"),
                 StandardCharsets.UTF_8);
-        logger.info(json);
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceData.json"),
+                StandardCharsets.UTF_8);
+        logger.info("****************");
+        logger.info(sourceSchema);
+        logger.info(sourceData);
+        logger.info("****************");
 
         JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", json);
-        input.addProperty("destinationSchema", json);
-        input.addProperty("sourceData", json);
+        input.addProperty("sourceSchema", sourceSchema);
+        input.addProperty("destinationSchema", sourceSchema);
+        input.addProperty("sourceData", sourceData);
 
 
         Response response = given().body(input.toString()).when().post("/dataMapper/map")
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
+        logger.info("**************");
         logger.info(response.getStatusLine());
         logger.info(jsonResponse);
-        logger.info("****");
+        logger.info("***************");
 
         //assert the body
-        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        JsonArray array = JsonParser.parseString(jsonResponse).getAsJsonArray();
+        JsonObject jsonObject = array.get(0).getAsJsonObject();
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
         assertEquals("123456789", jsonObject.get("Id").getAsString());
         assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
         assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
+
+        //Make sure the source data was ingested
+        Response sourceResponse = given().get("/dataMapper/map")
+                .andReturn();
+
+        String sourceDataSaved = sourceResponse.getBody().asString();
+        logger.info("**************");
+        logger.info(sourceResponse.getStatusLine());
+        logger.info(sourceDataSaved);
+        logger.info("***************");
+
+        //assert the body
+        JsonElement sourceDataElement = JsonParser.parseString(sourceDataSaved);
+        statusCode = sourceResponse.getStatusCode();
+        assertEquals(200, statusCode);
+
+        //assertEquals(sourceData, sourceDataSaved);
+        //assertEquals("123456789", jsonObject.get("Id").getAsString());
+        //assertEquals("1234567", jsonObject.get("Rcvr").getAsString());
+        //assertEquals(Boolean.TRUE, jsonObject.get("HasSig").getAsBoolean());
     }
 
     @Test
     public void testMapWithScatteredFields() throws Exception{
-        String json = IOUtils.toString(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream("airlinesDataScatteredFields.json"),
+        String sourceSchema = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceSchema.json"),
                 StandardCharsets.UTF_8);
-        logger.info(json);
+        String sourceData = IOUtils.toString(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream("dataMapper/sourceDataWithScatteredFields.json"),
+                StandardCharsets.UTF_8);
+        logger.info("****************");
+        logger.info(sourceSchema);
+        logger.info(sourceData);
+        logger.info("****************");
 
         JsonObject input = new JsonObject();
-        input.addProperty("sourceSchema", json);
-        input.addProperty("destinationSchema", json);
-        input.addProperty("sourceData", json);
+        input.addProperty("sourceSchema", sourceSchema);
+        input.addProperty("destinationSchema", sourceSchema);
+        input.addProperty("sourceData", sourceData);
 
 
         Response response = given().body(input.toString()).when().post("/dataMapper/map")
                 .andReturn();
 
         String jsonResponse = response.getBody().prettyPrint();
-        logger.info("****");
+        logger.info("***************");
         logger.info(response.getStatusLine());
         logger.info(jsonResponse);
-        logger.info("****");
+        logger.info("***************");
 
         //assert the body
-        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+        JsonArray array = JsonParser.parseString(jsonResponse).getAsJsonArray();
+        JsonObject jsonObject = array.get(0).getAsJsonObject();
         int statusCode = response.getStatusCode();
         assertEquals(200, statusCode);
         assertEquals("123456789", jsonObject.get("Id").getAsString());
@@ -135,7 +168,7 @@ public class DataMapperTests {
     }
 
     @Test
-    public void testModelTraining() throws Exception
+    public void testMapCsvSourceData() throws Exception
     {
         //Map<Integer,String> dataMap = this.readEnumCSV();
         //logger.info(dataMap.toString());
@@ -147,32 +180,32 @@ public class DataMapperTests {
         //DataSet dataSet = this.readCSVDataset(batchSizeTraining, labelIndex, numClasses);
         //logger.info(dataSet.toString());
 
-        File file = new File("tmp/data");
+        /*File file = new File("tmp/data");
         FileInputStream fis = new FileInputStream(file);
         String data = IOUtils.toString(fis, StandardCharsets.UTF_8);
         JsonObject input = new JsonObject();
         input.addProperty("sourceSchema", data);
         input.addProperty("destinationSchema", data);
-        input.addProperty("sourceData", data);
+        input.addProperty("sourceData", data);*/
 
-        Response response = given().body(input.toString()).when().post("/dataMapper/mapCsv")
+        Response response = given().body("").when().post("/dataMapper/mapCsv")
                 .andReturn();
 
-        String jsonResponse = response.getBody().prettyPrint();
+        //String jsonResponse = response.getBody().prettyPrint();
         //logger.info("****");
         //logger.info(response.getStatusLine());
         //logger.info(jsonResponse);
         //logger.info("****");
 
         //Kickoff the Training
-        String runId = this.trainingWorkflow.startTraining();
+        //String runId = this.trainingWorkflow.startTraining();
 
-        logger.info("*******");
-        logger.info("RunId: "+runId);
-        logger.info("*******");
-        assertNotNull(runId);
+        //logger.info("*******");
+        //logger.info("RunId: "+runId);
+        //logger.info("*******");
+        //assertNotNull(runId);
 
-        String runJson = this.mlFlowRunClient.getRun(runId);
+        //String runJson = this.mlFlowRunClient.getRun(runId);
         //logger.info(runJson);
     }
 
@@ -200,5 +233,5 @@ public class DataMapperTests {
             enums.put(Integer.parseInt(parts[0]),parts[1]);
         }
         return enums;
-    }*/
+    }
 }
