@@ -151,12 +151,13 @@ public class TrainingWorkflow {
             jsonObject.add("flavors", new JsonObject());
             jsonObject.addProperty("modelSer", Base64.getEncoder().encodeToString(modelStream.toByteArray()));
 
+            this.mongoDBJsonStore.storeDevModels(jsonObject);
+
+            //logger.info("*********************************************");
+            //logger.info(json);
+            //logger.info("*********************************************");
+
             String json = jsonObject.toString();
-
-            logger.info("*********************************************");
-            logger.info(json);
-            logger.info("*********************************************");
-
             this.mlFlowRunClient.logModel(runId, json);
 
             return runId;
